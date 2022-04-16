@@ -20,7 +20,9 @@ namespace RPG_Project
         [Header("Speed")]
         public float walkSpeed = 4f;
         public float runSpeed = 6f;
+        public float acceleration = 8f;
 
+        [SerializeField] float targetSpeed;
         [SerializeField] float currentSpeed;
 
         [Header("Gravity")]
@@ -47,10 +49,10 @@ namespace RPG_Project
                 switch (state)
                 {
                     case MovementState.Walk:
-                        currentSpeed = walkSpeed;
+                        targetSpeed = walkSpeed;
                         break;
                     case MovementState.Run:
-                        currentSpeed = runSpeed;
+                        targetSpeed = runSpeed;
                         break;
                     default:
                         break;
@@ -88,6 +90,13 @@ namespace RPG_Project
 
         public void MovePosition(Vector3 dir, float dt)
         {
+            float target = 0;
+
+            if (dir == Vector3.zero) target = 0;
+            else target = targetSpeed;
+
+            currentSpeed = Mathf.MoveTowards(currentSpeed, target, acceleration * dt);
+
             model.RotateModel(dir, dt);
 
             cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);

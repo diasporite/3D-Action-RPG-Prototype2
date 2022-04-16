@@ -450,6 +450,8 @@ MonoBehaviour:
   grounded: 0
   walkSpeed: 3
   runSpeed: 5
+  acceleration: 8
+  targetSpeed: 0
   currentSpeed: 0
   timeSinceGrounded: 0
   verticalSpeed: 0
@@ -923,6 +925,8 @@ MonoBehaviour:
   grounded: 0
   walkSpeed: 3
   runSpeed: 5
+  acceleration: 3
+  targetSpeed: 0
   currentSpeed: 0
   timeSinceGrounded: 0
   verticalSpeed: 0
@@ -1147,6 +1151,8 @@ MonoBehaviour:
   defendKey: k
   runKey: l
   toggleLockKey: right shift
+  selectNextKey: right arrow
+  selectPreviousKey: left arrow
   actionL1Key: u
   actionL2Key: y
   actionR1Key: o
@@ -1886,6 +1892,8 @@ MonoBehaviour:
   grounded: 0
   walkSpeed: 3
   runSpeed: 5
+  acceleration: 8
+  targetSpeed: 0
   currentSpeed: 0
   timeSinceGrounded: 0
   verticalSpeed: 0
@@ -2024,6 +2032,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GroundCheck
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504922334369130148, guid: e247e0a86676deb4898b5f19f901b35b,
+        type: 3}
+      propertyPath: radius
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1504922334369130149, guid: e247e0a86676deb4898b5f19f901b35b,
         type: 3}
