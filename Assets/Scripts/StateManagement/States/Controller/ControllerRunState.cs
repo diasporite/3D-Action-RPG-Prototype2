@@ -28,7 +28,7 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            if (!inputController.Run) csm.ChangeState(StateID.ControllerMove);
+            if (!inputController.Run()) csm.ChangeState(StateID.ControllerMove);
 
             movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
         }

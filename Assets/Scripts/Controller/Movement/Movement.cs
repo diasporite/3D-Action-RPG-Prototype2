@@ -20,9 +20,7 @@ namespace RPG_Project
         [Header("Speed")]
         public float walkSpeed = 4f;
         public float runSpeed = 6f;
-        public float acceleration = 8f;
 
-        [SerializeField] float targetSpeed;
         [SerializeField] float currentSpeed;
 
         [Header("Gravity")]
@@ -49,10 +47,10 @@ namespace RPG_Project
                 switch (state)
                 {
                     case MovementState.Walk:
-                        targetSpeed = walkSpeed;
+                        currentSpeed = walkSpeed;
                         break;
                     case MovementState.Run:
-                        targetSpeed = runSpeed;
+                        currentSpeed = runSpeed;
                         break;
                     default:
                         break;
@@ -90,14 +88,12 @@ namespace RPG_Project
 
         public void MovePosition(Vector3 dir, float dt)
         {
-            float target = 0;
-
-            if (dir == Vector3.zero) target = 0;
-            else target = targetSpeed;
-
-            currentSpeed = Mathf.MoveTowards(currentSpeed, target, acceleration * dt);
-
             model.RotateModel(dir, dt);
+
+            //print(dir.magnitude * currentSpeed);
+            model.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model.SetAnimHorizontal(dir.x);
+            model.SetAnimVertical(dir.z);
 
             cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
         }
@@ -125,6 +121,7 @@ namespace RPG_Project
 
         public void Fall(float dt)
         {
+            //grounded = cc.isGrounded;
             grounded = gc.IsGrounded;
 
             if (grounded)

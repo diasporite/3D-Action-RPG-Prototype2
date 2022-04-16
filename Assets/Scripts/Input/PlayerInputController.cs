@@ -49,22 +49,22 @@ namespace RPG_Project
         public override Vector2 InputMoveCamDir => moveCam.Dir;
         public override Vector3 MoveCamDir => moveCam.DirXz;
 
-        public override bool Defend => defend.GetInput;
-        public override bool Run => run.GetInput;
+        public override bool Defend() => defend.GetInput;
+        public override bool Run() => run.GetInput;
 
-        public override bool ToggleLock => toggleLock.GetInput;
-        public override bool SelectNext => selectNext.GetInput;
-        public override bool SelectPrevious => selectPrevious.GetInput;
+        public override bool ToggleLock() => toggleLock.GetInput;
+        public override bool SelectNext() => selectNext.GetInput;
+        public override bool SelectPrevious() => selectPrevious.GetInput;
 
-        public override bool ActionL1 => actionL1.GetInput;
-        public override bool ActionL2 => actionL2.GetInput;
-        public override bool ActionR1 => actionR1.GetInput;
-        public override bool ActionR2 => actionR2.GetInput;
+        public override bool ActionL1() => actionL1.GetInput;
+        public override bool ActionL2() => actionL2.GetInput;
+        public override bool ActionR1() => actionR1.GetInput;
+        public override bool ActionR2() => actionR2.GetInput;
 
-        public override bool Char1 => char1.GetInput;
-        public override bool Char2 => char2.GetInput;
-        public override bool Char3 => char3.GetInput;
-        public override bool Char4 => char4.GetInput;
+        public override bool Char1() => char1.GetInput;
+        public override bool Char2() => char2.GetInput;
+        public override bool Char3() => char3.GetInput;
+        public override bool Char4() => char4.GetInput;
 
         private void Awake()
         {

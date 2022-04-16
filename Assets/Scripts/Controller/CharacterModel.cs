@@ -12,6 +12,8 @@ namespace RPG_Project
         float target;
         float turnVelocity;
 
+        Animator anim;
+
         Controller controller;
 
         CharacterController cc;
@@ -21,6 +23,8 @@ namespace RPG_Project
 
         private void Awake()
         {
+            anim = GetComponent<Animator>();
+
             controller = GetComponentInParent<Controller>();
 
             cc = GetComponentInParent<CharacterController>();
@@ -28,7 +32,7 @@ namespace RPG_Project
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.Pivot.Locked)
+            if (controller.Pivot.locked)
                 LookAt(controller.Pivot.targetPos);
             else
             {
@@ -48,6 +52,26 @@ namespace RPG_Project
         {
             look.y = transform.position.y;
             transform.LookAt(look);
+        }
+
+        public void SetAnimSpeed(float speed)
+        {
+            anim.SetFloat("Speed", speed);
+        }
+
+        public void SetAnimHorizontal(float horizontal)
+        {
+            anim.SetFloat("Horizontal", horizontal);
+        }
+
+        public void SetAnimVertical(float vertical)
+        {
+            anim.SetFloat("Vertical", vertical);
+        }
+
+        public void SetAnimLocked(bool locked)
+        {
+            anim.SetBool("Locked", locked);
         }
     }
 }

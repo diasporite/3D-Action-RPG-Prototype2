@@ -6,7 +6,7 @@ namespace RPG_Project
 {
     public class CameraPivot : MonoBehaviour
     {
-        public bool Locked = false;
+        public bool locked = false;
 
         public LayerMask targetMask;
 
@@ -58,7 +58,7 @@ namespace RPG_Project
         {
             LockOn();
 
-            if (!Locked)
+            if (!locked)
             {
                 GetInput();
                 MovePivot();
@@ -68,7 +68,7 @@ namespace RPG_Project
                 var targetsFound = FindTargets();
                 //print(targetsFound);
                 if (targetsFound) FollowTarget();
-                else Locked = false;
+                else ToggleLock(false);
             }
         }
 
@@ -123,7 +123,7 @@ namespace RPG_Project
         {
             if (currentTarget == null)
             {
-                Locked = false;
+                locked = false;
                 return;
             }
 
@@ -155,11 +155,10 @@ namespace RPG_Project
             if (currentTarget != null)
             {
                 if ((currentTarget.position - follow.position).sqrMagnitude > sqrLockOnRange)
-                    Locked = false;
+                    ToggleLock(false);
             }
 
-                if (Input.GetKeyDown("right shift")) Locked = !Locked;
-
+            if (Input.GetKeyDown("right shift")) ToggleLock();
         }
 
         bool FindTargets()
@@ -189,6 +188,20 @@ namespace RPG_Project
             }
 
             return false;
+        }
+
+        void ToggleLock()
+        {
+            locked = !locked;
+
+            party.CurrentController.Model.SetAnimLocked(locked);
+        }
+
+        void ToggleLock(bool value)
+        {
+            locked = value;
+
+            party.CurrentController.Model.SetAnimLocked(locked);
         }
     }
 }

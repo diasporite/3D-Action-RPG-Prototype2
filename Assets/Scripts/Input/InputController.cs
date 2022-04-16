@@ -12,21 +12,21 @@ namespace RPG_Project
         public virtual Vector2 InputMoveCamDir { get; }
         public virtual Vector3 MoveCamDir { get; }
 
-        public virtual bool Defend { get; }
-        public virtual bool Run { get; } 
+        public virtual bool Defend() { return false; }
+        public virtual bool Run() { return false; } 
 
-        public virtual bool ToggleLock { get; }
-        public virtual bool SelectNext { get; }
-        public virtual bool SelectPrevious { get; }
+        public virtual bool ToggleLock() { return false; }
+        public virtual bool SelectNext() { return false; }
+        public virtual bool SelectPrevious() { return false; }
 
-        public virtual bool ActionL1 { get; }
-        public virtual bool ActionL2 { get; }
-        public virtual bool ActionR1 { get; }
-        public virtual bool ActionR2 { get; }
+        public virtual bool ActionL1() { return false; }
+        public virtual bool ActionL2() { return false; }
+        public virtual bool ActionR1() { return false; }
+        public virtual bool ActionR2() { return false; }
 
-        public virtual bool Char1 { get; }
-        public virtual bool Char2 { get; }
-        public virtual bool Char3 { get; }
-        public virtual bool Char4 { get; }
+        public virtual bool Char1() { return false; }
+        public virtual bool Char2() { return false; }
+        public virtual bool Char3() { return false; }
+        public virtual bool Char4() { return false; }
     }
 }
