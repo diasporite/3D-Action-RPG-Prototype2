@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -71,7 +72,14 @@ namespace RPG_Project
             Init();
         }
 
-        public void Init()
+        protected override void Init()
+        {
+            InitButtons();
+
+            base.Init();
+        }
+
+        void InitButtons()
         {
             defend.key = defendKey;
             run.key = runKey;

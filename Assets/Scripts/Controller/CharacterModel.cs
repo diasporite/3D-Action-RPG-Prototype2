@@ -54,6 +54,16 @@ namespace RPG_Project
             transform.LookAt(look);
         }
 
+        public void PlayAnimation(string stateName, int layer)
+        {
+            anim.Play(stateName, 0);
+        }
+
+        public void AdvanceAction()
+        {
+            controller.Party.ActionQueue.AdvanceAction();
+        }
+
         public void SetAnimSpeed(float speed)
         {
             anim.SetFloat("Speed", speed);

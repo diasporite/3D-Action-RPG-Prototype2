@@ -28,6 +28,10 @@ namespace RPG_Project
         [SerializeField] List<QueueAction> actions = new List<QueueAction>();
         int actionCap = 5;
 
+        Dictionary<QueueAction, string> actionTriggers = new Dictionary<QueueAction, string>();
+
+        PartyController party;
+
         public bool Executing
         {
             get => executing;
@@ -35,6 +39,16 @@ namespace RPG_Project
         }
 
         public List<QueueAction> Actions => actions;
+
+        public Controller CurrentController => party.CurrentController;
+
+        private void Awake()
+        {
+            party = GetComponent<PartyController>();
+
+            actionTriggers.Add(QueueAction.ActionL1, "Action1");
+            actionTriggers.Add(QueueAction.Defend, "Defend");
+        }
 
         public void AddAction(QueueAction action)
         {
@@ -46,7 +60,24 @@ namespace RPG_Project
         {
             actions.RemoveAt(0);
 
-            if (actions.Count <= 0) executing = false;
+            if (actions.Count <= 0) StopChain();
+            else
+            {
+                if (!CurrentController.Movement.Grounded)
+                    StopChain();
+                else CurrentController.Model.PlayAnimation(actionTriggers[actions[0]], 0);
+            }
+        }
+
+        void StopChain()
+        {
+            executing = false;
+
+            if (!CurrentController.Movement.Grounded)
+                CurrentController.sm.ChangeState(StateID.ControllerFall);
+            else CurrentController.sm.ChangeState(StateID.ControllerMove);
+
+            actions.Clear();
         }
     }
 }

@@ -17,8 +17,6 @@ namespace RPG_Project
         InputController inputController;
         ActionQueue actionQueue;
 
-        Dictionary<Func<bool>, QueueAction> actions;
-
         public ControllerMoveState(Controller controller)
         {
             this.controller = controller;
@@ -30,18 +28,6 @@ namespace RPG_Project
             stamina = controller.Party.Stamina;
             inputController = controller.InputController;
             actionQueue = controller.Party.ActionQueue;
-
-            actions = new Dictionary<Func<bool>, QueueAction>();
-            Func<bool> l1 = inputController.ActionL1;
-            actions.Add(l1, QueueAction.ActionL1);
-            actions.Add(inputController.ActionL2, QueueAction.ActionL2);
-            actions.Add(inputController.ActionR1, QueueAction.ActionR1);
-            actions.Add(inputController.ActionR2, QueueAction.ActionR2);
-            actions.Add(inputController.Defend, QueueAction.Defend);
-            actions.Add(inputController.Char1, QueueAction.Char1);
-            actions.Add(inputController.Char2, QueueAction.Char2);
-            actions.Add(inputController.Char3, QueueAction.Char3);
-            actions.Add(inputController.Char4, QueueAction.Char4);
         }
 
         public void Enter(params object[] args)
@@ -49,6 +35,8 @@ namespace RPG_Project
             movement.State = MovementState.Walk;
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
+
+            controller.Model.PlayAnimation("Move", 0);
         }
 
         public void ExecuteFrame()
@@ -87,11 +75,11 @@ namespace RPG_Project
 
         bool Action()
         {
-            foreach(var inp in actions.Keys)
+            foreach(var inp in inputController.actions.Keys)
             {
                 if (inp.Invoke())
                 {
-                    actionQueue.AddAction(actions[inp]);
+                    actionQueue.AddAction(inputController.actions[inp]);
                     return true;
                 }
             }

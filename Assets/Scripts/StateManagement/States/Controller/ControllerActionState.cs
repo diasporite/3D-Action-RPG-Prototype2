@@ -9,15 +9,23 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
+        CharacterModel model;
+
+        ActionQueue actionQueue;
+
         public ControllerActionState(Controller controller)
         {
             this.controller = controller;
             csm = controller.sm;
+
+            model = controller.Model;
+
+            actionQueue = controller.Party.ActionQueue;
         }
 
         public void Enter(params object[] args)
         {
-
+            model.PlayAnimation("Action1", 0);
         }
 
         public void ExecuteFrame()

@@ -15,7 +15,7 @@ namespace RPG_Project
     {
         [Header("Info")]
         [SerializeField] MovementState state;
-        public bool grounded;
+        [SerializeField] bool grounded;
 
         [Header("Speed")]
         public float walkSpeed = 4f;
