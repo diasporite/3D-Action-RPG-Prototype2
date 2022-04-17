@@ -30,6 +30,7 @@ namespace RPG_Project
         float gravity = -9.81f;
         public float damageSpeedThreshold = 20f;
 
+        Controller controller;
         CharacterModel model;
         GroundCheck gc;
         CameraPivot pivot;
@@ -58,6 +59,8 @@ namespace RPG_Project
             }
         }
 
+        public bool Grounded => grounded;
+
         private void Update()
         {
             Fall(Time.deltaTime);
@@ -77,6 +80,7 @@ namespace RPG_Project
 
         public void Init()
         {
+            controller = GetComponent<Controller>();
             cc = GetComponent<CharacterController>();
 
             model = GetComponentInChildren<CharacterModel>();
@@ -126,11 +130,17 @@ namespace RPG_Project
 
             if (grounded)
             {
+                if (controller.CurrentState == StateID.ControllerFall)
+                    controller.sm.ChangeState(StateID.ControllerMove);
+
                 timeSinceGrounded = 0;
                 verticalSpeed = 0;
             }
             else
             {
+                if (controller.CurrentState != StateID.ControllerFall)
+                    controller.sm.ChangeState(StateID.ControllerFall);
+
                 timeSinceGrounded += dt;
                 verticalSpeed = Mathf.Clamp(verticalSpeed + gravity * dt, 
                     -terminalVelocity, terminalVelocity);

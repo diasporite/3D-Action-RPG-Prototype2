@@ -73,5 +73,10 @@ namespace RPG_Project
         {
             anim.SetBool("Locked", locked);
         }
+
+        public void SetAnimFalling(bool falling)
+        {
+            anim.SetBool("Falling", falling);
+        }
     }
 }

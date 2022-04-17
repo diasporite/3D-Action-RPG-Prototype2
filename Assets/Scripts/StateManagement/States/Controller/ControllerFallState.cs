@@ -9,6 +9,8 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
+        Movement movement;
+
         public ControllerFallState(Controller controller)
         {
             this.controller = controller;
@@ -17,12 +19,12 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-
+            controller.Model.SetAnimFalling(true);
         }
 
         public void ExecuteFrame()
         {
-
+            movement.State = MovementState.Fall;
         }
 
         public void ExecuteFrameFixed()
@@ -37,7 +39,7 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            controller.Model.SetAnimFalling(false);
         }
     }
 }

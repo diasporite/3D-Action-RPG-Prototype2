@@ -11,6 +11,9 @@ namespace RPG_Project
         StateMachine csm;
 
         Movement movement;
+
+        Health health;
+        Stamina stamina;
         InputController inputController;
         ActionQueue actionQueue;
 
@@ -22,6 +25,9 @@ namespace RPG_Project
             csm = controller.sm;
 
             movement = controller.Movement;
+
+            health = controller.Party.Health;
+            stamina = controller.Party.Stamina;
             inputController = controller.InputController;
             actionQueue = controller.Party.ActionQueue;
 
@@ -41,14 +47,27 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Walk;
+            health.State = ResourceState.Regen;
+            stamina.State = ResourceState.Regen;
         }
 
         public void ExecuteFrame()
         {
-            if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
-            else if (Action()) csm.ChangeState(StateID.ControllerAction);
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else
+            {
+                if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
+                else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
+                else if (Action()) csm.ChangeState(StateID.ControllerAction);
 
-            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                var ds = inputController.MoveCharDir;
+
+                movement.MovePosition(ds, Time.deltaTime);
+
+                if (ds != Vector3.zero) health.Tick();
+                stamina.Tick();
+            }
         }
 
         public void ExecuteFrameFixed()

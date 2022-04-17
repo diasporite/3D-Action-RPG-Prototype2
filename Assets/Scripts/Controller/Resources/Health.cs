@@ -6,6 +6,26 @@ namespace RPG_Project
 {
     public class Health : Resource
     {
+        public override ResourceState State
+        {
+            get => state;
+            set
+            {
+                switch (value)
+                {
+                    case ResourceState.Regen:
+                        currentRegen = regen;
+                        break;
+                    case ResourceState.Run:
+                        currentRegen = 0;
+                        break;
+                    case ResourceState.Recover:
+                        currentRegen = 0;
+                        break;
+                }
 
+                resourceCooldown.Speed = currentRegen;
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace RPG_Project
 
         private void Update()
         {
-            LockOn();
+            //LockOn();
 
             if (!locked)
             {
@@ -190,14 +190,14 @@ namespace RPG_Project
             return false;
         }
 
-        void ToggleLock()
+        public void ToggleLock()
         {
             locked = !locked;
 
             party.CurrentController.Model.SetAnimLocked(locked);
         }
 
-        void ToggleLock(bool value)
+        public void ToggleLock(bool value)
         {
             locked = value;
 

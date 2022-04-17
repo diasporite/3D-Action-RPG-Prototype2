@@ -9,6 +9,8 @@ namespace RPG_Project
     {
         public string charName;
 
+        public int baseExpAtLv = 50;
+
         public int baseVit = 50;
         public int baseEnd = 50;
 

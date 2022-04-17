@@ -8,21 +8,27 @@ namespace RPG_Project
 
     public class Controller : MonoBehaviour
     {
+        [SerializeField] StateID currentState;
+
         PartyController party;
         InputController inputController;
         ActionQueue actionQueue;
 
         Movement movement;
+        Combatant combatant;
 
         CharacterModel model;
         CameraPivot pivot;
 
         public readonly StateMachine sm = new StateMachine();
 
+        public StateID CurrentState => currentState;
+
         public PartyController Party => party;
+        public InputController InputController => inputController;
 
         public Movement Movement => movement;
-        public InputController InputController => inputController;
+        public Combatant Combatant => combatant;
 
         public CharacterModel Model => model;
         public CameraPivot Pivot => pivot;
@@ -34,13 +40,15 @@ namespace RPG_Project
             actionQueue = party.ActionQueue;
 
             movement = GetComponent<Movement>();
+            combatant = GetComponent<Combatant>();
 
             model = GetComponentInChildren<CharacterModel>();
 
             pivot = party.Pivot;
 
             movement.Init();
-            
+            combatant.Init(0);
+
             InitSM();
 
             sm.ChangeState(StateID.ControllerMove);
@@ -55,10 +63,13 @@ namespace RPG_Project
             sm.AddState(StateID.ControllerAction, new ControllerActionState(this));
             sm.AddState(StateID.ControllerStagger, new ControllerStaggerState(this));
             sm.AddState(StateID.ControllerDeath, new ControllerDeathState(this));
+            sm.AddState(StateID.ControllerStrafe, new ControllerStrafeState(this));
         }
 
         public void UpdateController()
         {
+            currentState = (StateID)sm.GetCurrentKey;
+
             sm.Update();
         }
 

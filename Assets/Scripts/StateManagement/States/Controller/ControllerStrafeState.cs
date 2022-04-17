@@ -4,40 +4,34 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    public class ControllerRecoverState : IState
+    public class ControllerStrafeState : IState
     {
         Controller controller;
         StateMachine csm;
 
         Movement movement;
+        InputController inputController;
 
-        Health health;
-        Stamina stamina;
-
-        public ControllerRecoverState(Controller controller)
+        public ControllerStrafeState(Controller controller)
         {
             this.controller = controller;
             csm = controller.sm;
 
             movement = controller.Movement;
-
-            health = controller.Party.Health;
-            stamina = controller.Party.Stamina;
+            inputController = controller.InputController;
         }
 
         public void Enter(params object[] args)
         {
+            controller.Pivot.ToggleLock(true);
             movement.State = MovementState.Walk;
-            health.State = ResourceState.Recover;
-            stamina.State = ResourceState.Recover;
         }
 
         public void ExecuteFrame()
         {
-            stamina.Tick();
+            if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
 
-            if (stamina.Full)
-                csm.ChangeState(StateID.ControllerMove);
+            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
         }
 
         public void ExecuteFrameFixed()
@@ -52,7 +46,7 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            controller.Pivot.ToggleLock(false);
         }
     }
 }

@@ -9,20 +9,31 @@ namespace RPG_Project
     {
         [SerializeField] Vector2 dir = new Vector2(0, 0);
 
+        Vector3 dir_xz = new Vector3(0, 0, 0);
+
         public override bool GetInput => Dir != Vector2.zero;
 
         public Vector2 Dir
         {
             get
             {
-                dir.x = Input.GetAxisRaw("Horizontal");
-                dir.y = Input.GetAxisRaw("Vertical");
+                dir.x = Input.GetAxis("Horizontal");
+                dir.y = Input.GetAxis("Vertical");
 
                 return dir;
             }
         }
 
-        public Vector3 DirXz => new Vector3(Dir.x, 0, Dir.y);
+        public Vector3 DirXz
+        {
+            get
+            {
+                dir_xz.x = Dir.x;
+                dir_xz.z = Dir.y;
+                if (dir_xz.sqrMagnitude > 1) dir_xz.Normalize();
+                return dir_xz;
+            }
+        }
 
         public DirectionInput() : base("")
         {

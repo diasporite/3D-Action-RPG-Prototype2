@@ -6,6 +6,26 @@ namespace RPG_Project
 {
     public class Stamina : Resource
     {
+        public override ResourceState State
+        {
+            get => state;
+            set
+            {
+                switch (value)
+                {
+                    case ResourceState.Regen:
+                        currentRegen = regen;
+                        break;
+                    case ResourceState.Run:
+                        currentRegen = -0.2f * regen;
+                        break;
+                    case ResourceState.Recover:
+                        currentRegen = 2.5f * regen;
+                        break;
+                }
 
+                resourceCooldown.Speed = currentRegen;
+            }
+        }
     }
 }

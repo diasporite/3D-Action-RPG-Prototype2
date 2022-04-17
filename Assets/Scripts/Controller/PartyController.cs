@@ -45,9 +45,45 @@ namespace RPG_Project
 
         public CameraPivot Pivot => pivot;
 
-        public int Hp { get; }
-        public int Sp { get; }
+        public int Hp
+        {
+            get
+            {
+                var hp = 0;
 
+                if (party.Count > 0)
+                {
+                    foreach (var c in party)
+                        hp += c.Combatant.Vitality.CurrentStatValue;
+
+                    hp = Mathf.RoundToInt(hp / party.Count);
+
+                    return hp;
+                }
+
+                return 1;
+            }
+        }
+
+        public int Sp
+        {
+            get
+            {
+                var sp = 0;
+
+                if (party.Count > 0)
+                {
+                    foreach (var c in party)
+                        sp += c.Combatant.Endurance.CurrentStatValue;
+
+                    sp = Mathf.RoundToInt(sp / party.Count);
+
+                    return sp;
+                }
+
+                return 1;
+            }
+        }
         private void Awake()
         {
             health = GetComponent<Health>();
