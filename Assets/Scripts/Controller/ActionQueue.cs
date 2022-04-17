@@ -47,6 +47,9 @@ namespace RPG_Project
             party = GetComponent<PartyController>();
 
             actionTriggers.Add(QueueAction.ActionL1, "Action1");
+            actionTriggers.Add(QueueAction.ActionL2, "Action1");
+            actionTriggers.Add(QueueAction.ActionR1, "Action1");
+            actionTriggers.Add(QueueAction.ActionR2, "Action1");
             actionTriggers.Add(QueueAction.Defend, "Defend");
         }
 

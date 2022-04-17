@@ -11,6 +11,7 @@ namespace RPG_Project
 
         CharacterModel model;
 
+        InputController inputController;
         ActionQueue actionQueue;
 
         public ControllerActionState(Controller controller)
@@ -20,6 +21,7 @@ namespace RPG_Project
 
             model = controller.Model;
 
+            inputController = controller.Party.InputController;
             actionQueue = controller.Party.ActionQueue;
         }
 
@@ -30,7 +32,9 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-
+            foreach (var inp in inputController.actions.Keys)
+                if (inp.Invoke())
+                    actionQueue.AddAction(inputController.actions[inp]);
         }
 
         public void ExecuteFrameFixed()
