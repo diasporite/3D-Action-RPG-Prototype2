@@ -40,16 +40,35 @@ namespace RPG_Project
 
         public List<QueueAction> Actions => actions;
 
+        public QueueAction TopAction
+        {
+            get
+            {
+                if (actions.Count > 0) return actions[0];
+                return QueueAction.Unqueuable;
+            }
+        }
+
+        public string TopTrigger
+        {
+            get
+            {
+                if (actionTriggers.ContainsKey(TopAction))
+                    return actionTriggers[TopAction];
+                return "";
+            }
+        }
+
         public Controller CurrentController => party.CurrentController;
 
         private void Awake()
         {
             party = GetComponent<PartyController>();
 
-            actionTriggers.Add(QueueAction.ActionL1, "Action1");
-            actionTriggers.Add(QueueAction.ActionL2, "Action1");
-            actionTriggers.Add(QueueAction.ActionR1, "Action1");
-            actionTriggers.Add(QueueAction.ActionR2, "Action1");
+            actionTriggers.Add(QueueAction.ActionL1, "ActionL1");
+            actionTriggers.Add(QueueAction.ActionL2, "ActionL2");
+            actionTriggers.Add(QueueAction.ActionR1, "ActionR1");
+            actionTriggers.Add(QueueAction.ActionR2, "ActionR2");
             actionTriggers.Add(QueueAction.Defend, "Defend");
         }
 
@@ -68,7 +87,7 @@ namespace RPG_Project
             {
                 if (!CurrentController.Movement.Grounded)
                     StopChain();
-                else CurrentController.Model.PlayAnimation(actionTriggers[actions[0]], 0);
+                else CurrentController.Model.PlayAnimation(TopTrigger, 0);
             }
         }
 

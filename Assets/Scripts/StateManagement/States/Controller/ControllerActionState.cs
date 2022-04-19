@@ -27,7 +27,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            model.PlayAnimation("Action1", 0);
+            model.PlayAnimation(actionQueue.TopTrigger, 0);
         }
 
         public void ExecuteFrame()

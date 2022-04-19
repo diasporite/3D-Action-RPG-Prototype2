@@ -12,9 +12,8 @@ namespace RPG_Project
         float target;
         float turnVelocity;
 
-        Animator anim;
-
         Controller controller;
+        Animator anim;
 
         CharacterController cc;
 
@@ -23,9 +22,8 @@ namespace RPG_Project
 
         private void Awake()
         {
-            anim = GetComponent<Animator>();
-
             controller = GetComponentInParent<Controller>();
+            anim = GetComponentInParent<Animator>();
 
             cc = GetComponentInParent<CharacterController>();
         }
@@ -44,6 +42,7 @@ namespace RPG_Project
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
                     transform.rotation = Quaternion.Euler(0, angle, 0);
+                    print(angle + " " + transform.eulerAngles);
                 }
             }
         }
@@ -56,7 +55,13 @@ namespace RPG_Project
 
         public void PlayAnimation(string stateName, int layer)
         {
+            print(stateName);
             anim.Play(stateName, 0);
+        }
+
+        public void PlayAnimationFade(string stateName, int layer, float dt)
+        {
+            anim.CrossFade(stateName, dt);
         }
 
         public void AdvanceAction()

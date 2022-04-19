@@ -9,6 +9,7 @@ namespace RPG_Project
     public class Controller : MonoBehaviour
     {
         [SerializeField] StateID currentState;
+        [SerializeField] bool actionMovement;
 
         PartyController party;
         InputController inputController;
@@ -23,9 +24,11 @@ namespace RPG_Project
         public readonly StateMachine sm = new StateMachine();
 
         public StateID CurrentState => currentState;
+        public bool ActionMovement => actionMovement;
 
         public PartyController Party => party;
         public InputController InputController => inputController;
+        public ActionQueue ActionQueue => actionQueue;
 
         public Movement Movement => movement;
         public Combatant Combatant => combatant;
@@ -75,7 +78,17 @@ namespace RPG_Project
 
         public void AdvanceAction()
         {
+            actionQueue.AdvanceAction();
+        }
 
+        public void LockActionMovement()
+        {
+            actionMovement = false;
+        }
+
+        public void UnlockActionMovement()
+        {
+            actionMovement = true;
         }
     }
 }

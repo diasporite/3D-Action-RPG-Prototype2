@@ -30,8 +30,19 @@ namespace RPG_Project
         public void ExecuteFrame()
         {
             if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                foreach (var inp in inputController.actions.Keys)
+                {
+                    if (inp.Invoke())
+                    {
+                        controller.ActionQueue.AddAction(inputController.actions[inp]);
+                        csm.ChangeState(StateID.ControllerAction);
+                    }
+                }
 
-            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+            }
         }
 
         public void ExecuteFrameFixed()

@@ -35,8 +35,19 @@ namespace RPG_Project
         {
             if (!inputController.Run())
                 csm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                foreach (var inp in inputController.actions.Keys)
+                {
+                    if (inp.Invoke())
+                    {
+                        controller.ActionQueue.AddAction(inputController.actions[inp]);
+                        csm.ChangeState(StateID.ControllerAction);
+                    }
+                }
 
-            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+            }
 
             stamina.Tick();
         }

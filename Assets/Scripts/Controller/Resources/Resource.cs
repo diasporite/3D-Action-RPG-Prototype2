@@ -21,7 +21,11 @@ namespace RPG_Project
         [SerializeField] protected float regen;
         [SerializeField] protected float currentRegen;
 
-        public virtual ResourceState State { get; set; }
+        public virtual ResourceState State
+        {
+            get => state;
+            set => state = value;
+        }
 
         public bool Empty => resourcePoints.Empty;
         public bool Full => resourcePoints.Full;

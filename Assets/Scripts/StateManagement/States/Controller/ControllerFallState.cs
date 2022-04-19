@@ -15,6 +15,8 @@ namespace RPG_Project
         {
             this.controller = controller;
             csm = controller.sm;
+
+            movement = controller.Movement;
         }
 
         public void Enter(params object[] args)

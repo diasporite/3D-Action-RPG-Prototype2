@@ -36,7 +36,7 @@ namespace RPG_Project
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
 
-            controller.Model.PlayAnimation("Move", 0);
+            controller.Model.PlayAnimationFade("Move", 0, 0.1f);
         }
 
         public void ExecuteFrame()
@@ -48,13 +48,15 @@ namespace RPG_Project
                 if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
                 else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
                 else if (Action()) csm.ChangeState(StateID.ControllerAction);
+                else
+                {
+                    var ds = inputController.MoveCharDir;
 
-                var ds = inputController.MoveCharDir;
+                    movement.MovePosition(ds, Time.deltaTime);
 
-                movement.MovePosition(ds, Time.deltaTime);
-
-                if (ds != Vector3.zero) health.Tick();
-                stamina.Tick();
+                    if (ds != Vector3.zero) health.Tick();
+                    stamina.Tick();
+                }
             }
         }
 

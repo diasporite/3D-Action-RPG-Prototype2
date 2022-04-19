@@ -93,3 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.1
+  offset: 0.09
+  ground:
+    serializedVersion: 2
+    m_Bits: 256

@@ -8,9 +8,11 @@ namespace RPG_Project
     {
         public override ResourceState State
         {
-            get => state;
+            get => base.State;
             set
             {
+                value = base.State;
+
                 switch (value)
                 {
                     case ResourceState.Regen:
