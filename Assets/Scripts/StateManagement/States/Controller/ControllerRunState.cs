@@ -46,7 +46,7 @@ namespace RPG_Project
                     }
                 }
 
-                movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
             }
 
             stamina.Tick();

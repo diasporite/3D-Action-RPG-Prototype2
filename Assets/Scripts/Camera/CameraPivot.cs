@@ -44,12 +44,14 @@ namespace RPG_Project
         Vector3 dirToTarget;
 
         PartyController party;
+        InputController inputController;
 
         public float Theta => theta;
 
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
+            inputController = GetComponentInParent<InputController>();
 
             sqrLockOnRange = lockOnRange * lockOnRange;
         }
@@ -94,8 +96,8 @@ namespace RPG_Project
 
         void GetInput()
         {
-            dx = Input.GetAxis("Camera Horizontal");
-            dy = Input.GetAxis("Camera Vertical");
+            dx = inputController.MoveCam.x;
+            dy = inputController.MoveCam.y;
         }
 
         void MovePivot()
@@ -158,7 +160,7 @@ namespace RPG_Project
                     ToggleLock(false);
             }
 
-            if (Input.GetKeyDown("right shift")) ToggleLock();
+            if (inputController.ToggleLock()) ToggleLock();
         }
 
         bool FindTargets()

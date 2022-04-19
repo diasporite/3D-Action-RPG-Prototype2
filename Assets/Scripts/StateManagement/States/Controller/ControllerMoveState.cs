@@ -50,7 +50,7 @@ namespace RPG_Project
                 else if (Action()) csm.ChangeState(StateID.ControllerAction);
                 else
                 {
-                    var ds = inputController.MoveCharDir;
+                    var ds = inputController.MoveCharXz;
 
                     movement.MovePosition(ds, Time.deltaTime);
 
