@@ -84,6 +84,7 @@ namespace RPG_Project
                 return 1;
             }
         }
+
         private void Awake()
         {
             health = GetComponent<Health>();
@@ -136,6 +137,8 @@ namespace RPG_Project
 
             health.Init(Hp, Hp, 1, 3999);
             stamina.Init(Sp, Sp, 10, 999);
+
+            CurrentController.sm.ChangeState(StateID.ControllerMove);
         }
 
         void UpdatePosition()

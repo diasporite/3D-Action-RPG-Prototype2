@@ -14,6 +14,9 @@ namespace RPG_Project
             " speed is the inverse of a specific time period")]
         public float speed = 2f;
 
+        [Header("Stamina")]
+        public float spCost = 20;
+
         [Header("Usage")]
         public bool infiniteUse = false;
         [Range(1, 40)]

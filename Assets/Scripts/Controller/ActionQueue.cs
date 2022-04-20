@@ -80,7 +80,7 @@ namespace RPG_Project
 
         public void AdvanceAction()
         {
-            actions.RemoveAt(0);
+            if (actions.Count > 0) actions.RemoveAt(0);
 
             if (actions.Count <= 0) StopChain();
             else
@@ -97,7 +97,13 @@ namespace RPG_Project
 
             if (!CurrentController.Movement.Grounded)
                 CurrentController.sm.ChangeState(StateID.ControllerFall);
-            else CurrentController.sm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                print(2);
+                if (party.Pivot.locked)
+                    CurrentController.sm.ChangeState(StateID.ControllerStrafe);
+                else CurrentController.sm.ChangeState(StateID.ControllerMove);
+            }
 
             actions.Clear();
         }

@@ -88,8 +88,6 @@ namespace RPG_Project
 
             level = CalculateLv();
 
-            print(vitAtLv.Length);
-
             vitality = new Stat(vitAtLv[level - 1], 255);
             endurance = new Stat(endAtLv[level - 1], 255);
 

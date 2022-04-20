@@ -94,7 +94,6 @@ namespace RPG_Project
         {
             model.RotateModel(dir, dt);
 
-            //print(dir.magnitude * currentSpeed);
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimHorizontal(dir.x);
             model.SetAnimVertical(dir.z);
@@ -102,25 +101,11 @@ namespace RPG_Project
             cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
         }
 
-        public void MovePositionAround(Vector3 dir, float dt)
+        public void MovePositionAction(float speed, Vector3 dir, float dt)
         {
-            var around = pivot.targetPos;
-            model.LookAt(pivot.targetPos);
+            model.RotateModel(dir, dt);
 
-            around.y = transform.position.y;
-            transform.LookAt(around);
-
-            cc.Move(currentSpeed * dir * dt);
-        }
-
-        public void MovePositionAround(Vector3 dir, Vector3 around, float dt)
-        {
-            model.LookAt(around);
-
-            around.y = transform.position.y;
-            transform.LookAt(around);
-
-            cc.Move(currentSpeed * dir * dt);
+            cc.Move(speed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
         }
 
         public void Fall(float dt)

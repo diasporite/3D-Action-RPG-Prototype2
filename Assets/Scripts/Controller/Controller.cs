@@ -53,8 +53,6 @@ namespace RPG_Project
             combatant.Init(0);
 
             InitSM();
-
-            sm.ChangeState(StateID.ControllerMove);
         }
 
         void InitSM()

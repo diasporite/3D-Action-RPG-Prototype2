@@ -19,7 +19,8 @@ namespace RPG_Project
 
         public Stat(int statValue)
         {
-            this.statValue = Mathf.Clamp(statValue, 1, 255);
+            this.statValue = statValue;
+            statCap = statValue;
             currentStatValue = statValue;
         }
 

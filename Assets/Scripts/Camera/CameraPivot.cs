@@ -28,8 +28,8 @@ namespace RPG_Project
         [Header("Transforms")]
         public Transform follow;
         public Transform currentTarget;
-        public Transform[] targets;
-        public float[] angles;
+        public List<Transform> targets = new List<Transform>();
+        public List<float> angles = new List<float>();
         public Vector3 targetPos;
 
         [Header("Variables")]
@@ -48,6 +48,20 @@ namespace RPG_Project
 
         public float Theta => theta;
 
+        public bool InRange
+        {
+            get
+            {
+                if (currentTarget != null)
+                    return (currentTarget.position - follow.position).sqrMagnitude < 
+                        sqrLockOnRange;
+
+                return false;
+            }
+        }
+
+        public Controller CurrentController => party.CurrentController;
+
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
@@ -58,8 +72,6 @@ namespace RPG_Project
 
         private void Update()
         {
-            //LockOn();
-
             if (!locked)
             {
                 GetInput();
@@ -90,7 +102,7 @@ namespace RPG_Project
 
         public void Init()
         {
-            follow = party.CurrentController.transform;
+            follow = CurrentController.transform;
             transform.position = follow.position - camDist * follow.forward + heightDist * follow.up;
         }
 
@@ -108,7 +120,7 @@ namespace RPG_Project
             height += heightSpeed * dy * Time.deltaTime;
             height = Mathf.Clamp(height, -maxHeight, maxHeight);
 
-            follow = party.CurrentController.transform;
+            follow = CurrentController.transform;
 
             newPos = follow.position -
                 camDist * Mathf.Cos(theta * Mathf.Deg2Rad) * follow.forward +
@@ -154,17 +166,18 @@ namespace RPG_Project
 
         public void LockOn()
         {
-            if (currentTarget != null)
-            {
-                if ((currentTarget.position - follow.position).sqrMagnitude > sqrLockOnRange)
-                    ToggleLock(false);
-            }
+            if (!InRange)
+                ToggleLock(false);
 
             if (inputController.ToggleLock()) ToggleLock();
         }
 
+        // Look for more efficient method
         bool FindTargets()
         {
+            targets.Clear();
+            angles.Clear();
+
             var hits = Physics.OverlapSphere(follow.transform.position, 
                 lockOnRange, targetMask);
 
@@ -172,20 +185,24 @@ namespace RPG_Project
             {
                 if (hits.Length > 0)
                 {
-                    targets = new Transform[hits.Length];
-                    angles = new float[hits.Length];
                     var forward = follow.transform.forward;
 
-                    for (int i = 0; i < targets.Length; i++)
+                    foreach (var hit in hits)
                     {
-                        targets[i] = hits[i].transform;
-                        angles[i] = Vector3.SignedAngle(forward, 
-                            targets[i].position, follow.transform.up);
+                        if (hit.transform.root != transform.root)
+                        {
+                            targets.Add(hit.transform);
+                            angles.Add(Vector3.SignedAngle(forward,
+                                hit.transform.position, follow.transform.up));
+                        }
                     }
 
-                    currentTarget = targets[0];
+                    if (targets.Count > 0)
+                    {
+                        currentTarget = targets[0];
 
-                    return true;
+                        return true;
+                    }
                 }
             }
 
@@ -196,14 +213,14 @@ namespace RPG_Project
         {
             locked = !locked;
 
-            party.CurrentController.Model.SetAnimLocked(locked);
+            CurrentController.Model.SetAnimLocked(locked);
         }
 
         public void ToggleLock(bool value)
         {
             locked = value;
 
-            party.CurrentController.Model.SetAnimLocked(locked);
+            CurrentController.Model.SetAnimLocked(locked);
         }
     }
 }

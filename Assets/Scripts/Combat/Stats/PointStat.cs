@@ -12,7 +12,7 @@ namespace RPG_Project
         public int PointValue
         {
             get => PointValue;
-            set => pointValue = Mathf.Clamp(pointValue, 0, currentStatValue);
+            set => pointValue = Mathf.Clamp(value, 0, currentStatValue);
         }
 
         public float PointFraction

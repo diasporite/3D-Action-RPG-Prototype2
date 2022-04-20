@@ -11,15 +11,13 @@ namespace RPG_Project
             get => base.State;
             set
             {
-                value = base.State;
-
                 switch (value)
                 {
                     case ResourceState.Regen:
                         currentRegen = regen;
                         break;
                     case ResourceState.Run:
-                        currentRegen = -0.2f * regen;
+                        currentRegen = -0.5f * regen;
                         break;
                     case ResourceState.Recover:
                         currentRegen = 2.5f * regen;
@@ -27,6 +25,8 @@ namespace RPG_Project
                 }
 
                 resourceCooldown.Speed = currentRegen;
+
+                state = value;
             }
         }
     }

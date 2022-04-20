@@ -11,8 +11,6 @@ namespace RPG_Project
             get => base.State;
             set
             {
-                value = base.State;
-
                 switch (value)
                 {
                     case ResourceState.Regen:
@@ -27,6 +25,8 @@ namespace RPG_Project
                 }
 
                 resourceCooldown.Speed = currentRegen;
+
+                state = value;
             }
         }
     }

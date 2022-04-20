@@ -33,7 +33,9 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            if (!inputController.Run())
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else if (!inputController.Run())
                 csm.ChangeState(StateID.ControllerMove);
             else
             {

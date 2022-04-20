@@ -30,6 +30,8 @@ namespace RPG_Project
         public bool Empty => resourcePoints.Empty;
         public bool Full => resourcePoints.Full;
 
+        public float ResourceFraction => resourceCooldown.CooldownFraction;
+
         public virtual void Init(int initValue, int initPoints, int regen, int statCap)
         {
             this.regen = regen;
