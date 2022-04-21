@@ -123,9 +123,9 @@ namespace RPG_Project
             follow = CurrentController.transform;
 
             newPos = follow.position -
-                camDist * Mathf.Cos(theta * Mathf.Deg2Rad) * follow.forward +
-                camDist * Mathf.Sin(theta * Mathf.Deg2Rad) * follow.right + 
-                (heightDist + height) * transform.up;
+                camDist * Mathf.Cos(theta * Mathf.Deg2Rad) * Vector3.forward +
+                camDist * Mathf.Sin(theta * Mathf.Deg2Rad) * Vector3.right + 
+                (heightDist + height) * follow.transform.up;
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);
@@ -157,8 +157,8 @@ namespace RPG_Project
             theta = Mathf.Atan2(-dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
             height = maxHeight;
 
-            newPos = follow.position - camDist * dirToTarget + 
-                heightDist * follow.transform.up + (follow.transform.rotation * offset);
+            newPos = follow.position - camDist * dirToTarget +
+                heightDist * follow.transform.up + (party.transform.rotation * offset);
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);

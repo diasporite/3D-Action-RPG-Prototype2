@@ -38,6 +38,10 @@ namespace RPG_Project
         CharacterController cc;
         Vector3 ds;
 
+        float target = 0f;
+        float angle = 0f;
+        float turnVelocity = 0f;
+
         public MovementState State
         {
             get => state;
@@ -92,7 +96,8 @@ namespace RPG_Project
 
         public void MovePosition(Vector3 dir, float dt)
         {
-            model.RotateModel(dir, dt);
+            //model.RotateModel(dir, dt);
+            RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimHorizontal(dir.x);
@@ -131,6 +136,31 @@ namespace RPG_Project
                     -terminalVelocity, terminalVelocity);
                 cc.Move(verticalSpeed * transform.up * dt);
             }
+        }
+
+        public void RotateModel(Vector3 dir, float dt)
+        {
+            if (controller.Pivot.locked)
+                LookAt(controller.Pivot.targetPos);
+            else
+            {
+                if (dir != Vector3.zero)
+                {
+                    target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+                    target -= controller.Party.Pivot.Theta;
+
+                    angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
+                        target, ref turnVelocity, 0.1f);
+                    transform.rotation = Quaternion.Euler(0, angle, 0);
+                    print(angle + " " + transform.eulerAngles);
+                }
+            }
+        }
+
+        public void LookAt(Vector3 look)
+        {
+            look.y = transform.position.y;
+            transform.LookAt(look);
         }
     }
 }
