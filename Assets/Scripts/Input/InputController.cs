@@ -27,9 +27,12 @@ namespace RPG_Project
     {
         [SerializeField] protected Vector2 moveChar;
         [SerializeField] protected Vector2 moveCam;
+        [SerializeField] protected Vector2 dpad;
 
         [SerializeField] protected bool run;
         [SerializeField] protected bool defend;
+        //[SerializeField] protected InputButton run = new InputButton(true);
+        //[SerializeField] protected InputButton defend = new InputButton(false);
 
         [SerializeField] protected bool toggleLock;
         [SerializeField] protected bool selectNext;
@@ -55,6 +58,8 @@ namespace RPG_Project
 
         public Vector2 MoveCam => moveCam;
         public Vector3 MoveCamXz => new Vector3(moveCam.x, 0, moveCam.y);
+
+        public Vector2 Dpad => dpad;
 
         public bool Defend()
         {
@@ -99,6 +104,7 @@ namespace RPG_Project
             if (pressed) actionL2 = false;
             return pressed;
         }
+
         public bool ActionR1()
         {
             var pressed = actionR1;
@@ -160,6 +166,11 @@ namespace RPG_Project
             buttonDict.Add(ButtonID.ActionL2, actionL2);
             buttonDict.Add(ButtonID.ActionR1, actionR1);
             buttonDict.Add(ButtonID.ActionR2, actionR2);
+        }
+
+        public void ResetDpad()
+        {
+            dpad = Vector2.zero;
         }
     }
 }

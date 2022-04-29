@@ -39,6 +39,8 @@ namespace RPG_Project
             controller.Pivot.ToggleLock(false);
 
             controller.Model.PlayAnimationFade("Move", 0, 0.1f);
+
+            actionQueue.ClearActions();
         }
 
         public void ExecuteFrame()
@@ -50,11 +52,12 @@ namespace RPG_Project
                 if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
                 else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
                 else if (Action()) csm.ChangeState(StateID.ControllerAction);
+                else if (inputController.Dpad != Vector2.zero) controller.Switch();
                 else
                 {
                     var ds = inputController.MoveCharXz;
 
-                    movement.MovePosition(ds, Time.deltaTime);
+                    controller.Move(ds);
 
                     if (ds != Vector3.zero) health.Tick();
                     stamina.Tick();

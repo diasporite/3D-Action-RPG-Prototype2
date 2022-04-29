@@ -18,6 +18,11 @@ namespace RPG_Project
             moveCam = value.Get<Vector2>();
         }
 
+        public void OnDpad(InputValue value)
+        {
+            dpad = value.Get<Vector2>();
+        }
+
         public void OnToggleLock(InputValue value)
         {
             toggleLock = value.isPressed;

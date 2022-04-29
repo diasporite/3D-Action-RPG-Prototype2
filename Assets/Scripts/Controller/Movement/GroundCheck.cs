@@ -34,7 +34,9 @@ namespace RPG_Project
 
             slopeLimit = cc.slopeLimit;
 
-            transform.localPosition = (-0.5f * cc.height - offset) * transform.up;
+            radius = cc.radius;
+
+            transform.localPosition = -(0.5f * cc.height + offset) * transform.up;
         }
 
         private void OnDrawGizmos()

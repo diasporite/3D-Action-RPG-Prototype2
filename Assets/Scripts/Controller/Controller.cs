@@ -88,5 +88,27 @@ namespace RPG_Project
         {
             actionMovement = true;
         }
+
+        public void Move()
+        {
+            movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
+        }
+
+        public void Move(Vector3 ds)
+        {
+            movement.MovePosition(ds, Time.deltaTime);
+        }
+
+        public void Switch()
+        {
+            var dpad = inputController.Dpad;
+
+            if (dpad == Vector2.up) party.SwitchController(0);
+            else if (dpad == Vector2.left) party.SwitchController(1);
+            else if (dpad == Vector2.right) party.SwitchController(2);
+            else if (dpad == Vector2.down) party.SwitchController(3);
+
+            inputController.ResetDpad();
+        }
     }
 }

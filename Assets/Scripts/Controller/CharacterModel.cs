@@ -16,6 +16,7 @@ namespace RPG_Project
         Animator anim;
 
         CharacterController cc;
+        CapsuleCollider col;
 
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
             dir.x * transform.right;
@@ -26,6 +27,11 @@ namespace RPG_Project
             anim = GetComponentInParent<Animator>();
 
             cc = GetComponentInParent<CharacterController>();
+
+            col = GetComponent<CapsuleCollider>();
+
+            col.height = cc.height;
+            col.radius = cc.radius;
         }
 
         public void RotateModel(Vector3 dir, float dt)

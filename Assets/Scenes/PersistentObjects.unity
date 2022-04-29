@@ -369,8 +369,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   grounded: 0
-  walkSpeed: 2.5
-  runSpeed: 5
+  walkSpeed: 3.5
+  runSpeed: 7
   currentSpeed: 0
   timeSinceGrounded: 0
   verticalSpeed: 0
@@ -501,6 +501,7 @@ GameObject:
   - component: {fileID: 778438617}
   - component: {fileID: 778438616}
   - component: {fileID: 778438618}
+  - component: {fileID: 778438619}
   m_Layer: 0
   m_Name: Party
   m_TagString: Untagged
@@ -600,6 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveChar: {x: 0, y: 0}
   moveCam: {x: 0, y: 0}
+  dpad: {x: 0, y: 0}
   run: 0
   defend: 0
   toggleLock: 0
@@ -658,6 +660,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &778438619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778438611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e0a0bf6de207f46a04247ac3023579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &798190557
 PrefabInstance:
   m_ObjectHideFlags: 0

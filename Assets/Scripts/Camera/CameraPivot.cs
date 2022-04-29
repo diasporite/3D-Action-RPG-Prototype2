@@ -13,7 +13,7 @@ namespace RPG_Project
         [SerializeField] float lockOnRange = 12f;
         float sqrLockOnRange;
 
-        public Vector3 offset = new Vector3(2, 0, -2);
+        public float offsetTheta = 20f;
 
         [Header("Speeds")]
         public float rotateSpeed = 120f;
@@ -98,6 +98,9 @@ namespace RPG_Project
             Gizmos.DrawRay(transform.position, camDist * dirToFollow);
             Gizmos.DrawRay(transform.position, camDist * dirToTarget);
             Gizmos.DrawRay(follow.transform.position, -camDist * follow.transform.forward);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(follow.transform.position, camDist);
         }
 
         public void Init()
@@ -122,10 +125,7 @@ namespace RPG_Project
 
             follow = CurrentController.transform;
 
-            newPos = follow.position -
-                camDist * Mathf.Cos(theta * Mathf.Deg2Rad) * Vector3.forward +
-                camDist * Mathf.Sin(theta * Mathf.Deg2Rad) * Vector3.right + 
-                (heightDist + height) * follow.transform.up;
+            newPos = ThetaToPosition(theta, heightDist + height, follow);
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);
@@ -157,8 +157,7 @@ namespace RPG_Project
             theta = Mathf.Atan2(-dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
             height = maxHeight;
 
-            newPos = follow.position - camDist * dirToTarget +
-                heightDist * follow.transform.up + (party.transform.rotation * offset);
+            newPos = ThetaToPosition(theta + offsetTheta, heightDist + height, follow);
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);
@@ -221,6 +220,14 @@ namespace RPG_Project
             locked = value;
 
             CurrentController.Model.SetAnimLocked(locked);
+        }
+
+        public Vector3 ThetaToPosition(float theta, float height, Transform follow)
+        {
+            return newPos = follow.position +
+                camDist * (-Mathf.Cos(theta * Mathf.Deg2Rad) * Vector3.forward +
+                Mathf.Sin(theta * Mathf.Deg2Rad) * Vector3.right) +
+                height * follow.transform.up;
         }
     }
 }

@@ -26,6 +26,7 @@ namespace RPG_Project
         [SerializeField] bool executing = false;
 
         [SerializeField] List<QueueAction> actions = new List<QueueAction>();
+        //[SerializeField] List<BattleAction> actions = new List<BattleAction>();
         int actionCap = 5;
 
         Dictionary<QueueAction, string> actionTriggers = new Dictionary<QueueAction, string>();
@@ -78,6 +79,11 @@ namespace RPG_Project
                 actions.Add(action);
         }
 
+        public void ClearActions()
+        {
+            if (actions.Count > 0) actions.Clear();
+        }
+
         public void AdvanceAction()
         {
             if (actions.Count > 0) actions.RemoveAt(0);
@@ -99,7 +105,6 @@ namespace RPG_Project
                 CurrentController.sm.ChangeState(StateID.ControllerFall);
             else
             {
-                print(2);
                 if (party.Pivot.locked)
                     CurrentController.sm.ChangeState(StateID.ControllerStrafe);
                 else CurrentController.sm.ChangeState(StateID.ControllerMove);

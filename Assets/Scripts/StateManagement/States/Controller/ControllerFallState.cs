@@ -22,11 +22,14 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             controller.Model.SetAnimFalling(true);
+            controller.Model.PlayAnimationFade("Fall", 0, 0.25f);
         }
 
         public void ExecuteFrame()
         {
             movement.State = MovementState.Fall;
+
+            movement.MovePosition(controller.InputController.MoveCharXz, Time.deltaTime);
         }
 
         public void ExecuteFrameFixed()
