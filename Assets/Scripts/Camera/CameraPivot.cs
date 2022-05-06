@@ -6,8 +6,6 @@ namespace RPG_Project
 {
     public class CameraPivot : MonoBehaviour
     {
-        public bool locked = false;
-
         public TargetSphere targetSphere;
 
         public LayerMask targetMask;
@@ -72,7 +70,7 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (!locked)
+            if (!targetSphere.enabled)
             {
                 GetInput();
                 MovePivot();
@@ -80,7 +78,7 @@ namespace RPG_Project
             else
             {
                 currentTarget = targetSphere.CurrentTargetTransform;
-                if (currentTarget == null) ToggleLock(false);
+                FollowTarget();
             }
         }
 
@@ -133,12 +131,6 @@ namespace RPG_Project
 
         void FollowTarget()
         {
-            if (currentTarget == null)
-            {
-                locked = false;
-                return;
-            }
-
             follow = party.CurrentController.transform;
 
             targetPos = 0.5f * (follow.position + currentTarget.position);
@@ -161,30 +153,20 @@ namespace RPG_Project
                 updateSpeed * Time.deltaTime);
         }
 
-        public void LockOn()
-        {
-            if (!InRange)
-                ToggleLock(false);
-
-            if (inputController.ToggleLock()) ToggleLock();
-        }
-
         public void ToggleLock()
         {
-            locked = !locked;
+            if (targetSphere.NoTargets) return;
 
-            targetSphere.enabled = locked;
+            targetSphere.enabled = !targetSphere.enabled;
 
-            CurrentController.Model.SetAnimLocked(locked);
+            CurrentController.Model.SetAnimLocked(targetSphere.enabled);
         }
 
         public void ToggleLock(bool value)
         {
-            locked = value;
+            if (targetSphere.NoTargets) return;
 
             targetSphere.enabled = value;
-
-            CurrentController.Model.SetAnimLocked(locked);
         }
 
         public Vector3 ThetaToPosition(float theta, float height, Transform follow)

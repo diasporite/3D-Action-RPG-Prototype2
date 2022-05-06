@@ -19,6 +19,7 @@ namespace RPG_Project
         Combatant combatant;
 
         CharacterModel model;
+        TargetSphere targetSphere;
         CameraPivot pivot;
 
         public readonly StateMachine sm = new StateMachine();
@@ -34,6 +35,7 @@ namespace RPG_Project
         public Combatant Combatant => combatant;
 
         public CharacterModel Model => model;
+        public TargetSphere TargetSphere => targetSphere;
         public CameraPivot Pivot => pivot;
 
         public void Init()
@@ -46,6 +48,7 @@ namespace RPG_Project
             combatant = GetComponent<Combatant>();
 
             model = GetComponentInChildren<CharacterModel>();
+            targetSphere = GetComponentInChildren<TargetSphere>();
 
             pivot = party.Pivot;
 

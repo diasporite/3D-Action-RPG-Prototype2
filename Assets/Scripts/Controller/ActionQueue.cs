@@ -105,7 +105,7 @@ namespace RPG_Project
                 CurrentController.sm.ChangeState(StateID.ControllerFall);
             else
             {
-                if (party.Pivot.locked)
+                if (CurrentController.TargetSphere.enabled)
                     CurrentController.sm.ChangeState(StateID.ControllerStrafe);
                 else CurrentController.sm.ChangeState(StateID.ControllerMove);
             }

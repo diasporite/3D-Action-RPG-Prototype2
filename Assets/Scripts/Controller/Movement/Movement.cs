@@ -140,7 +140,7 @@ namespace RPG_Project
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.Pivot.locked)
+            if (controller.TargetSphere.enabled)
                 LookAt(controller.Pivot.targetPos);
             else
             {
@@ -152,7 +152,7 @@ namespace RPG_Project
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
                     transform.rotation = Quaternion.Euler(0, angle, 0);
-                    print(angle + " " + transform.eulerAngles);
+                    //print(angle + " " + transform.eulerAngles);
                 }
             }
         }

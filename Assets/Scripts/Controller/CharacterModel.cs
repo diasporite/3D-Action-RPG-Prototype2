@@ -36,7 +36,7 @@ namespace RPG_Project
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.Pivot.locked)
+            if (controller.TargetSphere.enabled)
                 LookAt(controller.Pivot.targetPos);
             else
             {

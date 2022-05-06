@@ -29,6 +29,12 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
+            if (controller.TargetSphere.NoTargets)
+            {
+                csm.ChangeState(StateID.ControllerMove);
+                return;
+            }
+
             controller.Pivot.ToggleLock(true);
 
             movement.State = MovementState.Walk;
@@ -44,7 +50,7 @@ namespace RPG_Project
             stamina.Tick();
 
             if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
-            else if (!controller.Pivot.InRange) csm.ChangeState(StateID.ControllerMove);
+            else if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
             else
             {
                 foreach (var inp in inputController.actions.Keys)

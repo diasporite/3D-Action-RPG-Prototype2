@@ -8,33 +8,53 @@ namespace RPG_Project
     {
         [SerializeField] List<Target> targets = new List<Target>();
 
+        [SerializeField] Target currentTarget;
         public Target CurrentTarget { get; private set; }
-        public Transform CurrentTargetTransform => CurrentTarget?.transform;
+        //public Transform CurrentTargetTransform => CurrentTarget?.transform;
+        public Transform CurrentTargetTransform
+        {
+            get
+            {
+                if (CurrentTarget != null) return CurrentTarget.transform;
+                return null;
+            }
+        }
 
-        private void Update()
+        public bool NoTargets => targets.Count <= 0;
+
+        private void OnEnable()
         {
             SelectTarget();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            var target = other.GetComponent<Target>();
+            var target = other.GetComponentInChildren<Target>();
 
-            if (target != null) targets.Add(target);
+            if (target != null)
+                if (target.transform.root != transform.root && !targets.Contains(target))
+                    targets.Add(target);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            var target = other.GetComponent<Target>();
+            var target = other.GetComponentInChildren<Target>();
 
             if (target != null && targets.Contains(target)) targets.Remove(target);
         }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, GetComponent<SphereCollider>().radius);
+        }
+
         public void SelectTarget()
         {
-            if (targets.Count <= 0) return;
+            if (NoTargets) return;
 
             CurrentTarget = targets[0];
+            currentTarget = CurrentTarget;
         }
     }
 }
