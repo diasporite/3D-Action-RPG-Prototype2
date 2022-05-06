@@ -12,7 +12,7 @@ namespace RPG_Project
         Stamina = 2,
 
         Level = 5,
-        ExpToLv = 6,
+        ExpAtLv = 6,
         ExpReward = 7,
 
         Vitality = 10,
@@ -66,16 +66,29 @@ namespace RPG_Project
                 target.Weight.CurrentStatValue));
         }
 
+        float BackstepMultiplier(Combatant instigator, Combatant target)
+        {
+            float dot = Vector3.Dot(instigator.transform.forward, target.transform.forward);
+
+            if (dot > 0.5f) return critical;
+
+            return 1f;
+        }
+
         public int HealthDamage(DamageInfo damage, Combatant target)
         {
-            return WholeNumber(damage.HealthDamage + AtkDef(damage.Instigator, target) + 
-                WeightDiff(damage.Instigator, target)) + 1;
+            var hDamage = WholeNumber(damage.HealthDamage + AtkDef(damage.Instigator, target) + 
+                WeightDiff(damage.Instigator, target));
+
+            return Mathf.RoundToInt(BackstepMultiplier(damage.Instigator, target) * hDamage + 1);
         }
 
         public int StaminaDamage(DamageInfo damage, Combatant target)
         {
-            return WholeNumber(damage.StaminaDamage + AtkDef(damage.Instigator, target) +
-                WeightDiff(damage.Instigator, target)) + 1;
+            var sDamage = WholeNumber(damage.StaminaDamage + AtkDef(damage.Instigator, target) +
+                WeightDiff(damage.Instigator, target));
+
+            return Mathf.RoundToInt(BackstepMultiplier(damage.Instigator, target) * sDamage + 1);
         }
 
         public int[] GetStatAtLv(StatID stat, int baseValue)
@@ -86,13 +99,26 @@ namespace RPG_Project
             {
                 switch (stat)
                 {
+                    case StatID.ExpAtLv:
+                        statAtLv[i] = Mathf.RoundToInt(baseValue * i);
+                        break;
                     case StatID.Vitality:
+                        statAtLv[i] = Mathf.RoundToInt(0.1f * baseValue * i + 100);
                         break;
                     case StatID.Endurance:
+                        statAtLv[i] = Mathf.RoundToInt(0.03f * baseValue * i * 10 + 100);
                         break;
                     case StatID.Attack:
+                        statAtLv[i] = Mathf.RoundToInt(0.05f * baseValue * i + 15);
                         break;
                     case StatID.Defence:
+                        statAtLv[i] = Mathf.RoundToInt(0.05f * baseValue * i + 15);
+                        break;
+                    case StatID.HealthRegen:
+                        statAtLv[i] = Mathf.RoundToInt(baseValue * i + 1);
+                        break;
+                    case StatID.StaminaRegen:
+                        statAtLv[i] = Mathf.RoundToInt(3f * baseValue * i + 15);
                         break;
                     default:
                         break;

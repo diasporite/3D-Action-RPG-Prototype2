@@ -26,7 +26,12 @@ namespace RPG_Project
         [SerializeField] bool executing = false;
 
         [SerializeField] List<QueueAction> actions = new List<QueueAction>();
+        //[SerializeField] List<BattleAction> actions = new List<BattleAction>();
         int actionCap = 5;
+
+        Dictionary<QueueAction, string> actionTriggers = new Dictionary<QueueAction, string>();
+
+        PartyController party;
 
         public bool Executing
         {
@@ -36,17 +41,76 @@ namespace RPG_Project
 
         public List<QueueAction> Actions => actions;
 
+        public QueueAction TopAction
+        {
+            get
+            {
+                if (actions.Count > 0) return actions[0];
+                return QueueAction.Unqueuable;
+            }
+        }
+
+        public string TopTrigger
+        {
+            get
+            {
+                if (actionTriggers.ContainsKey(TopAction))
+                    return actionTriggers[TopAction];
+                return "";
+            }
+        }
+
+        public Controller CurrentController => party.CurrentController;
+
+        private void Awake()
+        {
+            party = GetComponent<PartyController>();
+
+            actionTriggers.Add(QueueAction.ActionL1, "ActionL1");
+            actionTriggers.Add(QueueAction.ActionL2, "ActionL2");
+            actionTriggers.Add(QueueAction.ActionR1, "ActionR1");
+            actionTriggers.Add(QueueAction.ActionR2, "ActionR2");
+            actionTriggers.Add(QueueAction.Defend, "Defend");
+        }
+
         public void AddAction(QueueAction action)
         {
             if (actions.Count < actionCap)
                 actions.Add(action);
         }
 
+        public void ClearActions()
+        {
+            if (actions.Count > 0) actions.Clear();
+        }
+
         public void AdvanceAction()
         {
-            actions.RemoveAt(0);
+            if (actions.Count > 0) actions.RemoveAt(0);
 
-            if (actions.Count <= 0) executing = false;
+            if (actions.Count <= 0) StopChain();
+            else
+            {
+                if (!CurrentController.Movement.Grounded)
+                    StopChain();
+                else CurrentController.Model.PlayAnimation(TopTrigger, 0);
+            }
+        }
+
+        void StopChain()
+        {
+            executing = false;
+
+            if (!CurrentController.Movement.Grounded)
+                CurrentController.sm.ChangeState(StateID.ControllerFall);
+            else
+            {
+                if (CurrentController.TargetSphere.enabled)
+                    CurrentController.sm.ChangeState(StateID.ControllerStrafe);
+                else CurrentController.sm.ChangeState(StateID.ControllerMove);
+            }
+
+            actions.Clear();
         }
     }
 }

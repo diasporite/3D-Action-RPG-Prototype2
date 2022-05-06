@@ -7,11 +7,12 @@ namespace RPG_Project
     public class GroundCheck : MonoBehaviour
     {
         public float radius = 0.02f;
+        public float offset = 0.09f;
 
         float slopeLimit;
 
         CharacterController cc;
-        LayerMask ground;
+        public LayerMask ground;
 
         public bool IsGrounded { get => Physics.CheckSphere(transform.position, 
             radius, ground); }
@@ -33,9 +34,9 @@ namespace RPG_Project
 
             slopeLimit = cc.slopeLimit;
 
-            transform.localPosition = -0.5f * cc.height * transform.up;
+            radius = cc.radius;
 
-            ground = LayerMask.GetMask("Ground");
+            transform.localPosition = -(0.5f * cc.height + offset) * transform.up;
         }
 
         private void OnDrawGizmos()

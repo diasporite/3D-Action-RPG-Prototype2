@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,11 @@ namespace RPG_Project
         StateMachine csm;
 
         Movement movement;
+
+        Health health;
+        Stamina stamina;
         InputController inputController;
+        ActionQueue actionQueue;
 
         public ControllerMoveState(Controller controller)
         {
@@ -18,19 +23,46 @@ namespace RPG_Project
             csm = controller.sm;
 
             movement = controller.Movement;
+
+            health = controller.Party.Health;
+            stamina = controller.Party.Stamina;
             inputController = controller.InputController;
+            actionQueue = controller.Party.ActionQueue;
         }
 
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Walk;
+            health.State = ResourceState.Regen;
+            stamina.State = ResourceState.Regen;
+
+            controller.Pivot.ToggleLock(false);
+
+            controller.Model.PlayAnimationFade("Move", 0, 0.1f);
+
+            actionQueue.ClearActions();
         }
 
         public void ExecuteFrame()
         {
-            if (inputController.Run) csm.ChangeState(StateID.ControllerRun);
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else
+            {
+                if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
+                else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
+                else if (Action()) csm.ChangeState(StateID.ControllerAction);
+                else if (inputController.Dpad != Vector2.zero) controller.Switch();
+                else
+                {
+                    var ds = inputController.MoveCharXz;
 
-            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                    controller.Move(ds);
+
+                    if (ds != Vector3.zero) health.Tick();
+                    stamina.Tick();
+                }
+            }
         }
 
         public void ExecuteFrameFixed()
@@ -46,6 +78,19 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        bool Action()
+        {
+            foreach(var inp in inputController.actions.Keys)
+            {
+                if (inp.Invoke())
+                {
+                    actionQueue.AddAction(inputController.actions[inp]);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

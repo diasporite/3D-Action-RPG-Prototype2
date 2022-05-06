@@ -45,8 +45,45 @@ namespace RPG_Project
 
         public CameraPivot Pivot => pivot;
 
-        public int Hp { get; }
-        public int Sp { get; }
+        public int Hp
+        {
+            get
+            {
+                var hp = 0;
+
+                if (party.Count > 0)
+                {
+                    foreach (var c in party)
+                        hp += c.Combatant.Vitality.CurrentStatValue;
+
+                    hp = Mathf.RoundToInt(hp / party.Count);
+
+                    return hp;
+                }
+
+                return 1;
+            }
+        }
+
+        public int Sp
+        {
+            get
+            {
+                var sp = 0;
+
+                if (party.Count > 0)
+                {
+                    foreach (var c in party)
+                        sp += c.Combatant.Endurance.CurrentStatValue;
+
+                    sp = Mathf.RoundToInt(sp / party.Count);
+
+                    return sp;
+                }
+
+                return 1;
+            }
+        }
 
         private void Awake()
         {
@@ -65,8 +102,8 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (InputController.Char1) SwitchController(0);
-            else if (InputController.Char2) SwitchController(1);
+            if (InputController.Char1()) SwitchController(0);
+            else if (InputController.Char2()) SwitchController(1);
             else
             {
                 CurrentController.UpdateController();
@@ -100,6 +137,8 @@ namespace RPG_Project
 
             health.Init(Hp, Hp, 1, 3999);
             stamina.Init(Sp, Sp, 10, 999);
+
+            CurrentController.sm.ChangeState(StateID.ControllerMove);
         }
 
         void UpdatePosition()

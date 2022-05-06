@@ -7,13 +7,30 @@ namespace RPG_Project
     [System.Serializable]
     public class InputButton
     {
-        public string key = "";
+        [SerializeField] bool value;
 
-        public virtual bool GetInput { get; }
+        bool hold;
 
-        public InputButton(string key)
+        public bool Input
         {
-            this.key = key;
+            get
+            {
+                if (!hold)
+                {
+                    var pressed = value;
+                    value = false;
+                    return pressed;
+                }
+
+                return value;
+            }
+            set => this.value = value;
+        }
+
+        public InputButton(bool hold)
+        {
+            value = false;
+            this.hold = hold;
         }
     }
 }

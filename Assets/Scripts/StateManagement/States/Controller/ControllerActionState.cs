@@ -9,20 +9,32 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
+        CharacterModel model;
+
+        InputController inputController;
+        ActionQueue actionQueue;
+
         public ControllerActionState(Controller controller)
         {
             this.controller = controller;
             csm = controller.sm;
+
+            model = controller.Model;
+
+            inputController = controller.Party.InputController;
+            actionQueue = controller.Party.ActionQueue;
         }
 
         public void Enter(params object[] args)
         {
-
+            model.PlayAnimation(actionQueue.TopTrigger, 0);
         }
 
         public void ExecuteFrame()
         {
-
+            foreach (var inp in inputController.actions.Keys)
+                if (inp.Invoke())
+                    actionQueue.AddAction(inputController.actions[inp]);
         }
 
         public void ExecuteFrameFixed()

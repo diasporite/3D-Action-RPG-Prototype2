@@ -10,6 +10,8 @@ namespace RPG_Project
         StateMachine csm;
 
         Movement movement;
+
+        Stamina stamina;
         InputController inputController;
 
         public ControllerRunState(Controller controller)
@@ -18,19 +20,38 @@ namespace RPG_Project
             csm = controller.sm;
 
             movement = controller.Movement;
+
+            stamina = controller.Party.Stamina;
             inputController = controller.InputController;
         }
 
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Run;
+            stamina.State = ResourceState.Run;
         }
 
         public void ExecuteFrame()
         {
-            if (!inputController.Run) csm.ChangeState(StateID.ControllerMove);
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else if (!inputController.Run())
+                csm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                foreach (var inp in inputController.actions.Keys)
+                {
+                    if (inp.Invoke())
+                    {
+                        controller.ActionQueue.AddAction(inputController.actions[inp]);
+                        csm.ChangeState(StateID.ControllerAction);
+                    }
+                }
 
-            movement.MovePosition(inputController.MoveCharDir, Time.deltaTime);
+                controller.Move();
+            }
+
+            stamina.Tick();
         }
 
         public void ExecuteFrameFixed()

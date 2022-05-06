@@ -92,4 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c586c52f1b53904b817adfc416c3ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.1
+  radius: 0.35
+  offset: 0.08
+  ground:
+    serializedVersion: 2
+    m_Bits: 256

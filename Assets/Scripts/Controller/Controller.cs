@@ -8,23 +8,34 @@ namespace RPG_Project
 
     public class Controller : MonoBehaviour
     {
+        [SerializeField] StateID currentState;
+        [SerializeField] bool actionMovement;
+
         PartyController party;
         InputController inputController;
         ActionQueue actionQueue;
 
         Movement movement;
+        Combatant combatant;
 
         CharacterModel model;
+        TargetSphere targetSphere;
         CameraPivot pivot;
 
         public readonly StateMachine sm = new StateMachine();
 
+        public StateID CurrentState => currentState;
+        public bool ActionMovement => actionMovement;
+
         public PartyController Party => party;
+        public InputController InputController => inputController;
+        public ActionQueue ActionQueue => actionQueue;
 
         public Movement Movement => movement;
-        public InputController InputController => inputController;
+        public Combatant Combatant => combatant;
 
         public CharacterModel Model => model;
+        public TargetSphere TargetSphere => targetSphere;
         public CameraPivot Pivot => pivot;
 
         public void Init()
@@ -34,16 +45,17 @@ namespace RPG_Project
             actionQueue = party.ActionQueue;
 
             movement = GetComponent<Movement>();
+            combatant = GetComponent<Combatant>();
 
             model = GetComponentInChildren<CharacterModel>();
+            targetSphere = GetComponentInChildren<TargetSphere>();
 
             pivot = party.Pivot;
 
             movement.Init();
-            
-            InitSM();
+            combatant.Init(0);
 
-            sm.ChangeState(StateID.ControllerMove);
+            InitSM();
         }
 
         void InitSM()
@@ -55,16 +67,51 @@ namespace RPG_Project
             sm.AddState(StateID.ControllerAction, new ControllerActionState(this));
             sm.AddState(StateID.ControllerStagger, new ControllerStaggerState(this));
             sm.AddState(StateID.ControllerDeath, new ControllerDeathState(this));
+            sm.AddState(StateID.ControllerStrafe, new ControllerStrafeState(this));
         }
 
         public void UpdateController()
         {
+            currentState = (StateID)sm.GetCurrentKey;
+
             sm.Update();
         }
 
         public void AdvanceAction()
         {
+            actionQueue.AdvanceAction();
+        }
 
+        public void LockActionMovement()
+        {
+            actionMovement = false;
+        }
+
+        public void UnlockActionMovement()
+        {
+            actionMovement = true;
+        }
+
+        public void Move()
+        {
+            movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
+        }
+
+        public void Move(Vector3 ds)
+        {
+            movement.MovePosition(ds, Time.deltaTime);
+        }
+
+        public void Switch()
+        {
+            var dpad = inputController.Dpad;
+
+            if (dpad == Vector2.up) party.SwitchController(0);
+            else if (dpad == Vector2.left) party.SwitchController(1);
+            else if (dpad == Vector2.right) party.SwitchController(2);
+            else if (dpad == Vector2.down) party.SwitchController(3);
+
+            inputController.ResetDpad();
         }
     }
 }

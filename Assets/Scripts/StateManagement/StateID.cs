@@ -11,5 +11,6 @@ namespace RPG_Project
         ControllerAction = 5,
         ControllerStagger = 6,
         ControllerDeath = 7,
+        ControllerStrafe = 8,
     }
 }

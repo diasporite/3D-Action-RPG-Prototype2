@@ -6,14 +6,14 @@ namespace RPG_Project
 {
     public class CameraPivot : MonoBehaviour
     {
-        public bool Locked = false;
+        public TargetSphere targetSphere;
 
         public LayerMask targetMask;
 
         [SerializeField] float lockOnRange = 12f;
         float sqrLockOnRange;
 
-        public Vector3 offset = new Vector3(2, 0, -2);
+        public float offsetTheta = 20f;
 
         [Header("Speeds")]
         public float rotateSpeed = 120f;
@@ -28,8 +28,6 @@ namespace RPG_Project
         [Header("Transforms")]
         public Transform follow;
         public Transform currentTarget;
-        public Transform[] targets;
-        public float[] angles;
         public Vector3 targetPos;
 
         [Header("Variables")]
@@ -44,31 +42,43 @@ namespace RPG_Project
         Vector3 dirToTarget;
 
         PartyController party;
+        InputController inputController;
 
         public float Theta => theta;
+
+        public bool InRange
+        {
+            get
+            {
+                if (currentTarget != null)
+                    return (currentTarget.position - follow.position).sqrMagnitude < 
+                        sqrLockOnRange;
+
+                return false;
+            }
+        }
+
+        public Controller CurrentController => party.CurrentController;
 
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
+            inputController = GetComponentInParent<InputController>();
 
             sqrLockOnRange = lockOnRange * lockOnRange;
         }
 
         private void Update()
         {
-            LockOn();
-
-            if (!Locked)
+            if (!targetSphere.enabled)
             {
                 GetInput();
                 MovePivot();
             }
             else
             {
-                var targetsFound = FindTargets();
-                //print(targetsFound);
-                if (targetsFound) FollowTarget();
-                else Locked = false;
+                currentTarget = targetSphere.CurrentTargetTransform;
+                FollowTarget();
             }
         }
 
@@ -84,18 +94,21 @@ namespace RPG_Project
             Gizmos.DrawRay(transform.position, camDist * dirToFollow);
             Gizmos.DrawRay(transform.position, camDist * dirToTarget);
             Gizmos.DrawRay(follow.transform.position, -camDist * follow.transform.forward);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(follow.transform.position, camDist);
         }
 
         public void Init()
         {
-            follow = party.CurrentController.transform;
+            follow = CurrentController.transform;
             transform.position = follow.position - camDist * follow.forward + heightDist * follow.up;
         }
 
         void GetInput()
         {
-            dx = Input.GetAxis("Camera Horizontal");
-            dy = Input.GetAxis("Camera Vertical");
+            dx = inputController.MoveCam.x;
+            dy = inputController.MoveCam.y;
         }
 
         void MovePivot()
@@ -106,12 +119,9 @@ namespace RPG_Project
             height += heightSpeed * dy * Time.deltaTime;
             height = Mathf.Clamp(height, -maxHeight, maxHeight);
 
-            follow = party.CurrentController.transform;
+            follow = CurrentController.transform;
 
-            newPos = follow.position -
-                camDist * Mathf.Cos(theta * Mathf.Deg2Rad) * follow.forward +
-                camDist * Mathf.Sin(theta * Mathf.Deg2Rad) * follow.right + 
-                (heightDist + height) * transform.up;
+            newPos = ThetaToPosition(theta, heightDist + height, follow);
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);
@@ -121,12 +131,6 @@ namespace RPG_Project
 
         void FollowTarget()
         {
-            if (currentTarget == null)
-            {
-                Locked = false;
-                return;
-            }
-
             follow = party.CurrentController.transform;
 
             targetPos = 0.5f * (follow.position + currentTarget.position);
@@ -143,52 +147,34 @@ namespace RPG_Project
             theta = Mathf.Atan2(-dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
             height = maxHeight;
 
-            newPos = follow.position - camDist * dirToTarget + 
-                heightDist * follow.transform.up + (follow.transform.rotation * offset);
+            newPos = ThetaToPosition(theta + offsetTheta, heightDist + height, follow);
 
             transform.position = Vector3.MoveTowards(transform.position, newPos,
                 updateSpeed * Time.deltaTime);
         }
 
-        public void LockOn()
+        public void ToggleLock()
         {
-            if (currentTarget != null)
-            {
-                if ((currentTarget.position - follow.position).sqrMagnitude > sqrLockOnRange)
-                    Locked = false;
-            }
+            if (targetSphere.NoTargets) return;
 
-                if (Input.GetKeyDown("right shift")) Locked = !Locked;
+            targetSphere.enabled = !targetSphere.enabled;
 
+            CurrentController.Model.SetAnimLocked(targetSphere.enabled);
         }
 
-        bool FindTargets()
+        public void ToggleLock(bool value)
         {
-            var hits = Physics.OverlapSphere(follow.transform.position, 
-                lockOnRange, targetMask);
+            if (targetSphere.NoTargets) return;
 
-            if (hits != null)
-            {
-                if (hits.Length > 0)
-                {
-                    targets = new Transform[hits.Length];
-                    angles = new float[hits.Length];
-                    var forward = follow.transform.forward;
+            targetSphere.enabled = value;
+        }
 
-                    for (int i = 0; i < targets.Length; i++)
-                    {
-                        targets[i] = hits[i].transform;
-                        angles[i] = Vector3.SignedAngle(forward, 
-                            targets[i].position, follow.transform.up);
-                    }
-
-                    currentTarget = targets[0];
-
-                    return true;
-                }
-            }
-
-            return false;
+        public Vector3 ThetaToPosition(float theta, float height, Transform follow)
+        {
+            return newPos = follow.position +
+                camDist * (-Mathf.Cos(theta * Mathf.Deg2Rad) * Vector3.forward +
+                Mathf.Sin(theta * Mathf.Deg2Rad) * Vector3.right) +
+                height * follow.transform.up;
         }
     }
 }
