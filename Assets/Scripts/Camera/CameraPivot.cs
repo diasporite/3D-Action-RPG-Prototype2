@@ -8,6 +8,8 @@ namespace RPG_Project
     {
         public bool locked = false;
 
+        public TargetSphere targetSphere;
+
         public LayerMask targetMask;
 
         [SerializeField] float lockOnRange = 12f;
@@ -28,8 +30,6 @@ namespace RPG_Project
         [Header("Transforms")]
         public Transform follow;
         public Transform currentTarget;
-        public List<Transform> targets = new List<Transform>();
-        public List<float> angles = new List<float>();
         public Vector3 targetPos;
 
         [Header("Variables")]
@@ -79,10 +79,8 @@ namespace RPG_Project
             }
             else
             {
-                var targetsFound = FindTargets();
-                //print(targetsFound);
-                if (targetsFound) FollowTarget();
-                else ToggleLock(false);
+                currentTarget = targetSphere.CurrentTargetTransform;
+                if (currentTarget == null) ToggleLock(false);
             }
         }
 
@@ -171,46 +169,11 @@ namespace RPG_Project
             if (inputController.ToggleLock()) ToggleLock();
         }
 
-        // Look for more efficient method
-        bool FindTargets()
-        {
-            targets.Clear();
-            angles.Clear();
-
-            var hits = Physics.OverlapSphere(follow.transform.position, 
-                lockOnRange, targetMask);
-
-            if (hits != null)
-            {
-                if (hits.Length > 0)
-                {
-                    var forward = follow.transform.forward;
-
-                    foreach (var hit in hits)
-                    {
-                        if (hit.transform.root != transform.root)
-                        {
-                            targets.Add(hit.transform);
-                            angles.Add(Vector3.SignedAngle(forward,
-                                hit.transform.position, follow.transform.up));
-                        }
-                    }
-
-                    if (targets.Count > 0)
-                    {
-                        currentTarget = targets[0];
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public void ToggleLock()
         {
             locked = !locked;
+
+            targetSphere.enabled = locked;
 
             CurrentController.Model.SetAnimLocked(locked);
         }
@@ -218,6 +181,8 @@ namespace RPG_Project
         public void ToggleLock(bool value)
         {
             locked = value;
+
+            targetSphere.enabled = value;
 
             CurrentController.Model.SetAnimLocked(locked);
         }

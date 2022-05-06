@@ -1,3 +1,5 @@
 
 PROJECT NOTES
 
+RESOURCES
+- https://www.udemy.com/course/unity-3rd-person-combat-traversal/
