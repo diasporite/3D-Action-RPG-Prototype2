@@ -7,14 +7,16 @@ namespace RPG_Project
 {
     public class PartyController : MonoBehaviour
     {
-        public Action OnCharacterChanged;
+        public event Action OnCharacterChanged;
 
-        public Action OnHealthChanged;
-        public Action OnStaminaChanged;
+        public event Action OnHealthChanged;
+        public event Action OnStaminaChanged;
 
-        public Action OnDeath;
+        public event Action OnDeath;
 
         int partyCap = 4;
+        int healthCap = 3999;
+        int staminaCap = 999;
 
         [SerializeField] List<Controller> party = new List<Controller>();
         [SerializeField] int currentIndex;
@@ -37,6 +39,7 @@ namespace RPG_Project
                 return null;
             }
         }
+        public Combatant CurrentCombatant => CurrentController?.Combatant;
 
         public Health Health => health;
         public Stamina Stamina => stamina;
@@ -54,11 +57,11 @@ namespace RPG_Project
                 if (party.Count > 0)
                 {
                     foreach (var c in party)
-                        hp += c.Combatant.Vitality.CurrentStatValue;
+                        hp += c.Combatant.Vit;
 
                     hp = Mathf.RoundToInt(hp / party.Count);
 
-                    return hp;
+                    return Mathf.RoundToInt(hp * (1 + 0.75f * (party.Count - 1)));
                 }
 
                 return 1;
@@ -74,11 +77,11 @@ namespace RPG_Project
                 if (party.Count > 0)
                 {
                     foreach (var c in party)
-                        sp += c.Combatant.Endurance.CurrentStatValue;
+                        sp += c.Combatant.End;
 
                     sp = Mathf.RoundToInt(sp / party.Count);
 
-                    return sp;
+                    return Mathf.RoundToInt(sp * (1 + 0.15f * (party.Count - 1)));
                 }
 
                 return 1;
@@ -135,8 +138,8 @@ namespace RPG_Project
 
             pivot.Init();
 
-            health.Init(Hp, Hp, 1, 3999);
-            stamina.Init(Sp, Sp, 10, 999);
+            health.Init(Hp, Hp, CurrentCombatant.HRegen, healthCap);
+            stamina.Init(Sp, Sp, CurrentCombatant.SRegen, staminaCap);
 
             CurrentController.sm.ChangeState(StateID.ControllerMove);
         }
@@ -166,9 +169,30 @@ namespace RPG_Project
                 }
                 else party[i].gameObject.SetActive(false);
             }
+
+            InvokeCharChange();
         }
 
         #region Delegates
+        public void InvokeCharChange()
+        {
+            OnCharacterChanged?.Invoke();
+        }
+
+        public void InvokeHpChange()
+        {
+            OnHealthChanged?.Invoke();
+        }
+
+        public void InvokeSpChange()
+        {
+            OnStaminaChanged?.Invoke();
+        }
+
+        public void InvokeDeath()
+        {
+            OnDeath?.Invoke();
+        }
         #endregion
     }
 }

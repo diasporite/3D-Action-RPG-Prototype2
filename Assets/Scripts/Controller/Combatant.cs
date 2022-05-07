@@ -57,6 +57,20 @@ namespace RPG_Project
 
         public Stat Weight => weight;
 
+        public Stat HealthRegen => healthRegen;
+        public Stat StaminaRegen => staminaRegen;
+
+        public int Vit => vitality.CurrentStatValue;
+        public int End => endurance.CurrentStatValue;
+
+        public int Atk => attack.CurrentStatValue;
+        public int Def => defence.CurrentStatValue;
+
+        public int Wt => weight.CurrentStatValue;
+
+        public int HRegen => healthRegen.CurrentStatValue;
+        public int SRegen => staminaRegen.CurrentStatValue;
+
         public void OnDamage(DamageInfo damage)
         {
             int hDamage = combat.HealthDamage(damage, this);

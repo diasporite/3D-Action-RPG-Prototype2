@@ -14,6 +14,8 @@ namespace RPG_Project
         Stamina stamina;
         InputController inputController;
 
+        Vector3 ds;
+
         public ControllerRunState(Controller controller)
         {
             this.controller = controller;
@@ -33,25 +35,7 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            if (stamina.Empty)
-                csm.ChangeState(StateID.ControllerRecover);
-            else if (!inputController.Run())
-                csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                    }
-                }
-
-                controller.Move();
-            }
-
-            stamina.Tick();
+            Command();
         }
 
         public void ExecuteFrameFixed()
@@ -67,6 +51,34 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        void Command()
+        {
+            ds = inputController.MoveCharXz;
+
+            stamina.Tick();
+
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else if (!inputController.Run())
+                csm.ChangeState(StateID.ControllerMove);
+            else if (ds == Vector3.zero)
+                csm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                foreach (var inp in inputController.actions.Keys)
+                {
+                    if (inp.Invoke())
+                    {
+                        controller.AddAction(inputController.actions[inp]);
+                        csm.ChangeState(StateID.ControllerAction);
+                        return;
+                    }
+                }
+
+                movement.MovePosition(ds, Time.deltaTime);
+            }
         }
     }
 }

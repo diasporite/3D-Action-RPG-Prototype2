@@ -17,6 +17,8 @@ namespace RPG_Project
         InputController inputController;
         ActionQueue actionQueue;
 
+        Vector3 ds;
+
         public ControllerMoveState(Controller controller)
         {
             this.controller = controller;
@@ -45,22 +47,28 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
+            ds = inputController.MoveCharXz;
+
+            stamina.Tick();
+
             if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
             else
             {
                 if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
+                //if (inputController.Run())
+                //{
+                //    if (ds != Vector3.zero)
+                //        csm.ChangeState(StateID.ControllerRun);
+                //}
                 else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
                 else if (Action()) csm.ChangeState(StateID.ControllerAction);
                 else if (inputController.Dpad != Vector2.zero) controller.Switch();
                 else
                 {
-                    var ds = inputController.MoveCharXz;
-
                     controller.Move(ds);
 
                     if (ds != Vector3.zero) health.Tick();
-                    stamina.Tick();
                 }
             }
         }

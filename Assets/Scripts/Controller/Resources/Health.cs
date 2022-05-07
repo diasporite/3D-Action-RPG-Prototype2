@@ -29,5 +29,26 @@ namespace RPG_Project
                 state = value;
             }
         }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            party.InvokeHpChange();
+        }
+
+        public override void Tick(float dt)
+        {
+            base.Tick(dt);
+
+            party.InvokeHpChange();
+        }
+
+        public override void ChangeValue(int amount)
+        {
+            base.ChangeValue(amount);
+
+            party.InvokeHpChange();
+        }
     }
 }
