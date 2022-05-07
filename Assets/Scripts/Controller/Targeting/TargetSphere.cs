@@ -46,7 +46,7 @@ namespace RPG_Project
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, GetComponent<SphereCollider>().radius);
+            Gizmos.DrawWireSphere(transform.position, 0.5f * transform.lossyScale.x);
         }
 
         public void SelectTarget()

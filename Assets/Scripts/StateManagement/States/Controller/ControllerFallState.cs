@@ -21,7 +21,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            controller.Model.SetAnimFalling(true);
+            //controller.Model.SetAnimFalling(true);
             controller.Model.PlayAnimationFade("Fall", 0, 0.25f);
         }
 
@@ -44,7 +44,7 @@ namespace RPG_Project
 
         public void Exit()
         {
-            controller.Model.SetAnimFalling(false);
+            //controller.Model.SetAnimFalling(false);
         }
     }
 }

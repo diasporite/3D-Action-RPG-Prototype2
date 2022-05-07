@@ -27,14 +27,12 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            model.PlayAnimation(actionQueue.TopTrigger, 0);
+            model.PlayAnimation(actionQueue.TopAnimation, 0);
         }
 
         public void ExecuteFrame()
         {
-            foreach (var inp in inputController.actions.Keys)
-                if (inp.Invoke())
-                    actionQueue.AddAction(inputController.actions[inp]);
+            Command();
         }
 
         public void ExecuteFrameFixed()
@@ -50,6 +48,13 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        void Command()
+        {
+            foreach (var inp in inputController.actions.Keys)
+                if (inp.Invoke())
+                    controller.AddAction(inputController.actions[inp]);
         }
     }
 }

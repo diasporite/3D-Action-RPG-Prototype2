@@ -46,24 +46,7 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            health.Tick();
-            stamina.Tick();
-
-            if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
-            else if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.ActionQueue.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                    }
-                }
-
-                movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
-            }
+            Command();
         }
 
         public void ExecuteFrameFixed()
@@ -79,6 +62,30 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        void Command()
+        {
+            health.Tick();
+            stamina.Tick();
+
+            if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
+            else if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                foreach (var inp in inputController.actions.Keys)
+                {
+                    if (inp.Invoke())
+                    {
+                        controller.AddAction(inputController.actions[inp]);
+                        csm.ChangeState(StateID.ControllerAction);
+                    }
+                }
+
+                var dir = inputController.MoveCharXz;
+                movement.MovePosition(dir, Time.deltaTime);
+                controller.Model.SetAnimDir(dir);
+            }
         }
     }
 }

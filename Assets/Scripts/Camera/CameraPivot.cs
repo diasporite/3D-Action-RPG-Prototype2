@@ -159,7 +159,7 @@ namespace RPG_Project
 
             targetSphere.enabled = !targetSphere.enabled;
 
-            CurrentController.Model.SetAnimLocked(targetSphere.enabled);
+            //CurrentController.Model.SetAnimLocked(targetSphere.enabled);
         }
 
         public void ToggleLock(bool value)

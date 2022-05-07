@@ -113,5 +113,41 @@ namespace RPG_Project
 
             inputController.ResetDpad();
         }
+
+        public BattleAction GetAction(QueueAction action)
+        {
+            switch (action)
+            {
+                case QueueAction.ActionL1:
+                    return new BattleAction(this, "ActionL1", "ActionL1");
+                case QueueAction.ActionL2:
+                    return new BattleAction(this, "ActionL2", "ActionL2");
+                case QueueAction.ActionR1:
+                    return new BattleAction(this, "ActionR1", "ActionR1");
+                case QueueAction.ActionR2:
+                    return new BattleAction(this, "ActionR2", "ActionR2");
+
+                case QueueAction.Char1:
+                    return new BattleAction(this, "Char1");
+                case QueueAction.Char2:
+                    return new BattleAction(this, "Char2");
+                case QueueAction.Char3:
+                    return new BattleAction(this, "Char3");
+                case QueueAction.Char4:
+                    return new BattleAction(this, "Char4");
+
+                case QueueAction.Defend:
+                    if (targetSphere.enabled)
+                        return new BattleAction(this, "Defend", "StrafeDefend");
+                    return new BattleAction(this, "Defend", "Defend");
+
+                default: return null;
+            }
+        }
+
+        public void AddAction(QueueAction action)
+        {
+            actionQueue.AddAction(GetAction(action));
+        }
     }
 }

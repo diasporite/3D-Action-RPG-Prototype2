@@ -90,14 +90,20 @@ namespace RPG_Project
             anim.SetFloat("Vertical", vertical);
         }
 
-        public void SetAnimLocked(bool locked)
+        public void SetAnimDir(Vector3 dir)
         {
-            anim.SetBool("Locked", locked);
+            anim.SetFloat("Horizontal", dir.x);
+            anim.SetFloat("Vertical", dir.z);
         }
 
-        public void SetAnimFalling(bool falling)
-        {
-            anim.SetBool("Falling", falling);
-        }
+        //public void SetAnimLocked(bool locked)
+        //{
+        //    anim.SetBool("Locked", locked);
+        //}
+
+        //public void SetAnimFalling(bool falling)
+        //{
+        //    anim.SetBool("Falling", falling);
+        //}
     }
 }

@@ -36,7 +36,7 @@ namespace RPG_Project
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
 
-            controller.Pivot.ToggleLock(false);
+            controller.TargetSphere.enabled = false;
 
             controller.Model.PlayAnimationFade("Move", 0, 0.1f);
 
@@ -86,7 +86,7 @@ namespace RPG_Project
             {
                 if (inp.Invoke())
                 {
-                    actionQueue.AddAction(inputController.actions[inp]);
+                    controller.AddAction(inputController.actions[inp]);
                     return true;
                 }
             }

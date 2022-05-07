@@ -25,11 +25,8 @@ namespace RPG_Project
     {
         [SerializeField] bool executing = false;
 
-        [SerializeField] List<QueueAction> actions = new List<QueueAction>();
-        //[SerializeField] List<BattleAction> actions = new List<BattleAction>();
+        [SerializeField] List<BattleAction> actions = new List<BattleAction>();
         int actionCap = 5;
-
-        Dictionary<QueueAction, string> actionTriggers = new Dictionary<QueueAction, string>();
 
         PartyController party;
 
@@ -39,41 +36,27 @@ namespace RPG_Project
             set => executing = value;
         }
 
-        public List<QueueAction> Actions => actions;
+        public List<BattleAction> Actions => actions;
 
-        public QueueAction TopAction
+        public BattleAction TopAction
         {
             get
             {
                 if (actions.Count > 0) return actions[0];
-                return QueueAction.Unqueuable;
+                return null;
             }
         }
 
-        public string TopTrigger
-        {
-            get
-            {
-                if (actionTriggers.ContainsKey(TopAction))
-                    return actionTriggers[TopAction];
-                return "";
-            }
-        }
+        public string TopAnimation => TopAction?.AnimationStateName;
 
         public Controller CurrentController => party.CurrentController;
 
         private void Awake()
         {
             party = GetComponent<PartyController>();
-
-            actionTriggers.Add(QueueAction.ActionL1, "ActionL1");
-            actionTriggers.Add(QueueAction.ActionL2, "ActionL2");
-            actionTriggers.Add(QueueAction.ActionR1, "ActionR1");
-            actionTriggers.Add(QueueAction.ActionR2, "ActionR2");
-            actionTriggers.Add(QueueAction.Defend, "Defend");
         }
 
-        public void AddAction(QueueAction action)
+        public void AddAction(BattleAction action)
         {
             if (actions.Count < actionCap)
                 actions.Add(action);
@@ -93,7 +76,7 @@ namespace RPG_Project
             {
                 if (!CurrentController.Movement.Grounded)
                     StopChain();
-                else CurrentController.Model.PlayAnimation(TopTrigger, 0);
+                else CurrentController.Model.PlayAnimation(TopAction.AnimationStateName, 0);
             }
         }
 

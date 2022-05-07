@@ -100,15 +100,17 @@ namespace RPG_Project
             RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimHorizontal(dir.x);
-            model.SetAnimVertical(dir.z);
+            model.SetAnimDir(dir);
 
             cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
         }
 
         public void MovePositionAction(float speed, Vector3 dir, float dt)
         {
-            model.RotateModel(dir, dt);
+            RotateModel(dir, dt);
+
+            model.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model.SetAnimDir(dir);
 
             cc.Move(speed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
         }

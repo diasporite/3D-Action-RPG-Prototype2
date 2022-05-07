@@ -43,7 +43,7 @@ namespace RPG_Project
                 {
                     if (inp.Invoke())
                     {
-                        controller.ActionQueue.AddAction(inputController.actions[inp]);
+                        controller.AddAction(inputController.actions[inp]);
                         csm.ChangeState(StateID.ControllerAction);
                     }
                 }
