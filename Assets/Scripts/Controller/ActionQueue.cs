@@ -47,7 +47,7 @@ namespace RPG_Project
             }
         }
 
-        public string TopAnimation => TopAction?.AnimationStateName;
+        public int TopAnimation => TopAction.AnimStateHash;
 
         public Controller CurrentController => party.CurrentController;
 
@@ -69,14 +69,17 @@ namespace RPG_Project
 
         public void AdvanceAction()
         {
-            if (actions.Count > 0) actions.RemoveAt(0);
+            if (actions.Count > 0)
+                actions.RemoveAt(0);
 
-            if (actions.Count <= 0) StopChain();
+            var act = TopAction;
+
+            if (TopAction == null) StopChain();
             else
             {
                 if (!CurrentController.Movement.Grounded)
                     StopChain();
-                else CurrentController.Model.PlayAnimation(TopAction.AnimationStateName, 0);
+                else TopAction.Execute();
             }
         }
 

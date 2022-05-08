@@ -8,33 +8,37 @@ namespace RPG_Project
     public class BattleAction : ICommand
     {
         [SerializeField] protected string actionName;
-        [SerializeField] protected string animationStateName;
+        [SerializeField] protected int animStateHash;
 
         [SerializeField] Controller controller;
+        [SerializeField] PartyController party;
 
-        public string AnimationStateName => animationStateName;
+        public int AnimStateHash => animStateHash;
 
         public BattleAction(Controller controller)
         {
             this.controller = controller;
+            party = controller.Party;
         }
 
         public BattleAction(Controller controller, string actionName)
         {
             this.controller = controller;
             this.actionName = actionName;
+            party = controller.Party;
         }
 
-        public BattleAction(Controller controller, string actionName, string animationStateName)
+        public BattleAction(Controller controller, string actionName, int animStateHash)
         {
             this.controller = controller;
             this.actionName = actionName;
-            this.animationStateName = animationStateName;
+            this.animStateHash = animStateHash;
+            party = controller.Party;
         }
 
         public virtual void Execute()
         {
-
+            controller.Model.PlayAnimation(animStateHash, 0);
         }
 
         public virtual void Undo()

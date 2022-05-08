@@ -4,10 +4,20 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-
-
     public class Controller : MonoBehaviour
     {
+        public readonly int moveHash = Animator.StringToHash("Move");
+        public readonly int strafeHash = Animator.StringToHash("Strafe");
+        public readonly int fallHash = Animator.StringToHash("Fall");
+
+        public readonly int defendHash = Animator.StringToHash("Defend");
+        public readonly int strafeDefendHash = Animator.StringToHash("StrafeDefend");
+
+        public readonly int actionL1Hash = Animator.StringToHash("ActionL1");
+        public readonly int actionL2Hash = Animator.StringToHash("ActionL2");
+        public readonly int actionR1Hash = Animator.StringToHash("ActionR1");
+        public readonly int actionR2Hash = Animator.StringToHash("ActionR2");
+
         [SerializeField] StateID currentState;
         [SerializeField] bool actionMovement;
 
@@ -17,8 +27,8 @@ namespace RPG_Project
 
         Movement movement;
         Combatant combatant;
-
         CharacterModel model;
+
         TargetSphere targetSphere;
         CameraPivot pivot;
 
@@ -46,8 +56,8 @@ namespace RPG_Project
 
             movement = GetComponent<Movement>();
             combatant = GetComponent<Combatant>();
+            model = GetComponent<CharacterModel>();
 
-            model = GetComponentInChildren<CharacterModel>();
             targetSphere = GetComponentInChildren<TargetSphere>();
 
             pivot = party.Pivot;
@@ -119,13 +129,13 @@ namespace RPG_Project
             switch (action)
             {
                 case QueueAction.ActionL1:
-                    return new BattleAction(this, "ActionL1", "ActionL1");
+                    return new BattleAction(this, "ActionL1", actionL1Hash);
                 case QueueAction.ActionL2:
-                    return new BattleAction(this, "ActionL2", "ActionL2");
+                    return new BattleAction(this, "ActionL2", actionL2Hash);
                 case QueueAction.ActionR1:
-                    return new BattleAction(this, "ActionR1", "ActionR1");
+                    return new BattleAction(this, "ActionR1", actionR1Hash);
                 case QueueAction.ActionR2:
-                    return new BattleAction(this, "ActionR2", "ActionR2");
+                    return new BattleAction(this, "ActionR2", actionR2Hash);
 
                 case QueueAction.Char1:
                     return new BattleAction(this, "Char1");
@@ -138,8 +148,8 @@ namespace RPG_Project
 
                 case QueueAction.Defend:
                     if (targetSphere.enabled)
-                        return new BattleAction(this, "Defend", "StrafeDefend");
-                    return new BattleAction(this, "Defend", "Defend");
+                        return new BattleAction(this, "Defend", strafeDefendHash);
+                    return new BattleAction(this, "Defend", defendHash);
 
                 default: return null;
             }

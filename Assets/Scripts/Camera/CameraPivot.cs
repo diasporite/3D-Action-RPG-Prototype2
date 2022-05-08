@@ -70,16 +70,18 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (!targetSphere.enabled)
-            {
-                GetInput();
-                MovePivot();
-            }
-            else
-            {
-                currentTarget = targetSphere.CurrentTargetTransform;
-                FollowTarget();
-            }
+            //if (!targetSphere.enabled)
+            //{
+            //    GetInput();
+            //    MovePivot();
+            //}
+            //else
+            //{
+            //    currentTarget = targetSphere.CurrentTargetTransform;
+            //    FollowTarget();
+            //}
+
+            transform.position = Camera.main.transform.position;
         }
 
         private void OnDrawGizmos()

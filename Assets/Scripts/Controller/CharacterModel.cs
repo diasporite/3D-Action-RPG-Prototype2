@@ -6,7 +6,7 @@ namespace RPG_Project
 {
     public class CharacterModel : MonoBehaviour
     {
-        public bool isPlayer;
+        [SerializeField] GameObject charModel;
 
         float angle;
         float target;
@@ -23,12 +23,12 @@ namespace RPG_Project
 
         private void Awake()
         {
-            controller = GetComponentInParent<Controller>();
-            anim = GetComponentInParent<Animator>();
+            controller = GetComponent<Controller>();
+            anim = GetComponent<Animator>();
 
-            cc = GetComponentInParent<CharacterController>();
+            cc = GetComponent<CharacterController>();
 
-            col = GetComponent<CapsuleCollider>();
+            col = charModel.GetComponent<CapsuleCollider>();
 
             col.height = cc.height;
             col.radius = cc.radius;
@@ -47,22 +47,27 @@ namespace RPG_Project
 
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
-                    print(angle + " " + transform.eulerAngles);
+                    charModel.transform.rotation = Quaternion.Euler(0, angle, 0);
+                    //print(angle + " " + transform.eulerAngles);
                 }
             }
         }
 
         public void LookAt(Vector3 look)
         {
-            look.y = transform.position.y;
-            transform.LookAt(look);
+            look.y = charModel.transform.position.y;
+            charModel.transform.LookAt(look);
         }
 
         public void PlayAnimation(string stateName, int layer)
         {
-            print(stateName);
+            //print(stateName);
             anim.Play(stateName, 0);
+        }
+
+        public void PlayAnimation(int stateHash, int layer)
+        {
+            anim.Play(stateHash, 0);
         }
 
         public void PlayAnimationFade(string stateName, int layer, float dt)
@@ -70,11 +75,12 @@ namespace RPG_Project
             anim.CrossFade(stateName, dt);
         }
 
-        public void AdvanceAction()
+        public void PlayAnimationFade(int stateHash, int layer, float dt)
         {
-            controller.Party.ActionQueue.AdvanceAction();
+            anim.CrossFade(stateHash, dt);
         }
 
+        #region AnimParameters
         public void SetAnimSpeed(float speed)
         {
             anim.SetFloat("Speed", speed);
@@ -95,6 +101,7 @@ namespace RPG_Project
             anim.SetFloat("Horizontal", dir.x);
             anim.SetFloat("Vertical", dir.z);
         }
+        #endregion
 
         //public void SetAnimLocked(bool locked)
         //{
