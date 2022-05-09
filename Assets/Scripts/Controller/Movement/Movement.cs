@@ -88,6 +88,12 @@ namespace RPG_Project
             State = MovementState.Walk;
         }
 
+        public void Move(Vector3 dir, float dt)
+        {
+            MovePosition(dir, dt);
+
+        }
+
         public void MovePosition(Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
