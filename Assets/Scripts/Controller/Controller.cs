@@ -18,6 +18,8 @@ namespace RPG_Project
         public readonly int actionR1Hash = Animator.StringToHash("ActionR1");
         public readonly int actionR2Hash = Animator.StringToHash("ActionR2");
 
+        [SerializeField] bool isPlayer;
+
         [SerializeField] StateID currentState;
         [SerializeField] bool actionMovement;
 
@@ -34,6 +36,8 @@ namespace RPG_Project
 
         public readonly StateMachine sm = new StateMachine();
 
+        public bool IsPlayer => isPlayer;
+
         public StateID CurrentState => currentState;
         public bool ActionMovement => actionMovement;
 
@@ -48,8 +52,10 @@ namespace RPG_Project
         public TargetSphere TargetSphere => targetSphere;
         public CameraPivot Pivot => pivot;
 
-        public void Init()
+        public void Init(bool isPlayer)
         {
+            this.isPlayer = isPlayer;
+
             party = GetComponentInParent<PartyController>();
             inputController = party.InputController;
             actionQueue = party.ActionQueue;

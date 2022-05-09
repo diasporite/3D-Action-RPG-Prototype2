@@ -100,7 +100,7 @@ namespace RPG_Project
 
         private void Start()
         {
-            Init();
+            Init(true);
         }
 
         private void Update()
@@ -121,7 +121,7 @@ namespace RPG_Project
             Gizmos.DrawWireSphere(currentPosition, 1.5f);
         }
 
-        public void Init()
+        public void Init(bool isPlayerParty)
         {
             var controllers = GetComponentsInChildren<Controller>();
 
@@ -129,7 +129,7 @@ namespace RPG_Project
             {
                 if (party.Count < partyCap)
                 {
-                    c.Init();
+                    c.Init(isPlayerParty);
                     party.Add(c);
                 }
             }

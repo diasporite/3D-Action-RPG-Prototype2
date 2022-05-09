@@ -36,7 +36,11 @@ namespace RPG_Project
         CameraPivot pivot;
 
         CharacterController cc;
-        Vector3 ds;
+
+        public Vector3 dir;
+        public Vector3 ds;
+
+        Transform mainCamTransform;
 
         float target = 0f;
         float angle = 0f;
@@ -70,18 +74,6 @@ namespace RPG_Project
             Fall(Time.deltaTime);
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, ds);
-            Gizmos.color = Color.red;
-            if (model != null)
-                Gizmos.DrawRay(transform.position, model.AbsoluteDir(ds));
-            Gizmos.color = Color.blue;
-            if (model != null)
-                Gizmos.DrawRay(transform.position, model.transform.forward);
-        }
-
         public void Init()
         {
             controller = GetComponent<Controller>();
@@ -91,33 +83,35 @@ namespace RPG_Project
             gc = GetComponentInChildren<GroundCheck>();
             pivot = GetComponentInParent<PartyController>().Pivot;
 
+            mainCamTransform = Camera.main.transform;
+
             State = MovementState.Walk;
         }
 
         public void MovePosition(Vector3 dir, float dt)
         {
-            //model.RotateModel(dir, dt);
             RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
 
-            cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
+            if (dir != Vector3.zero)
+                cc.Move(currentSpeed * transform.forward * dt);
         }
 
-        public void MovePositionAction(float speed, Vector3 dir, float dt)
+        public void MovePosition(float speed, Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
 
-            cc.Move(speed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
+            if (dir != Vector3.zero)
+                cc.Move(currentSpeed * transform.forward * dt);
         }
 
         public void Fall(float dt)
         {
-            //grounded = cc.isGrounded;
             grounded = gc.IsGrounded;
 
             if (grounded)
@@ -149,12 +143,11 @@ namespace RPG_Project
                 if (dir != Vector3.zero)
                 {
                     target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-                    target -= controller.Party.Pivot.Theta;
+                    if (controller.IsPlayer) target += mainCamTransform.eulerAngles.y;
 
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
                     transform.rotation = Quaternion.Euler(0, angle, 0);
-                    //print(angle + " " + transform.eulerAngles);
                 }
             }
         }
