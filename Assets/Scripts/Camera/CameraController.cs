@@ -7,6 +7,6 @@ namespace RPG_Project
 {
     public class CameraController : MonoBehaviour
     {
-        public TargetCamera targetCam;
+
     }
 }

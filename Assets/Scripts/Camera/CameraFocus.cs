@@ -12,8 +12,14 @@ namespace RPG_Project
 
         Vector3 pos;
 
+        PartyController party;
         Controller controller;
         TargetSphere targetSphere;
+
+        private void Awake()
+        {
+            party = GetComponentInParent<PartyController>();
+        }
 
         public void Init(Controller controller)
         {
@@ -25,9 +31,14 @@ namespace RPG_Project
 
         private void Update()
         {
-            //transform.position = controller.transform.position + pos;
+            var height = 0f;
+
+            if (targetSphere.enabled) height = lockedHeight;
+            else height = freeHeight;
+
             transform.position = Vector3.MoveTowards(transform.position, 
-                controller.transform.position, updateSpeed * Time.deltaTime);
+                party.CurrentControllerTransform.position + height * Vector3.up, 
+                updateSpeed * Time.deltaTime);
 
             if (targetSphere.enabled) transform.rotation = controller.transform.rotation;
             //else transform.rotation = Quaternion.identity;

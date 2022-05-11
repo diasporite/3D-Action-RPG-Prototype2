@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6963799}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0000000430146, y: 0.49751866, z: 10.000124}
+  m_LocalPosition: {x: -0.000000043035374, y: 0.47040433, z: 10.001436}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 426131138}
@@ -280,7 +280,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426131137}
-  m_LocalRotation: {x: 0.049813703, y: 0.00000000214806, z: -1.0713581e-10, w: 0.99875855}
+  m_LocalRotation: {x: 0.048459735, y: -0.0000000021477853, z: 1.0420354e-10, w: 0.99882513}
   m_LocalPosition: {x: -1.4793793, y: -0.509773, z: -16.546726}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1691826168}
+  m_LookAt: {fileID: 6963800}
   m_Follow: {fileID: 2044350202}
   m_Lens:
     FieldOfView: 40
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
-  m_YawDamping: 0
+  m_YawDamping: 3
   m_RollDamping: 0
   m_AngularDamping: 0
 --- !u!114 &731744481
@@ -2122,6 +2122,7 @@ GameObject:
   - component: {fileID: 2044350205}
   - component: {fileID: 2044350204}
   - component: {fileID: 2044350203}
+  - component: {fileID: 2044350206}
   m_Layer: 12
   m_Name: CamFocus
   m_TagString: Untagged
@@ -2155,6 +2156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9cb08c65fcb2d4f95b57566142a086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeHeight: 1
+  lockedHeight: 2
   updateSpeed: 4
 --- !u!23 &2044350204
 MeshRenderer:
@@ -2203,6 +2206,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044350201}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &2044350206
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044350201}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!4 &2051194890 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1504922334369130149, guid: e247e0a86676deb4898b5f19f901b35b,
