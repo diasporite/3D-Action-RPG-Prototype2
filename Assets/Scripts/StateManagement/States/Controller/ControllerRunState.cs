@@ -77,7 +77,7 @@ namespace RPG_Project
                     }
                 }
 
-                movement.MovePosition(ds, Time.deltaTime);
+                controller.MoveFree(ds);
             }
         }
     }

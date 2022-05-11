@@ -83,7 +83,7 @@ namespace RPG_Project
                 }
 
                 var dir = inputController.MoveCharXz;
-                movement.MovePosition(dir, Time.deltaTime);
+                controller.MoveStrafe(dir);
                 controller.Model.SetAnimDir(dir);
             }
         }

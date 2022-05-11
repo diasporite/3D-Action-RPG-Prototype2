@@ -66,7 +66,7 @@ namespace RPG_Project
                 else if (inputController.Dpad != Vector2.zero) controller.Switch();
                 else
                 {
-                    controller.Move(ds);
+                    controller.MoveFree(ds);
 
                     if (ds != Vector3.zero) health.Tick();
                 }

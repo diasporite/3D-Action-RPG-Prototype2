@@ -39,7 +39,8 @@ namespace RPG_Project
             if (stamina.Full)
                 csm.ChangeState(StateID.ControllerMove);
 
-            movement.MovePosition(controller.InputController.MoveCharXz, Time.deltaTime);
+            if (controller.TargetSphere.enabled) controller.MoveStrafe();
+            else controller.MoveFree();
         }
 
         public void ExecuteFrameFixed()

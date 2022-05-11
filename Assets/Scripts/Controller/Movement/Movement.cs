@@ -46,6 +46,8 @@ namespace RPG_Project
         float angle = 0f;
         float turnVelocity = 0f;
 
+        float dropSpeed;
+
         public MovementState State
         {
             get => state;
@@ -86,15 +88,11 @@ namespace RPG_Project
             mainCamTransform = Camera.main.transform;
 
             State = MovementState.Walk;
+
+            dropSpeed = -Mathf.Tan(cc.slopeLimit * Mathf.Deg2Rad);
         }
 
-        public void Move(Vector3 dir, float dt)
-        {
-            MovePosition(dir, dt);
-
-        }
-
-        public void MovePosition(Vector3 dir, float dt)
+        public void MovePositionFree(Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
 
@@ -105,15 +103,17 @@ namespace RPG_Project
                 cc.Move(currentSpeed * transform.forward * dt);
         }
 
-        public void MovePosition(float speed, Vector3 dir, float dt)
+        public void MovePositionStrafe(Vector3 dir, float dt)
         {
-            RotateModel(dir, dt);
+            LookAt(controller.TargetSphere.CurrentTargetTransform.position);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
 
+            var ds = transform.forward * dir.z + transform.right * dir.x;
+
             if (dir != Vector3.zero)
-                cc.Move(currentSpeed * transform.forward * dt);
+                cc.Move(currentSpeed * ds * dt);
         }
 
         public void Fall(float dt)
@@ -127,6 +127,8 @@ namespace RPG_Project
 
                 timeSinceGrounded = 0;
                 verticalSpeed = 0;
+
+                cc.Move(gravity * transform.up * dt);
             }
             else
             {

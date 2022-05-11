@@ -2,4 +2,7 @@
 PROJECT NOTES
 
 RESOURCES
+3rd person combat course
 - https://www.udemy.com/course/unity-3rd-person-combat-traversal/
+Using custom cameras with Cinemachine
+- https://forum.unity.com/threads/using-cinemachine-alongside-scripted-camera.537044/

@@ -30,6 +30,7 @@ namespace RPG_Project
         ActionQueue actionQueue;
 
         CameraPivot pivot;
+        TargetSphere targetSphere;
 
         public Controller CurrentController
         {
@@ -39,6 +40,7 @@ namespace RPG_Project
                 return null;
             }
         }
+        public Transform CurrentControllerTransform => CurrentController?.transform;
         public Combatant CurrentCombatant => CurrentController?.Combatant;
 
         public Health Health => health;
@@ -47,6 +49,7 @@ namespace RPG_Project
         public ActionQueue ActionQueue => actionQueue;
 
         public CameraPivot Pivot => pivot;
+        public TargetSphere TargetSphere => targetSphere;
 
         public int Hp
         {
@@ -96,6 +99,7 @@ namespace RPG_Project
             actionQueue = GetComponent<ActionQueue>();
 
             pivot = GetComponentInChildren<CameraPivot>();
+            targetSphere = GetComponentInChildren<TargetSphere>();
         }
 
         private void Start()

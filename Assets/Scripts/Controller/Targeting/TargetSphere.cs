@@ -6,21 +6,31 @@ namespace RPG_Project
 {
     public class TargetSphere : MonoBehaviour
     {
+        PartyController party;
+
+        [SerializeField] Transform targetFocus;
+
         [SerializeField] List<Target> targets = new List<Target>();
 
         [SerializeField] Target currentTarget;
+
         public Target CurrentTarget { get; private set; }
-        //public Transform CurrentTargetTransform => CurrentTarget?.transform;
-        public Transform CurrentTargetTransform
-        {
-            get
-            {
-                if (CurrentTarget != null) return CurrentTarget.transform;
-                return null;
-            }
-        }
+
+        public Transform CurrentTargetTransform => CurrentTarget?.transform;
 
         public bool NoTargets => targets.Count <= 0;
+
+        private void Awake()
+        {
+            party = GetComponentInParent<PartyController>();
+        }
+
+        private void Update()
+        {
+            if (CurrentTarget != null)
+                targetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position + 
+                    CurrentTargetTransform.position);
+        }
 
         private void OnEnable()
         {

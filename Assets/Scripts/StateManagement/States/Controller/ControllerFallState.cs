@@ -29,7 +29,7 @@ namespace RPG_Project
         {
             movement.State = MovementState.Fall;
 
-            movement.MovePosition(controller.InputController.MoveCharXz, Time.deltaTime);
+            movement.MovePositionFree(controller.InputController.MoveCharXz, Time.deltaTime);
         }
 
         public void ExecuteFrameFixed()

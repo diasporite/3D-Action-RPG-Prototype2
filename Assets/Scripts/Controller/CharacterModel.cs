@@ -7,6 +7,7 @@ namespace RPG_Project
     public class CharacterModel : MonoBehaviour
     {
         [SerializeField] GameObject charModel;
+        [SerializeField] CameraFocus focus;
 
         float angle;
         float target;
@@ -27,11 +28,11 @@ namespace RPG_Project
             anim = GetComponent<Animator>();
 
             cc = GetComponent<CharacterController>();
+        }
 
-            col = charModel.GetComponent<CapsuleCollider>();
-
-            col.height = cc.height;
-            col.radius = cc.radius;
+        public void Init()
+        {
+            focus.Init(controller);
         }
 
         public void RotateModel(Vector3 dir, float dt)

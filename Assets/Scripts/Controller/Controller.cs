@@ -31,8 +31,8 @@ namespace RPG_Project
         Combatant combatant;
         CharacterModel model;
 
-        TargetSphere targetSphere;
         CameraPivot pivot;
+        TargetSphere targetSphere;
 
         public readonly StateMachine sm = new StateMachine();
 
@@ -47,10 +47,10 @@ namespace RPG_Project
 
         public Movement Movement => movement;
         public Combatant Combatant => combatant;
-
         public CharacterModel Model => model;
-        public TargetSphere TargetSphere => targetSphere;
+
         public CameraPivot Pivot => pivot;
+        public TargetSphere TargetSphere => targetSphere;
 
         public void Init(bool isPlayer)
         {
@@ -64,12 +64,12 @@ namespace RPG_Project
             combatant = GetComponent<Combatant>();
             model = GetComponent<CharacterModel>();
 
-            targetSphere = GetComponentInChildren<TargetSphere>();
-
             pivot = party.Pivot;
+            targetSphere = party.TargetSphere;
 
             movement.Init();
             combatant.Init(0);
+            model.Init();
 
             InitSM();
         }
@@ -98,6 +98,7 @@ namespace RPG_Project
             actionQueue.AdvanceAction();
         }
 
+        #region Movement
         public void LockActionMovement()
         {
             actionMovement = false;
@@ -108,15 +109,26 @@ namespace RPG_Project
             actionMovement = true;
         }
 
-        public void Move()
+        public void MoveFree()
         {
-            movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
+            movement.MovePositionFree(inputController.MoveCharXz, Time.deltaTime);
         }
 
-        public void Move(Vector3 ds)
+        public void MoveFree(Vector3 ds)
         {
-            movement.MovePosition(ds, Time.deltaTime);
+            movement.MovePositionFree(ds, Time.deltaTime);
         }
+
+        public void MoveStrafe()
+        {
+            movement.MovePositionStrafe(inputController.MoveCharXz, Time.deltaTime);
+        }
+
+        public void MoveStrafe(Vector3 ds)
+        {
+            movement.MovePositionStrafe(ds, Time.deltaTime);
+        }
+        #endregion
 
         public void Switch()
         {
