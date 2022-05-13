@@ -27,9 +27,12 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (CurrentTarget != null)
-                targetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position + 
+            if (CurrentTarget != null && party.CurrentControllerTransform != null)
+            {
+                transform.position = party.CurrentControllerTransform.position;
+                targetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position +
                     CurrentTargetTransform.position);
+            }
         }
 
         private void OnEnable()
