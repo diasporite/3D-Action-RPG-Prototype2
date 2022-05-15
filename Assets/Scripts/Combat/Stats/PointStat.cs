@@ -11,7 +11,7 @@ namespace RPG_Project
 
         public int PointValue
         {
-            get => PointValue;
+            get => pointValue;
             set => pointValue = Mathf.Clamp(value, 0, currentStatValue);
         }
 

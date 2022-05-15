@@ -31,5 +31,19 @@ namespace RPG_Project
         [Header("Actions")]
         public ActionData[] actions;
         public ActionData defendAction;
+
+        [Header("Restoratives")]
+        [Range(0, 4)]
+        public int healthRestores = 2;
+        [Range(0, 4)]
+        public int skillRestores = 2;
+
+        public ActionData GetAction(int index)
+        {
+            index = Mathf.Abs(index);
+            index = index % actions.Length;
+
+            return actions[index];
+        }
     }
 }

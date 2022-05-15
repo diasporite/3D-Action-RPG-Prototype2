@@ -75,6 +75,7 @@ namespace RPG_Project
             var act = TopAction;
 
             if (TopAction == null) StopChain();
+            else if (party.Stamina.Empty) StopChain();
             else
             {
                 if (!CurrentController.Movement.Grounded)
@@ -83,12 +84,21 @@ namespace RPG_Project
             }
         }
 
+        public void StartChain()
+        {
+            executing = true;
+
+            TopAction.Execute();
+        }
+
         void StopChain()
         {
             executing = false;
 
             if (!CurrentController.Movement.Grounded)
                 CurrentController.sm.ChangeState(StateID.ControllerFall);
+            else if (party.Stamina.Empty)
+                CurrentController.sm.ChangeState(StateID.ControllerRecover);
             else
             {
                 if (CurrentController.TargetSphere.enabled)

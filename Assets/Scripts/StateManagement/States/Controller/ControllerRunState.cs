@@ -11,6 +11,7 @@ namespace RPG_Project
 
         Movement movement;
 
+        Health health;
         Stamina stamina;
         InputController inputController;
 
@@ -23,6 +24,7 @@ namespace RPG_Project
 
             movement = controller.Movement;
 
+            health = controller.Party.Health;
             stamina = controller.Party.Stamina;
             inputController = controller.InputController;
         }
@@ -30,6 +32,7 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Run;
+            health.State = ResourceState.Run;
             stamina.State = ResourceState.Run;
         }
 
@@ -57,6 +60,7 @@ namespace RPG_Project
         {
             ds = inputController.MoveCharXz;
 
+            health.Tick();
             stamina.Tick();
 
             if (stamina.Empty)

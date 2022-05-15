@@ -16,6 +16,22 @@ namespace RPG_Project
         {
             if (instance == null) instance = this;
             else Destroy(gameObject);
+
+            ui = FindObjectOfType<UIManager>();
+
+            combat.InitDatabase();
+        }
+
+        private void Start()
+        {
+            SpawnPlayer();
+        }
+
+        public void SpawnPlayer()
+        {
+            var spawner = FindObjectOfType<PlayerSpawner>();
+            spawner.Spawn();
+            ui.InitUI(spawner.GetComponent<PartyController>());
         }
 
         public void InitUI(PartyController player)

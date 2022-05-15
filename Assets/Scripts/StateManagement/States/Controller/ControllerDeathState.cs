@@ -9,7 +9,7 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
-        int actionIndex;
+        float fadeTime = 0.1f;
 
         public ControllerDeathState(Controller controller)
         {
@@ -19,12 +19,17 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
+            controller.TargetSphere.enabled = false;
 
+            controller.Model.PlayAnimationFade(controller.deathHash, 0, fadeTime);
+
+            controller.ActionQueue.ClearActions();
         }
 
         public void ExecuteFrame()
         {
-
+            controller.Party.Health.Tick(0);
+            controller.Party.Stamina.Tick(0);
         }
 
         public void ExecuteFrameFixed()

@@ -30,6 +30,8 @@ namespace RPG_Project
             movement.State = MovementState.Walk;
             health.State = ResourceState.Recover;
             stamina.State = ResourceState.Recover;
+
+            controller.Model.PlayAnimationFade(controller.moveHash, 0, 0.1f);
         }
 
         public void ExecuteFrame()

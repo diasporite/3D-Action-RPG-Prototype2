@@ -8,9 +8,13 @@ namespace RPG_Project
     {
         [SerializeField] PartyController player;
 
+        [SerializeField] CharInfo charInfo;
+
         public void InitUI(PartyController player)
         {
             this.player = player;
+
+            charInfo.InitUI(player);
         }
     }
 }

@@ -19,5 +19,10 @@ namespace RPG_Project
 
             return null;
         }
+
+        public virtual void Spawn()
+        {
+
+        }
     }
 }

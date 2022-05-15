@@ -9,7 +9,7 @@ namespace RPG_Project
     {
         [SerializeField] protected string actionName;
         [SerializeField] protected int animStateHash;
-
+        [SerializeField] int spCost;
         [SerializeField] Controller controller;
         [SerializeField] PartyController party;
 
@@ -28,17 +28,19 @@ namespace RPG_Project
             party = controller.Party;
         }
 
-        public BattleAction(Controller controller, string actionName, int animStateHash)
+        public BattleAction(Controller controller, string actionName, int animStateHash, int spCost)
         {
             this.controller = controller;
             this.actionName = actionName;
             this.animStateHash = animStateHash;
+            this.spCost = spCost;
             party = controller.Party;
         }
 
         public virtual void Execute()
         {
             controller.Model.PlayAnimation(animStateHash, 0);
+            controller.Party.Stamina.ChangeValue(-Mathf.Abs(spCost));
         }
 
         public virtual void Undo()

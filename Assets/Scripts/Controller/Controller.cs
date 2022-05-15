@@ -6,6 +6,7 @@ namespace RPG_Project
 {
     public class Controller : MonoBehaviour
     {
+        #region AnimatorHashes
         public readonly int moveHash = Animator.StringToHash("Move");
         public readonly int strafeHash = Animator.StringToHash("Strafe");
         public readonly int fallHash = Animator.StringToHash("Fall");
@@ -13,10 +14,14 @@ namespace RPG_Project
         public readonly int defendHash = Animator.StringToHash("Defend");
         public readonly int strafeDefendHash = Animator.StringToHash("StrafeDefend");
 
+        public readonly int staggerHash = Animator.StringToHash("Stagger");
+        public readonly int deathHash = Animator.StringToHash("Death");
+
         public readonly int actionL1Hash = Animator.StringToHash("ActionL1");
         public readonly int actionL2Hash = Animator.StringToHash("ActionL2");
         public readonly int actionR1Hash = Animator.StringToHash("ActionR1");
         public readonly int actionR2Hash = Animator.StringToHash("ActionR2");
+        #endregion
 
         [SerializeField] bool isPlayer;
 
@@ -91,6 +96,9 @@ namespace RPG_Project
             currentState = (StateID)sm.GetCurrentKey;
 
             sm.Update();
+
+            // Test damage
+            if (Input.GetKeyDown("space")) combatant.OnDamage(new DamageInfo(combatant, 35, 10));
         }
 
         public void AdvanceAction()
@@ -147,13 +155,13 @@ namespace RPG_Project
             switch (action)
             {
                 case QueueAction.ActionL1:
-                    return new BattleAction(this, "ActionL1", actionL1Hash);
+                    return new BattleAction(this, "ActionL1", actionL1Hash, 20);
                 case QueueAction.ActionL2:
-                    return new BattleAction(this, "ActionL2", actionL2Hash);
+                    return new BattleAction(this, "ActionL2", actionL2Hash, 20);
                 case QueueAction.ActionR1:
-                    return new BattleAction(this, "ActionR1", actionR1Hash);
+                    return new BattleAction(this, "ActionR1", actionR1Hash, 20);
                 case QueueAction.ActionR2:
-                    return new BattleAction(this, "ActionR2", actionR2Hash);
+                    return new BattleAction(this, "ActionR2", actionR2Hash, 20);
 
                 case QueueAction.Char1:
                     return new BattleAction(this, "Char1");
@@ -166,8 +174,8 @@ namespace RPG_Project
 
                 case QueueAction.Defend:
                     if (targetSphere.enabled)
-                        return new BattleAction(this, "Defend", strafeDefendHash);
-                    return new BattleAction(this, "Defend", defendHash);
+                        return new BattleAction(this, "Defend", strafeDefendHash, 20);
+                    return new BattleAction(this, "Defend", defendHash, 20);
 
                 default: return null;
             }
@@ -176,6 +184,12 @@ namespace RPG_Project
         public void AddAction(QueueAction action)
         {
             actionQueue.AddAction(GetAction(action));
+        }
+
+        // For use with stagger and death animations
+        public void ReturnToMoveState()
+        {
+            sm.ChangeState(StateID.ControllerMove);
         }
     }
 }

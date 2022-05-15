@@ -11,6 +11,8 @@ namespace RPG_Project
 
         Movement movement;
 
+        float fadeTime = 0.25f;
+
         public ControllerFallState(Controller controller)
         {
             this.controller = controller;
@@ -21,13 +23,15 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            //controller.Model.SetAnimFalling(true);
-            controller.Model.PlayAnimationFade("Fall", 0, 0.25f);
+            controller.Model.PlayAnimationFade(controller.fallHash, 0, fadeTime);
         }
 
         public void ExecuteFrame()
         {
             movement.State = MovementState.Fall;
+
+            controller.Party.Health.Tick(0);
+            controller.Party.Stamina.Tick(0);
 
             movement.MovePositionFree(controller.InputController.MoveCharXz, Time.deltaTime);
         }

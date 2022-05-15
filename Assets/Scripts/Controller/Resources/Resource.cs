@@ -32,6 +32,9 @@ namespace RPG_Project
         public bool Empty => resourcePoints.Empty;
         public bool Full => resourcePoints.Full;
 
+        public int ResourcePointValue => resourcePoints.PointValue;
+        public int ResourceStatValue => resourcePoints.CurrentStatValue;
+
         public float ResourceFraction => resourceCooldown.CooldownFraction;
 
         private void Awake()

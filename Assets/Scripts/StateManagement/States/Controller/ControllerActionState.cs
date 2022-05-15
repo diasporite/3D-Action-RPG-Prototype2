@@ -27,7 +27,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            model.PlayAnimation(actionQueue.TopAnimation, 0);
+            actionQueue.StartChain();
         }
 
         public void ExecuteFrame()
@@ -52,6 +52,9 @@ namespace RPG_Project
 
         void Command()
         {
+            controller.Party.Health.Tick(0);
+            controller.Party.Stamina.Tick(0);
+
             foreach (var inp in inputController.actions.Keys)
                 if (inp.Invoke())
                     controller.AddAction(inputController.actions[inp]);
