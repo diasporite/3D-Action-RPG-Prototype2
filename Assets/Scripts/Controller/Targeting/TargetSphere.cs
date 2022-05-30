@@ -14,6 +14,8 @@ namespace RPG_Project
 
         [SerializeField] Target currentTarget;
 
+        Camera mainCam;
+
         public Target CurrentTarget { get; private set; }
 
         public Transform CurrentTargetTransform => CurrentTarget?.transform;
@@ -23,6 +25,8 @@ namespace RPG_Project
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
+
+            mainCam = Camera.main;
         }
 
         private void Update()
@@ -66,8 +70,32 @@ namespace RPG_Project
         {
             if (NoTargets) return;
 
+            //float closestSqrDist = Mathf.Infinity;
+
+            //CurrentTarget = null;
+
+            //foreach(var target in targets)
+            //{
+            //    Vector2 screenPos = mainCam.WorldToViewportPoint(target.transform.position);
+
+            //    if (OutsideScreen(screenPos)) continue;
+
+            //    var dirToCentre = 0.5f * Vector2.one - screenPos;
+
+            //    if (dirToCentre.sqrMagnitude < closestSqrDist)
+            //    {
+            //        CurrentTarget = target;
+            //        closestSqrDist = dirToCentre.sqrMagnitude;
+            //    }
+            //}
+
             CurrentTarget = targets[0];
             currentTarget = CurrentTarget;
+        }
+
+        bool OutsideScreen(Vector2 screenPos)
+        {
+            return screenPos.x < 0 || screenPos.x > 1 || screenPos.y < 0 || screenPos.y > 1;
         }
     }
 }

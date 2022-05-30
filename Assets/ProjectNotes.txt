@@ -1,6 +1,13 @@
 
 PROJECT NOTES
 
+TO DO
+- Rewrite code for action queuing
+  - Action state continually checks if chain is executing
+  - Switch state logic is in action state instead of ActionQueue
+- Implement skillset using ScriptableObjects
+- Implement skill UI
+
 RESOURCES
 3rd person combat course
 - https://www.udemy.com/course/unity-3rd-person-combat-traversal/
