@@ -2,11 +2,23 @@
 PROJECT NOTES
 
 TO DO
+- Use [field: SerializeField]
 - Rewrite code for action queuing
   - Action state continually checks if chain is executing
   - Switch state logic is in action state instead of ActionQueue
 - Implement skillset using ScriptableObjects
 - Implement skill UI
+- Rework progression system
+  - Levels are bought
+  - Party shares level
+  - Skills level at certain party levels
+
+IDEAS
+- Max stamina gradually
+  - Very slow with time
+  - Slow with movement
+  - Actions have max sp costs
+  - Purpose is to serve as hunger meter
 
 RESOURCES
 3rd person combat course
