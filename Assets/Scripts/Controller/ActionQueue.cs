@@ -23,18 +23,12 @@ namespace RPG_Project
 
     public class ActionQueue : MonoBehaviour
     {
-        [SerializeField] bool executing = false;
+        [field: SerializeField] public bool Executing { get; private set; }
 
         [SerializeField] List<BattleAction> actions = new List<BattleAction>();
         int actionCap = 5;
 
         PartyController party;
-
-        public bool Executing
-        {
-            get => executing;
-            set => executing = value;
-        }
 
         public List<BattleAction> Actions => actions;
 
@@ -86,18 +80,20 @@ namespace RPG_Project
 
         public void StartChain()
         {
-            executing = true;
+            Executing = true;
 
             TopAction.Execute();
         }
 
         void StopChain()
         {
-            executing = false;
+            Executing = false;
+
+            actions.Clear();
 
             if (!CurrentController.Movement.Grounded)
                 CurrentController.sm.ChangeState(StateID.ControllerFall);
-            else if (party.Stamina.Empty)
+            else if (CurrentController.Party.Stamina.Empty)
                 CurrentController.sm.ChangeState(StateID.ControllerRecover);
             else
             {
@@ -105,8 +101,6 @@ namespace RPG_Project
                     CurrentController.sm.ChangeState(StateID.ControllerStrafe);
                 else CurrentController.sm.ChangeState(StateID.ControllerMove);
             }
-
-            actions.Clear();
         }
     }
 }

@@ -15,8 +15,8 @@ namespace RPG_Project
 
         [Header("Progression")]
         [SerializeField] int level = 1;
-        [SerializeField] int exp = 0;
-        [SerializeField] int[] expAtLv;
+        //[SerializeField] int exp = 0;
+        //[SerializeField] int[] expAtLv;
 
         #region Stats
         [Header("Resource Stats")]
@@ -120,7 +120,7 @@ namespace RPG_Project
 
             charName = data.charName;
 
-            expAtLv = combat.GetStatAtLv(StatID.ExpAtLv, data.baseExpAtLv);
+            //expAtLv = combat.GetStatAtLv(StatID.ExpAtLv, data.baseExpAtLv);
             
             vitAtLv = combat.GetStatAtLv(StatID.Vitality, data.baseVit);
             endAtLv = combat.GetStatAtLv(StatID.Endurance, data.baseEnd);
@@ -131,9 +131,9 @@ namespace RPG_Project
             hRegenAtLv = combat.GetStatAtLv(StatID.HealthRegen, data.baseHealthRegen);
             sRegenAtLv = combat.GetStatAtLv(StatID.StaminaRegen, data.baseStaminaRegen);
 
-            this.exp = exp;
+            //this.exp = exp;
 
-            level = CalculateLv();
+            //level = CalculateLv();
 
             vitality = new Stat(vitAtLv[level - 1], 255);
             endurance = new Stat(endAtLv[level - 1], 255);
@@ -149,14 +149,14 @@ namespace RPG_Project
             skillset = data.actions.ToList();
         }
 
-        int CalculateLv()
-        {
-            for (int i = 0; i < expAtLv.Length; i++)
-                if (exp < expAtLv[i])
-                    return i;
+        //int CalculateLv()
+        //{
+        //    for (int i = 0; i < expAtLv.Length; i++)
+        //        if (exp < expAtLv[i])
+        //            return i;
 
-            return expAtLv.Length;
-        }
+        //    return expAtLv.Length;
+        //}
 
         public void SwapSkills(ActionData skill1, ActionData skill2)
         {

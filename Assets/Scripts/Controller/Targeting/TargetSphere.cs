@@ -12,11 +12,9 @@ namespace RPG_Project
 
         [SerializeField] List<Target> targets = new List<Target>();
 
-        [SerializeField] Target currentTarget;
-
         Camera mainCam;
 
-        public Target CurrentTarget { get; private set; }
+        [field: SerializeField] public Target CurrentTarget { get; private set; }
 
         public Transform CurrentTargetTransform => CurrentTarget?.transform;
 
@@ -90,7 +88,6 @@ namespace RPG_Project
             //}
 
             CurrentTarget = targets[0];
-            currentTarget = CurrentTarget;
         }
 
         bool OutsideScreen(Vector2 screenPos)

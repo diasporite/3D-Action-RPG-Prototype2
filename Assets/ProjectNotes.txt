@@ -12,6 +12,7 @@ TO DO
   - Levels are bought
   - Party shares level
   - Skills level at certain party levels
+- Fix targeting
 
 IDEAS
 - Max stamina gradually
