@@ -46,7 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionL1",
+                    "name": "Action1",
                     "type": "Button",
                     "id": "9994636f-6bf1-4421-8943-ce98338bd911",
                     "expectedControlType": "Button",
@@ -54,7 +54,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionL2",
+                    "name": "Action2",
                     "type": "Button",
                     "id": "27b8560b-6714-4755-a910-428836c47c6f",
                     "expectedControlType": "Button",
@@ -62,7 +62,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionR1",
+                    "name": "Action3",
                     "type": "Button",
                     "id": "b46ae25a-2a24-4b27-9462-6381f680ddbd",
                     "expectedControlType": "Button",
@@ -70,7 +70,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionR2",
+                    "name": "Action4",
                     "type": "Button",
                     "id": "d22625e0-8df7-4d01-a51c-157a74f68a5e",
                     "expectedControlType": "Button",
@@ -358,7 +358,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionL1",
+                    "action": "Action1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -369,7 +369,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionL1",
+                    "action": "Action1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -380,7 +380,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionL2",
+                    "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -391,7 +391,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionL2",
+                    "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -402,7 +402,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionR1",
+                    "action": "Action3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -413,7 +413,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionR1",
+                    "action": "Action3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -424,7 +424,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionR2",
+                    "action": "Action4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -435,7 +435,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionR2",
+                    "action": "Action4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

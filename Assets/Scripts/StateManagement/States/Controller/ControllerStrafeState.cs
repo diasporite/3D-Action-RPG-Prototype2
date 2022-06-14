@@ -69,8 +69,8 @@ namespace RPG_Project
             health.Tick();
             stamina.Tick();
 
-            if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
-            else if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
+            //if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
+            if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
             else
             {
                 foreach (var inp in inputController.actions.Keys)

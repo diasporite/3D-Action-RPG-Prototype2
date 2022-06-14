@@ -109,14 +109,14 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (InputController.Char1()) SwitchController(0);
-            else if (InputController.Char2()) SwitchController(1);
-            else
-            {
-                CurrentController.UpdateController();
+            //if (InputController.Char1()) SwitchController(0);
+            //else if (InputController.Char2()) SwitchController(1);
+            //else
+            //{
+            CurrentController.UpdateController();
 
-                UpdatePosition();
-            }
+            UpdatePosition();
+            //}
         }
 
         private void OnDrawGizmos()

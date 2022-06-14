@@ -11,9 +11,10 @@ namespace RPG_Project
 
         int levelCap = 1;
 
-        public Progression(int level)
+        public Progression(int level, int levelCap)
         {
             Level = level;
+            this.levelCap = levelCap;
         }
 
         public void ChangeLevel(int amount)

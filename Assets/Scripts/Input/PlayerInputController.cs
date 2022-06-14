@@ -25,37 +25,84 @@ namespace RPG_Project
 
         public void OnToggleLock(InputValue value)
         {
-            toggleLock = value.isPressed;
+            //toggleLock = value.isPressed;
+
+            if (Controller.CurrentState == StateID.ControllerMove)
+                Controller.sm.ChangeState(StateID.ControllerStrafe);
+            else if (Controller.CurrentState == StateID.ControllerStrafe)
+                Controller.sm.ChangeState(StateID.ControllerMove);
         }
 
         public void OnRun(InputValue value)
         {
-            run = value.isPressed;
+            //run = value.isPressed;
+
+            if (Controller.CurrentState == StateID.ControllerMove)
+            {
+                if (value.isPressed && moveChar != Vector2.zero)
+                    Controller.sm.ChangeState(StateID.ControllerRun);
+            }
+            else if (Controller.CurrentState == StateID.ControllerRun)
+            {
+                if (!value.isPressed)
+                    Controller.sm.ChangeState(StateID.ControllerMove);
+            }
         }
 
         public void OnDefend(InputValue value)
         {
-            defend = value.isPressed;
+            //defend = value.isPressed;
+
+            if (CanAct) Controller.AddAction(QueueAction.Defend);
         }
 
-        public void OnActionL1(InputValue value)
+        public void OnAction1(InputValue value)
         {
-            actionL1 = value.isPressed;
+            // L1
+            if (CanAct) Controller.AddAction(QueueAction.ActionL1);
         }
 
-        public void OnActionL2(InputValue value)
+        public void OnAction2(InputValue value)
         {
-            actionL2 = value.isPressed;
+            // L2
+            if (CanAct) Controller.AddAction(QueueAction.ActionL2);
         }
 
-        public void OnActionR1(InputValue value)
+        public void OnAction3(InputValue value)
         {
-            actionR1 = value.isPressed;
+            // R1
+            if (CanAct) Controller.AddAction(QueueAction.ActionR1);
         }
 
-        public void OnActionR2(InputValue value)
+        public void OnAction4(InputValue value)
         {
-            actionR2 = value.isPressed;
+            //R2
+            if (CanAct) Controller.AddAction(QueueAction.ActionR2);
         }
+
+        public void OnChar1(InputValue value)
+        {
+
+        }
+
+        public void OnChar2(InputValue value)
+        {
+
+        }
+
+        public void OnChar3(InputValue value)
+        {
+
+        }
+
+        public void OnChar4(InputValue value)
+        {
+
+        }
+
+        bool CanAct => Controller.CurrentState != StateID.ControllerFall && 
+            Controller.CurrentState != StateID.ControllerRecover && 
+            Controller.CurrentState != StateID.ControllerStagger && 
+            Controller.CurrentState != StateID.ControllerDeath;
     }
 }

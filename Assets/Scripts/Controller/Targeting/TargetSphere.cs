@@ -64,28 +64,32 @@ namespace RPG_Project
             Gizmos.DrawWireSphere(transform.position, 0.5f * transform.lossyScale.x);
         }
 
+        // Check Udemy course
         public void SelectTarget()
         {
             if (NoTargets) return;
 
-            //float closestSqrDist = Mathf.Infinity;
+            float closestSqrDist = Mathf.Infinity;
 
-            //CurrentTarget = null;
+            CurrentTarget = null;
 
-            //foreach(var target in targets)
-            //{
-            //    Vector2 screenPos = mainCam.WorldToViewportPoint(target.transform.position);
+            foreach (var target in targets)
+            {
+                Vector2 screenPos = mainCam.WorldToViewportPoint(target.transform.position);
 
-            //    if (OutsideScreen(screenPos)) continue;
+                //if (OutsideScreen(screenPos)) continue;
 
-            //    var dirToCentre = 0.5f * Vector2.one - screenPos;
+                if (!OutsideScreen(screenPos))
+                {
+                    var dirToCentre = 0.5f * Vector2.one - screenPos;
 
-            //    if (dirToCentre.sqrMagnitude < closestSqrDist)
-            //    {
-            //        CurrentTarget = target;
-            //        closestSqrDist = dirToCentre.sqrMagnitude;
-            //    }
-            //}
+                    if (dirToCentre.sqrMagnitude < closestSqrDist)
+                    {
+                        CurrentTarget = target;
+                        closestSqrDist = dirToCentre.sqrMagnitude;
+                    }
+                }
+            }
 
             CurrentTarget = targets[0];
         }

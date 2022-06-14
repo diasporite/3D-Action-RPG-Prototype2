@@ -49,31 +49,14 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            ds = inputController.MoveCharXz;
+            ds = controller.InputController.MoveCharXz;
 
+            if (ds != Vector3.zero) health.Tick();
             stamina.Tick();
 
             if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else
-            {
-                if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
-                //if (inputController.Run())
-                //{
-                //    if (ds != Vector3.zero)
-                //        csm.ChangeState(StateID.ControllerRun);
-                //}
-                else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
-                else if (Action()) csm.ChangeState(StateID.ControllerAction);
-                else if (inputController.Dpad != Vector2.zero) controller.Switch();
-                else
-                {
-                    controller.MoveFree(ds);
-
-                    if (ds != Vector3.zero) health.Tick();
-                    else health.Tick(0);
-                }
-            }
+            else controller.MoveFree(ds);
         }
 
         public void ExecuteFrameFixed()
@@ -89,6 +72,35 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        void Command()
+        {
+            ds = inputController.MoveCharXz;
+
+            stamina.Tick();
+
+            if (stamina.Empty)
+                csm.ChangeState(StateID.ControllerRecover);
+            else
+            {
+                //if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
+                //if (inputController.Run())
+                //{
+                //    if (ds != Vector3.zero)
+                //        csm.ChangeState(StateID.ControllerRun);
+                //}
+                //else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
+                if (Action()) csm.ChangeState(StateID.ControllerAction);
+                else if (inputController.Dpad != Vector2.zero) controller.Switch();
+                else
+                {
+                    controller.MoveFree(ds);
+
+                    if (ds != Vector3.zero) health.Tick();
+                    else health.Tick(0);
+                }
+            }
         }
 
         bool Action()

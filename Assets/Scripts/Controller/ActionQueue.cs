@@ -54,6 +54,8 @@ namespace RPG_Project
         {
             if (actions.Count < actionCap)
                 actions.Add(action);
+
+            if (!Executing) StartChain();
         }
 
         public void ClearActions()
@@ -66,13 +68,10 @@ namespace RPG_Project
             if (actions.Count > 0)
                 actions.RemoveAt(0);
 
-            var act = TopAction;
-
-            if (TopAction == null) StopChain();
-            else if (party.Stamina.Empty) StopChain();
+            if (actions.Count <= 0) StopChain();
             else
             {
-                if (!CurrentController.Movement.Grounded)
+                if (party.Stamina.Empty || !CurrentController.Movement.Grounded)
                     StopChain();
                 else TopAction.Execute();
             }
@@ -81,6 +80,8 @@ namespace RPG_Project
         public void StartChain()
         {
             Executing = true;
+
+            CurrentController.sm.ChangeState(StateID.ControllerAction);
 
             TopAction.Execute();
         }

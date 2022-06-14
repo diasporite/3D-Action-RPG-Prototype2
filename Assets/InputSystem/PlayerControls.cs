@@ -59,7 +59,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ActionL1"",
+                    ""name"": ""Action1"",
                     ""type"": ""Button"",
                     ""id"": ""9994636f-6bf1-4421-8943-ce98338bd911"",
                     ""expectedControlType"": ""Button"",
@@ -67,7 +67,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ActionL2"",
+                    ""name"": ""Action2"",
                     ""type"": ""Button"",
                     ""id"": ""27b8560b-6714-4755-a910-428836c47c6f"",
                     ""expectedControlType"": ""Button"",
@@ -75,7 +75,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ActionR1"",
+                    ""name"": ""Action3"",
                     ""type"": ""Button"",
                     ""id"": ""b46ae25a-2a24-4b27-9462-6381f680ddbd"",
                     ""expectedControlType"": ""Button"",
@@ -83,7 +83,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ActionR2"",
+                    ""name"": ""Action4"",
                     ""type"": ""Button"",
                     ""id"": ""d22625e0-8df7-4d01-a51c-157a74f68a5e"",
                     ""expectedControlType"": ""Button"",
@@ -371,7 +371,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""ActionL1"",
+                    ""action"": ""Action1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -382,7 +382,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""ActionL1"",
+                    ""action"": ""Action1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -393,7 +393,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""ActionL2"",
+                    ""action"": ""Action2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -404,7 +404,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""ActionL2"",
+                    ""action"": ""Action2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -415,7 +415,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""ActionR1"",
+                    ""action"": ""Action3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -426,7 +426,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""ActionR1"",
+                    ""action"": ""Action3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -437,7 +437,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""ActionR2"",
+                    ""action"": ""Action4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -448,7 +448,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""ActionR2"",
+                    ""action"": ""Action4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -619,10 +619,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_Dpad = m_Player.FindAction("Dpad", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Defend = m_Player.FindAction("Defend", throwIfNotFound: true);
-        m_Player_ActionL1 = m_Player.FindAction("ActionL1", throwIfNotFound: true);
-        m_Player_ActionL2 = m_Player.FindAction("ActionL2", throwIfNotFound: true);
-        m_Player_ActionR1 = m_Player.FindAction("ActionR1", throwIfNotFound: true);
-        m_Player_ActionR2 = m_Player.FindAction("ActionR2", throwIfNotFound: true);
+        m_Player_Action1 = m_Player.FindAction("Action1", throwIfNotFound: true);
+        m_Player_Action2 = m_Player.FindAction("Action2", throwIfNotFound: true);
+        m_Player_Action3 = m_Player.FindAction("Action3", throwIfNotFound: true);
+        m_Player_Action4 = m_Player.FindAction("Action4", throwIfNotFound: true);
         m_Player_ToggleLock = m_Player.FindAction("ToggleLock", throwIfNotFound: true);
     }
 
@@ -678,10 +678,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Dpad;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Defend;
-    private readonly InputAction m_Player_ActionL1;
-    private readonly InputAction m_Player_ActionL2;
-    private readonly InputAction m_Player_ActionR1;
-    private readonly InputAction m_Player_ActionR2;
+    private readonly InputAction m_Player_Action1;
+    private readonly InputAction m_Player_Action2;
+    private readonly InputAction m_Player_Action3;
+    private readonly InputAction m_Player_Action4;
     private readonly InputAction m_Player_ToggleLock;
     public struct PlayerActions
     {
@@ -692,10 +692,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Dpad => m_Wrapper.m_Player_Dpad;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Defend => m_Wrapper.m_Player_Defend;
-        public InputAction @ActionL1 => m_Wrapper.m_Player_ActionL1;
-        public InputAction @ActionL2 => m_Wrapper.m_Player_ActionL2;
-        public InputAction @ActionR1 => m_Wrapper.m_Player_ActionR1;
-        public InputAction @ActionR2 => m_Wrapper.m_Player_ActionR2;
+        public InputAction @Action1 => m_Wrapper.m_Player_Action1;
+        public InputAction @Action2 => m_Wrapper.m_Player_Action2;
+        public InputAction @Action3 => m_Wrapper.m_Player_Action3;
+        public InputAction @Action4 => m_Wrapper.m_Player_Action4;
         public InputAction @ToggleLock => m_Wrapper.m_Player_ToggleLock;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -721,18 +721,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Defend.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
                 @Defend.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
                 @Defend.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
-                @ActionL1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL1;
-                @ActionL1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL1;
-                @ActionL1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL1;
-                @ActionL2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL2;
-                @ActionL2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL2;
-                @ActionL2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionL2;
-                @ActionR1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR1;
-                @ActionR1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR1;
-                @ActionR1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR1;
-                @ActionR2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR2;
-                @ActionR2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR2;
-                @ActionR2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionR2;
+                @Action1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
+                @Action1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
+                @Action1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
+                @Action2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction2;
+                @Action2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction2;
+                @Action2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction2;
+                @Action3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction3;
+                @Action3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction3;
+                @Action3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction3;
+                @Action4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction4;
+                @Action4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction4;
+                @Action4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction4;
                 @ToggleLock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleLock;
                 @ToggleLock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleLock;
                 @ToggleLock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleLock;
@@ -755,18 +755,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Defend.started += instance.OnDefend;
                 @Defend.performed += instance.OnDefend;
                 @Defend.canceled += instance.OnDefend;
-                @ActionL1.started += instance.OnActionL1;
-                @ActionL1.performed += instance.OnActionL1;
-                @ActionL1.canceled += instance.OnActionL1;
-                @ActionL2.started += instance.OnActionL2;
-                @ActionL2.performed += instance.OnActionL2;
-                @ActionL2.canceled += instance.OnActionL2;
-                @ActionR1.started += instance.OnActionR1;
-                @ActionR1.performed += instance.OnActionR1;
-                @ActionR1.canceled += instance.OnActionR1;
-                @ActionR2.started += instance.OnActionR2;
-                @ActionR2.performed += instance.OnActionR2;
-                @ActionR2.canceled += instance.OnActionR2;
+                @Action1.started += instance.OnAction1;
+                @Action1.performed += instance.OnAction1;
+                @Action1.canceled += instance.OnAction1;
+                @Action2.started += instance.OnAction2;
+                @Action2.performed += instance.OnAction2;
+                @Action2.canceled += instance.OnAction2;
+                @Action3.started += instance.OnAction3;
+                @Action3.performed += instance.OnAction3;
+                @Action3.canceled += instance.OnAction3;
+                @Action4.started += instance.OnAction4;
+                @Action4.performed += instance.OnAction4;
+                @Action4.canceled += instance.OnAction4;
                 @ToggleLock.started += instance.OnToggleLock;
                 @ToggleLock.performed += instance.OnToggleLock;
                 @ToggleLock.canceled += instance.OnToggleLock;
@@ -799,10 +799,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnDpad(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnDefend(InputAction.CallbackContext context);
-        void OnActionL1(InputAction.CallbackContext context);
-        void OnActionL2(InputAction.CallbackContext context);
-        void OnActionR1(InputAction.CallbackContext context);
-        void OnActionR2(InputAction.CallbackContext context);
+        void OnAction1(InputAction.CallbackContext context);
+        void OnAction2(InputAction.CallbackContext context);
+        void OnAction3(InputAction.CallbackContext context);
+        void OnAction4(InputAction.CallbackContext context);
         void OnToggleLock(InputAction.CallbackContext context);
     }
 }

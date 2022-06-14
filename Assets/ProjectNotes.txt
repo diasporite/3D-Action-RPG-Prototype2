@@ -13,6 +13,7 @@ TO DO
   - Party shares level
   - Skills level at certain party levels
 - Fix targeting
+- Redo input system, make more event driven
 
 IDEAS
 - Max stamina gradually
