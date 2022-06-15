@@ -54,6 +54,9 @@ namespace RPG_Project
         {
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
+
+            if (!controller.Movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
         }
     }
 }

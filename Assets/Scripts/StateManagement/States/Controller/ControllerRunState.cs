@@ -43,7 +43,9 @@ namespace RPG_Project
             health.Tick();
             stamina.Tick();
 
-            if (stamina.Empty)
+            if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
+            else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
             else if (ds == Vector3.zero)
                 csm.ChangeState(StateID.ControllerMove);

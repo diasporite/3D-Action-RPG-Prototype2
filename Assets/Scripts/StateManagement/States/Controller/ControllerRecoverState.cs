@@ -40,6 +40,7 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
+            health.Tick(0);
             stamina.Tick();
 
             if (stamina.Full)
@@ -47,9 +48,14 @@ namespace RPG_Project
                 if (controller.TargetSphere.enabled)
                     csm.ChangeState(StateID.ControllerStrafe);
                 else csm.ChangeState(StateID.ControllerMove);
+
+                return;
             }
 
-            if (controller.TargetSphere.enabled) controller.MoveStrafe();
+            if (controller.TargetSphere.enabled)
+                controller.MoveStrafe();
+            else if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
             else controller.MoveFree();
         }
 

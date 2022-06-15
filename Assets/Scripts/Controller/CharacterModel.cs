@@ -9,12 +9,14 @@ namespace RPG_Project
         [SerializeField] GameObject charModel;
         [SerializeField] CameraFocus focus;
 
+        [SerializeField] float fadeTime = 0.1f;
+
         float angle;
         float target;
         float turnVelocity;
 
         Controller controller;
-        Animator anim;
+        public Animator Anim { get; private set; }
 
         CharacterController cc;
         CapsuleCollider col;
@@ -25,7 +27,7 @@ namespace RPG_Project
         private void Awake()
         {
             controller = GetComponent<Controller>();
-            anim = GetComponent<Animator>();
+            Anim = GetComponent<Animator>();
 
             cc = GetComponent<CharacterController>();
         }
@@ -49,7 +51,6 @@ namespace RPG_Project
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
                     charModel.transform.rotation = Quaternion.Euler(0, angle, 0);
-                    //print(angle + " " + transform.eulerAngles);
                 }
             }
         }
@@ -62,45 +63,54 @@ namespace RPG_Project
 
         public void PlayAnimation(string stateName, int layer)
         {
-            //print(stateName);
-            anim.Play(stateName, 0);
+            Anim.Play(stateName, 0);
         }
 
         public void PlayAnimation(int stateHash, int layer)
         {
-            anim.Play(stateHash, 0);
+            Anim.Play(stateHash, 0);
         }
 
         public void PlayAnimationFade(string stateName, int layer, float dt)
         {
-            anim.CrossFade(stateName, dt);
+            Anim.CrossFade(stateName, dt);
+        }
+
+        public void PlayAnimationFade(string stateName, int layer)
+        {
+            Anim.CrossFade(stateName, fadeTime);
         }
 
         public void PlayAnimationFade(int stateHash, int layer, float dt)
         {
-            anim.CrossFade(stateHash, dt);
+            Anim.CrossFade(stateHash, dt);
+        }
+
+        public void PlayAnimationFade(int stateHash, int layer)
+        {
+            Anim.CrossFade(stateHash, fadeTime);
         }
 
         #region AnimParameters
         public void SetAnimSpeed(float speed)
         {
-            anim.SetFloat("Speed", speed);
+            Anim.SetFloat("Speed", speed);
         }
 
         public void SetAnimHorizontal(float horizontal)
         {
-            anim.SetFloat("Horizontal", horizontal);
+            Anim.SetFloat("Horizontal", horizontal);
         }
 
         public void SetAnimVertical(float vertical)
         {
-            anim.SetFloat("Vertical", vertical);
+            Anim.SetFloat("Vertical", vertical);
         }
 
         public void SetAnimDir(Vector3 dir)
         {
-            anim.SetFloat("Horizontal", dir.x);
-            anim.SetFloat("Vertical", dir.z);
+            Anim.SetFloat("Horizontal", dir.x);
+            Anim.SetFloat("Vertical", dir.z);
         }
         #endregion
 

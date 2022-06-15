@@ -34,6 +34,9 @@ namespace RPG_Project
             controller.Party.Stamina.Tick(0);
 
             movement.MovePositionFree(controller.InputController.MoveCharXz, Time.deltaTime);
+
+            if (movement.Grounded)
+                csm.ChangeState(StateID.ControllerMove);
         }
 
         public void ExecuteFrameFixed()

@@ -39,7 +39,7 @@ namespace RPG_Project
 
         private void OnEnable()
         {
-            SelectTarget();
+            FindTarget();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -64,34 +64,37 @@ namespace RPG_Project
             Gizmos.DrawWireSphere(transform.position, 0.5f * transform.lossyScale.x);
         }
 
-        // Check Udemy course
-        public void SelectTarget()
+        public void FindTarget()
         {
             if (NoTargets) return;
 
+            Target closestTarget = null;
             float closestSqrDist = Mathf.Infinity;
-
-            CurrentTarget = null;
 
             foreach (var target in targets)
             {
                 Vector2 screenPos = mainCam.WorldToViewportPoint(target.transform.position);
 
-                //if (OutsideScreen(screenPos)) continue;
+                if (OutsideScreen(screenPos)) continue;
 
-                if (!OutsideScreen(screenPos))
+                var dirToCentre = 0.5f * Vector2.one - screenPos;
+
+                if (dirToCentre.sqrMagnitude < closestSqrDist)
                 {
-                    var dirToCentre = 0.5f * Vector2.one - screenPos;
-
-                    if (dirToCentre.sqrMagnitude < closestSqrDist)
-                    {
-                        CurrentTarget = target;
-                        closestSqrDist = dirToCentre.sqrMagnitude;
-                    }
+                    closestTarget = target;
+                    closestSqrDist = dirToCentre.sqrMagnitude;
                 }
+
             }
 
-            CurrentTarget = targets[0];
+            if (closestTarget == null) return;
+
+            CurrentTarget = closestTarget;
+        }
+
+        public void SelectTarget(int index)
+        {
+
         }
 
         bool OutsideScreen(Vector2 screenPos)

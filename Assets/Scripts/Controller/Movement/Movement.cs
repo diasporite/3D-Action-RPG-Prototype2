@@ -20,12 +20,13 @@ namespace RPG_Project
         [Header("Speed")]
         public float walkSpeed = 4f;
         public float runSpeed = 6f;
-
         [SerializeField] float currentSpeed;
+
+        [Header("Forces")]
+        [SerializeField] Vector3 forceVelocity = new Vector3(0, 0, 0);
 
         [Header("Gravity")]
         [SerializeField] float timeSinceGrounded = 0f;
-        [SerializeField] float verticalSpeed = 0f;
         [SerializeField] float terminalVelocity = 40f;
         float gravity = -9.81f;
         public float damageSpeedThreshold = 20f;
@@ -70,6 +71,12 @@ namespace RPG_Project
         }
 
         public bool Grounded => grounded;
+
+        public Vector3 ForceVelocity
+        {
+            get => forceVelocity;
+            set => forceVelocity = value;
+        }
 
         private void Update()
         {
@@ -122,23 +129,17 @@ namespace RPG_Project
 
             if (grounded)
             {
-                if (controller.CurrentState == StateID.ControllerFall)
-                    controller.sm.ChangeState(StateID.ControllerMove);
-
                 timeSinceGrounded = 0;
-                verticalSpeed = 0;
+                forceVelocity.y = 0;
 
                 cc.Move(gravity * transform.up * dt);
             }
             else
             {
-                if (controller.CurrentState != StateID.ControllerFall)
-                    controller.sm.ChangeState(StateID.ControllerFall);
-
                 timeSinceGrounded += dt;
-                verticalSpeed = Mathf.Clamp(verticalSpeed + gravity * dt, 
+                forceVelocity.y = Mathf.Clamp(forceVelocity.y + gravity * dt, 
                     -terminalVelocity, terminalVelocity);
-                cc.Move(verticalSpeed * transform.up * dt);
+                cc.Move(forceVelocity * dt);
             }
         }
 

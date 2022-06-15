@@ -19,8 +19,6 @@ namespace RPG_Project
 
         Vector3 ds;
 
-        float fadeTime = 0.1f;
-
         public ControllerMoveState(Controller controller)
         {
             this.controller = controller;
@@ -42,7 +40,7 @@ namespace RPG_Project
 
             controller.TargetSphere.enabled = false;
 
-            controller.Model.PlayAnimationFade(controller.moveHash, 0, fadeTime);
+            controller.Model.PlayAnimationFade(controller.moveHash, 0);
 
             actionQueue.ClearActions();
         }
@@ -52,9 +50,13 @@ namespace RPG_Project
             ds = controller.InputController.MoveCharXz;
 
             if (ds != Vector3.zero) health.Tick();
+            else health.Tick(0);
+
             stamina.Tick();
 
-            if (stamina.Empty)
+            if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
+            else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
             else controller.MoveFree(ds);
         }
