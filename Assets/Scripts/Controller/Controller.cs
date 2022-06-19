@@ -67,7 +67,8 @@ namespace RPG_Project
 
             movement = GetComponent<Movement>();
             combatant = GetComponent<Combatant>();
-            model = GetComponent<CharacterModel>();
+
+            model = GetComponentInChildren<CharacterModel>();
 
             pivot = party.Pivot;
             targetSphere = party.TargetSphere;
@@ -119,22 +120,22 @@ namespace RPG_Project
 
         public void MoveFree()
         {
-            movement.MovePositionFree(inputController.MoveCharXz, Time.deltaTime);
+            movement.MovePositionFree(inputController.MoveCharXz, Time.deltaTime, false);
         }
 
         public void MoveFree(Vector3 ds)
         {
-            movement.MovePositionFree(ds, Time.deltaTime);
+            movement.MovePositionFree(ds, Time.deltaTime, false);
         }
 
         public void MoveStrafe()
         {
-            movement.MovePositionStrafe(inputController.MoveCharXz, Time.deltaTime);
+            movement.MovePositionStrafe(inputController.MoveCharXz, Time.deltaTime, false);
         }
 
         public void MoveStrafe(Vector3 ds)
         {
-            movement.MovePositionStrafe(ds, Time.deltaTime);
+            movement.MovePositionStrafe(ds, Time.deltaTime, false);
         }
         #endregion
 
@@ -174,7 +175,8 @@ namespace RPG_Project
 
                 case QueueAction.Defend:
                     if (targetSphere.enabled)
-                        return new BattleAction(this, "Defend", strafeDefendHash, 20);
+                        return new BattleAction(this, inputController.MoveCharXz, 
+                            "Defend", defendHash, 20);
                     return new BattleAction(this, "Defend", defendHash, 20);
 
                 default: return null;

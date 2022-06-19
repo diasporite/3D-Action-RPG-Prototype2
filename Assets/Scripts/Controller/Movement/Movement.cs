@@ -78,6 +78,8 @@ namespace RPG_Project
             set => forceVelocity = value;
         }
 
+        public Vector3 Move(Vector3 dir) => forceVelocity + (currentSpeed * dir);
+
         private void Update()
         {
             Fall(Time.deltaTime);
@@ -99,7 +101,7 @@ namespace RPG_Project
             dropSpeed = -Mathf.Tan(cc.slopeLimit * Mathf.Deg2Rad);
         }
 
-        public void MovePositionFree(Vector3 dir, float dt)
+        public void MovePositionFree(Vector3 dir, float dt, bool damping)
         {
             RotateModel(dir, dt);
 
@@ -107,10 +109,10 @@ namespace RPG_Project
             model.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(currentSpeed * transform.forward * dt);
+                cc.Move(Move(transform.forward) * dt);
         }
 
-        public void MovePositionStrafe(Vector3 dir, float dt)
+        public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
             LookAt(controller.TargetSphere.CurrentTargetTransform.position);
 
@@ -120,7 +122,7 @@ namespace RPG_Project
             var ds = transform.forward * dir.z + transform.right * dir.x;
 
             if (dir != Vector3.zero)
-                cc.Move(currentSpeed * ds * dt);
+                cc.Move(Move(ds) * dt);
         }
 
         public void Fall(float dt)
@@ -165,6 +167,12 @@ namespace RPG_Project
         {
             look.y = transform.position.y;
             transform.LookAt(look);
+        }
+
+        public void LookTowards(Vector3 look)
+        {
+            look.y = 0;
+            Quaternion.LookRotation(look);
         }
     }
 }

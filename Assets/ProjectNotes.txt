@@ -12,8 +12,11 @@ TO DO
   - Levels are bought
   - Party shares level
   - Skills level at certain party levels
-- Fix targeting
-- Redo input system, make more event driven
+- Fix targeting [done]
+- Redo input system, make more event driven [done]
+- Redo animation structure (anim on CharacterModel)
+  - No root motion
+  - Create animation event functions in CharacterModel
 
 IDEAS
 - Max stamina gradually
@@ -27,3 +30,5 @@ RESOURCES
 - https://www.udemy.com/course/unity-3rd-person-combat-traversal/
 Using custom cameras with Cinemachine
 - https://forum.unity.com/threads/using-cinemachine-alongside-scripted-camera.537044/
+Character controller and root motion
+- https://www.youtube.com/watch?v=mNxEetKzc04

@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 3373866260671354872}
   - component: {fileID: 3373866260671354873}
   - component: {fileID: 3373866260671354874}
+  - component: {fileID: -6378435352682327910}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -572,7 +573,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b46c992d1916c041818c0a02c68d9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 1
+  charModel: {fileID: 0}
+  focus: {fileID: 0}
+  fadeTime: 0.1
+--- !u!95 &-6378435352682327910
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373866260671354879}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02f58fec1dc5e7940bfa299430c7e03d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4075051548065717834
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +718,7 @@ GameObject:
   - component: {fileID: 4816260046014149790}
   - component: {fileID: 5410755220857919091}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -6,8 +6,15 @@ namespace RPG_Project
 {
     public class CharacterModel : MonoBehaviour
     {
+        [field: SerializeField] public bool InMotion { get; private set; }
+
         [SerializeField] GameObject charModel;
         [SerializeField] CameraFocus focus;
+
+        [field: SerializeField] public float WalkSpeed { get; private set; } = 3.5f;
+        [field: SerializeField] public float RunSpeed { get; private set; } = 7f;
+        [field: SerializeField] public float StrafeSpeed { get; private set; } = 5f;
+        [field: SerializeField] public float RollSpeed { get; private set; } = 3f;
 
         [SerializeField] float fadeTime = 0.1f;
 
@@ -16,7 +23,7 @@ namespace RPG_Project
         float turnVelocity;
 
         Controller controller;
-        public Animator Anim { get; private set; }
+        [field: SerializeField] public Animator Anim { get; private set; }
 
         CharacterController cc;
         CapsuleCollider col;
@@ -26,10 +33,10 @@ namespace RPG_Project
 
         private void Awake()
         {
-            controller = GetComponent<Controller>();
-            Anim = GetComponent<Animator>();
+            controller = GetComponentInParent<Controller>();
+            cc = GetComponentInParent<CharacterController>();
 
-            cc = GetComponent<CharacterController>();
+            Anim = GetComponent<Animator>();
         }
 
         public void Init()
@@ -123,5 +130,27 @@ namespace RPG_Project
         //{
         //    anim.SetBool("Falling", falling);
         //}
+
+        #region AnimationEventMethods
+        public void AdvanceAction()
+        {
+            controller.ActionQueue.AdvanceAction();
+        }
+
+        public void ApplyForce(Vector3 force)
+        {
+            controller.Movement.ForceVelocity = force;
+        }
+
+        public void StartMotion()
+        {
+            InMotion = true;
+        }
+
+        public void StopMotion()
+        {
+            InMotion = false;
+        }
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ namespace RPG_Project
         [SerializeField] int spCost;
         [SerializeField] Controller controller;
         [SerializeField] PartyController party;
+        [SerializeField] Vector3 dir = new Vector3(0, 0, 0);
 
         public int AnimStateHash => animStateHash;
 
@@ -37,8 +38,19 @@ namespace RPG_Project
             party = controller.Party;
         }
 
+        public BattleAction(Controller controller, Vector3 dir, string actionName, int animStateHash, int spCost)
+        {
+            this.controller = controller;
+            this.dir = dir;
+            this.actionName = actionName;
+            this.animStateHash = animStateHash;
+            this.spCost = spCost;
+            party = controller.Party;
+        }
+
         public virtual void Execute()
         {
+            if (dir != Vector3.zero) controller.transform.rotation = Quaternion.LookRotation(dir);
             controller.Model.PlayAnimation(animStateHash, 0);
             controller.Party.Stamina.ChangeValue(-Mathf.Abs(spCost));
         }

@@ -41,7 +41,7 @@ namespace RPG_Project
                 updateSpeed * Time.deltaTime);
 
             if (targetSphere.enabled) transform.rotation = controller.transform.rotation;
-            //else transform.rotation = Quaternion.identity;
+            else transform.rotation = Quaternion.identity;
         }
     }
 }
