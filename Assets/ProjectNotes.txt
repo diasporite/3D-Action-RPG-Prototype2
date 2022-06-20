@@ -13,18 +13,25 @@ TO DO
   - Party shares level
   - Skills level at certain party levels
 - Fix targeting [done]
-- Redo input system, make more event driven [done]
+- Redo input system
+  - Make more event driven [done]
+  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy)
 - Redo animation structure (anim on CharacterModel)
   - No root motion
   - Create animation event functions in CharacterModel
 - BUG: Character freezes if an action is pressed the moment and action ends
 
 IDEAS
-- Max stamina gradually
+- Max stamina gradually [DITCHED]
   - Very slow with time
   - Slow with movement
   - Actions have max sp costs
   - Purpose is to serve as hunger meter
+- Use MP bar instead of actions having individual uses
+- Guard vs roll
+  - 90 resistance points spread between guard and roll
+  - 1 res. point = 1% reduced damage (if timed well for rolls)
+- Teleportation
 
 RESOURCES
 3rd person combat course

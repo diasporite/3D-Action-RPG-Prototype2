@@ -71,6 +71,7 @@ namespace RPG_Project
             sm.AddState(StateID.ControllerStagger, new ControllerStaggerState(this));
             sm.AddState(StateID.ControllerDeath, new ControllerDeathState(this));
             sm.AddState(StateID.ControllerStrafe, new ControllerStrafeState(this));
+            sm.AddState(StateID.controllerGuard, new ControllerGuardState(this));
         }
 
         public void UpdateController()

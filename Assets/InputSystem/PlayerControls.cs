@@ -51,12 +51,20 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Defend"",
+                    ""name"": ""Roll"",
                     ""type"": ""Button"",
                     ""id"": ""4a0004f2-c0c1-4cea-a245-e05706aec978"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Guard"",
+                    ""type"": ""Value"",
+                    ""id"": ""8ff475d2-308e-4a96-b93e-aed0b8745ce1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.1)""
                 },
                 {
                     ""name"": ""Action1"",
@@ -239,7 +247,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Defend"",
+                    ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -250,7 +258,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Defend"",
+                    ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -583,6 +591,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Dpad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f78026b7-7d42-42c0-8902-e97aec12bd62"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cee9d37-3582-453d-854b-1075c2d555f6"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -618,7 +648,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         m_Player_Dpad = m_Player.FindAction("Dpad", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-        m_Player_Defend = m_Player.FindAction("Defend", throwIfNotFound: true);
+        m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
+        m_Player_Guard = m_Player.FindAction("Guard", throwIfNotFound: true);
         m_Player_Action1 = m_Player.FindAction("Action1", throwIfNotFound: true);
         m_Player_Action2 = m_Player.FindAction("Action2", throwIfNotFound: true);
         m_Player_Action3 = m_Player.FindAction("Action3", throwIfNotFound: true);
@@ -677,7 +708,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Rotate;
     private readonly InputAction m_Player_Dpad;
     private readonly InputAction m_Player_Run;
-    private readonly InputAction m_Player_Defend;
+    private readonly InputAction m_Player_Roll;
+    private readonly InputAction m_Player_Guard;
     private readonly InputAction m_Player_Action1;
     private readonly InputAction m_Player_Action2;
     private readonly InputAction m_Player_Action3;
@@ -691,7 +723,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         public InputAction @Dpad => m_Wrapper.m_Player_Dpad;
         public InputAction @Run => m_Wrapper.m_Player_Run;
-        public InputAction @Defend => m_Wrapper.m_Player_Defend;
+        public InputAction @Roll => m_Wrapper.m_Player_Roll;
+        public InputAction @Guard => m_Wrapper.m_Player_Guard;
         public InputAction @Action1 => m_Wrapper.m_Player_Action1;
         public InputAction @Action2 => m_Wrapper.m_Player_Action2;
         public InputAction @Action3 => m_Wrapper.m_Player_Action3;
@@ -718,9 +751,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Run.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
-                @Defend.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
-                @Defend.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
-                @Defend.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefend;
+                @Roll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Roll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Roll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Guard.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGuard;
+                @Guard.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGuard;
+                @Guard.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGuard;
                 @Action1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
                 @Action1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
                 @Action1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction1;
@@ -752,9 +788,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
-                @Defend.started += instance.OnDefend;
-                @Defend.performed += instance.OnDefend;
-                @Defend.canceled += instance.OnDefend;
+                @Roll.started += instance.OnRoll;
+                @Roll.performed += instance.OnRoll;
+                @Roll.canceled += instance.OnRoll;
+                @Guard.started += instance.OnGuard;
+                @Guard.performed += instance.OnGuard;
+                @Guard.canceled += instance.OnGuard;
                 @Action1.started += instance.OnAction1;
                 @Action1.performed += instance.OnAction1;
                 @Action1.canceled += instance.OnAction1;
@@ -798,7 +837,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnRotate(InputAction.CallbackContext context);
         void OnDpad(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
-        void OnDefend(InputAction.CallbackContext context);
+        void OnRoll(InputAction.CallbackContext context);
+        void OnGuard(InputAction.CallbackContext context);
         void OnAction1(InputAction.CallbackContext context);
         void OnAction2(InputAction.CallbackContext context);
         void OnAction3(InputAction.CallbackContext context);

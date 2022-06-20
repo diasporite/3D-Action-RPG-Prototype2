@@ -47,11 +47,24 @@ namespace RPG_Project
             }
         }
 
-        public void OnDefend(InputValue value)
+        public void OnRoll(InputValue value)
         {
             //defend = value.isPressed;
 
             if (CanAct) Controller.AddAction(QueueAction.Defend);
+        }
+
+        public void OnGuard(InputValue value)
+        {
+            if (Controller.CurrentState == StateID.ControllerMove || 
+                Controller.CurrentState == StateID.ControllerStrafe || 
+                Controller.CurrentState == StateID.ControllerRun)
+                Controller.sm.ChangeState(StateID.controllerGuard);
+            else if (Controller.CurrentState == StateID.controllerGuard)
+            {
+                if (!value.isPressed)
+                    Controller.sm.ChangeState(StateID.ControllerMove);
+            }
         }
 
         public void OnAction1(InputValue value)

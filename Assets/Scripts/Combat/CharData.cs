@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace RPG_Project
 {
+    public enum DefenceMode
+    {
+        Guard = 0,
+        Roll = 1,
+    }
+
     [CreateAssetMenu(fileName = "New Character", menuName = "Combat/Character")]
     public class CharData : ScriptableObject
     {
@@ -25,9 +31,22 @@ namespace RPG_Project
         [field: SerializeField] public int BaseHealthRegen { get; private set; } = 4;
         [field: SerializeField] public int BaseStaminaRegen { get; private set; } = 32;
 
+        [Header("Defence")]
+        [SerializeField] DefenceMode mainDefence;
+        [Range(0, resistTotal)]
+        [SerializeField] int mainResist = 45;
+        const int resistTotal = 90;
+
         [field: Header("Actions")]
         [field: SerializeField] public ActionData[] Actions { get; private set; }
         [field: SerializeField] public ActionData DefendAction { get; private set; }
+
+        public float DefenceModifier(DefenceMode mode)
+        {
+            if (mode == mainDefence) return 0.01f * mainResist;
+
+            return 0.01f * (resistTotal - mainResist);
+        }
 
         public ActionData GetAction(int index)
         {

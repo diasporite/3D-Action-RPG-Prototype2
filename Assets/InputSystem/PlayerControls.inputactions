@@ -38,12 +38,20 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Defend",
+                    "name": "Roll",
                     "type": "Button",
                     "id": "4a0004f2-c0c1-4cea-a245-e05706aec978",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Guard",
+                    "type": "Value",
+                    "id": "8ff475d2-308e-4a96-b93e-aed0b8745ce1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)"
                 },
                 {
                     "name": "Action1",
@@ -226,7 +234,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Defend",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -237,7 +245,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Defend",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -570,6 +578,28 @@
                     "action": "Dpad",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f78026b7-7d42-42c0-8902-e97aec12bd62",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cee9d37-3582-453d-854b-1075c2d555f6",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
