@@ -86,22 +86,11 @@ namespace RPG_Project
             TopAction.Execute();
         }
 
-        void StopChain()
+        public void StopChain()
         {
             Executing = false;
 
             actions.Clear();
-
-            if (!CurrentController.Movement.Grounded)
-                CurrentController.sm.ChangeState(StateID.ControllerFall);
-            else if (CurrentController.Party.Stamina.Empty)
-                CurrentController.sm.ChangeState(StateID.ControllerRecover);
-            else
-            {
-                if (CurrentController.TargetSphere.enabled)
-                    CurrentController.sm.ChangeState(StateID.ControllerStrafe);
-                else CurrentController.sm.ChangeState(StateID.ControllerMove);
-            }
         }
     }
 }

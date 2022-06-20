@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    //[CreateAssetMenu(fileName = "New Action", menuName = "Combat/Action")]
+    [CreateAssetMenu(fileName = "New Action", menuName = "Combat/Action")]
     public class ActionData : ScriptableObject
     {
-        [Header("Animation Info")]
-        public AnimationData animation;
+        [field: Header("Animation Info")]
+        [field: SerializeField] public AnimationData Animation { get; private set; }
 
-        [Header("Stamina")]
-        public float spCost = 20;
+        [field: Header("Stamina")]
+        [field: SerializeField] public int SpCost { get; private set; } = 20;
 
         [Header("Usage")]
         public bool infiniteUse = false;

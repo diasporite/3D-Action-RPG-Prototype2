@@ -17,6 +17,7 @@ TO DO
 - Redo animation structure (anim on CharacterModel)
   - No root motion
   - Create animation event functions in CharacterModel
+- BUG: Character freezes if an action is pressed the moment and action ends
 
 IDEAS
 - Max stamina gradually

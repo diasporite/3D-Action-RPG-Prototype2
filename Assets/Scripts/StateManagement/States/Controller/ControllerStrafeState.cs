@@ -29,19 +29,19 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
+            controller.TargetSphere.enabled = true;
+
             if (controller.TargetSphere.NoTargets)
             {
                 csm.ChangeState(StateID.ControllerMove);
                 return;
             }
 
-            controller.Pivot.ToggleLock(true);
-
             movement.State = MovementState.Walk;
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
 
-            controller.Model.PlayAnimationFade("Strafe", 0, 0.1f);
+            controller.Model.PlayAnimationFade(controller.strafeHash, 0);
         }
 
         public void ExecuteFrame()
@@ -69,19 +69,9 @@ namespace RPG_Project
             health.Tick();
             stamina.Tick();
 
-            //if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
             if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
             else
             {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                    }
-                }
-
                 var dir = inputController.MoveCharXz;
                 controller.MoveStrafe(dir);
                 controller.Model.SetAnimDir(dir);

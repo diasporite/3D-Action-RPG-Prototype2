@@ -7,44 +7,30 @@ namespace RPG_Project
     [System.Serializable]
     public class BattleAction : ICommand
     {
-        [SerializeField] protected string actionName;
+        [field: SerializeField] public ActionData Action { get; private set; }
         [SerializeField] protected int animStateHash;
-        [SerializeField] int spCost;
         [SerializeField] Controller controller;
         [SerializeField] PartyController party;
         [SerializeField] Vector3 dir = new Vector3(0, 0, 0);
 
         public int AnimStateHash => animStateHash;
 
-        public BattleAction(Controller controller)
+        public BattleAction(Controller controller, ActionData action, int animStateHash)
         {
             this.controller = controller;
-            party = controller.Party;
-        }
-
-        public BattleAction(Controller controller, string actionName)
-        {
-            this.controller = controller;
-            this.actionName = actionName;
-            party = controller.Party;
-        }
-
-        public BattleAction(Controller controller, string actionName, int animStateHash, int spCost)
-        {
-            this.controller = controller;
-            this.actionName = actionName;
+            Action = action;
             this.animStateHash = animStateHash;
-            this.spCost = spCost;
+
             party = controller.Party;
         }
 
-        public BattleAction(Controller controller, Vector3 dir, string actionName, int animStateHash, int spCost)
+        public BattleAction(Controller controller, Vector3 dir, ActionData action, int animStateHash)
         {
             this.controller = controller;
             this.dir = dir;
-            this.actionName = actionName;
+            Action = action;
             this.animStateHash = animStateHash;
-            this.spCost = spCost;
+
             party = controller.Party;
         }
 
@@ -52,7 +38,7 @@ namespace RPG_Project
         {
             if (dir != Vector3.zero) controller.transform.rotation = Quaternion.LookRotation(dir);
             controller.Model.PlayAnimation(animStateHash, 0);
-            controller.Party.Stamina.ChangeValue(-Mathf.Abs(spCost));
+            controller.Party.Stamina.ChangeValue(-Mathf.Abs(Action.SpCost));
         }
 
         public virtual void Undo()

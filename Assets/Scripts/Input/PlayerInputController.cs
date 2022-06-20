@@ -25,8 +25,6 @@ namespace RPG_Project
 
         public void OnToggleLock(InputValue value)
         {
-            //toggleLock = value.isPressed;
-
             if (Controller.CurrentState == StateID.ControllerMove)
                 Controller.sm.ChangeState(StateID.ControllerStrafe);
             else if (Controller.CurrentState == StateID.ControllerStrafe)

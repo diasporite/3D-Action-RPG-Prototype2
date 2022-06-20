@@ -18,38 +18,31 @@ namespace RPG_Project
         int healthCap = 3999;
         int staminaCap = 999;
 
-        [SerializeField] List<Controller> party = new List<Controller>();
-        [SerializeField] int currentIndex;
+        [field: SerializeField]
+        public List<Controller> Party { get; private set; } = 
+            new List<Controller>();
+        [field: SerializeField] public int CurrentIndex { get; private set; }
 
-        [SerializeField] Vector3 currentPosition;
-        [SerializeField] Vector3 currentForward;
+        [field: SerializeField] public Vector3 CurrentPosition { get; private set; }
+        [field: SerializeField] public Vector3 CurrentForward { get; private set; }
 
-        Health health;
-        Stamina stamina;
-        InputController inputController;
-        ActionQueue actionQueue;
+        public Health Health { get; private set; }
+        public Stamina Stamina { get; private set; }
+        public InputController InputController { get; private set; }
+        public ActionQueue ActionQueue { get; private set; }
 
-        CameraPivot pivot;
-        TargetSphere targetSphere;
+        public TargetSphere TargetSphere { get; private set; }
 
         public Controller CurrentController
         {
             get
             {
-                if (party.Count > 0) return party[currentIndex];
+                if (Party.Count > 0) return Party[CurrentIndex];
                 return null;
             }
         }
         public Transform CurrentControllerTransform => CurrentController?.transform;
         public Combatant CurrentCombatant => CurrentController?.Combatant;
-
-        public Health Health => health;
-        public Stamina Stamina => stamina;
-        public InputController InputController => inputController;
-        public ActionQueue ActionQueue => actionQueue;
-
-        public CameraPivot Pivot => pivot;
-        public TargetSphere TargetSphere => targetSphere;
 
         public int Hp
         {
@@ -57,14 +50,14 @@ namespace RPG_Project
             {
                 var hp = 0;
 
-                if (party.Count > 0)
+                if (Party.Count > 0)
                 {
-                    foreach (var c in party)
+                    foreach (var c in Party)
                         hp += c.Combatant.Vit;
 
-                    hp = Mathf.RoundToInt(hp / party.Count);
+                    hp = Mathf.RoundToInt(hp / Party.Count);
 
-                    return Mathf.RoundToInt(hp * (1 + 0.75f * (party.Count - 1)));
+                    return Mathf.RoundToInt(hp * (1 + 0.75f * (Party.Count - 1)));
                 }
 
                 return 1;
@@ -77,14 +70,14 @@ namespace RPG_Project
             {
                 var sp = 0;
 
-                if (party.Count > 0)
+                if (Party.Count > 0)
                 {
-                    foreach (var c in party)
+                    foreach (var c in Party)
                         sp += c.Combatant.End;
 
-                    sp = Mathf.RoundToInt(sp / party.Count);
+                    sp = Mathf.RoundToInt(sp / Party.Count);
 
-                    return Mathf.RoundToInt(sp * (1 + 0.15f * (party.Count - 1)));
+                    return Mathf.RoundToInt(sp * (1 + 0.15f * (Party.Count - 1)));
                 }
 
                 return 1;
@@ -93,13 +86,12 @@ namespace RPG_Project
 
         private void Awake()
         {
-            health = GetComponent<Health>();
-            stamina = GetComponent<Stamina>();
-            inputController = GetComponent<InputController>();
-            actionQueue = GetComponent<ActionQueue>();
+            Health = GetComponent<Health>();
+            Stamina = GetComponent<Stamina>();
+            InputController = GetComponent<InputController>();
+            ActionQueue = GetComponent<ActionQueue>();
 
-            pivot = GetComponentInChildren<CameraPivot>();
-            targetSphere = GetComponentInChildren<TargetSphere>();
+            TargetSphere = GetComponentInChildren<TargetSphere>();
         }
 
         private void Start()
@@ -122,7 +114,7 @@ namespace RPG_Project
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(currentPosition, 1.5f);
+            Gizmos.DrawWireSphere(CurrentPosition, 1.5f);
         }
 
         public void Init(bool isPlayerParty)
@@ -131,19 +123,17 @@ namespace RPG_Project
 
             foreach (var c in controllers)
             {
-                if (party.Count < partyCap)
+                if (Party.Count < partyCap)
                 {
                     c.Init(isPlayerParty);
-                    party.Add(c);
+                    Party.Add(c);
                 }
             }
 
             SwitchController(0);
 
-            pivot.Init();
-
-            health.Init(Hp, Hp, CurrentCombatant.HRegen, healthCap);
-            stamina.Init(Sp, Sp, CurrentCombatant.SRegen, staminaCap);
+            Health.Init(Hp, Hp, CurrentCombatant.HRegen, healthCap);
+            Stamina.Init(Sp, Sp, CurrentCombatant.SRegen, staminaCap);
 
             CurrentController.sm.ChangeState(StateID.ControllerMove);
         }
@@ -152,26 +142,26 @@ namespace RPG_Project
         {
             if (CurrentController != null)
             {
-                currentPosition = CurrentController.transform.position;
-                currentForward = CurrentController.Model.transform.forward;
+                CurrentPosition = CurrentController.transform.position;
+                CurrentForward = CurrentController.Model.transform.forward;
             }
         }
 
         public void SwitchController(int index)
         {
-            if (index == currentIndex) return;
+            if (index == CurrentIndex) return;
 
-            currentIndex = Mathf.Clamp(index, 0, party.Count - 1);
+            CurrentIndex = Mathf.Clamp(index, 0, Party.Count - 1);
 
-            for(int i = 0; i < party.Count; i++)
+            for(int i = 0; i < Party.Count; i++)
             {
-                if (i == currentIndex)
+                if (i == CurrentIndex)
                 {
-                    party[i].gameObject.SetActive(true);
-                    CurrentController.transform.position = currentPosition;
-                    CurrentController.Model.transform.forward = currentForward;
+                    Party[i].gameObject.SetActive(true);
+                    CurrentController.transform.position = CurrentPosition;
+                    CurrentController.Model.transform.forward = CurrentForward;
                 }
-                else party[i].gameObject.SetActive(false);
+                else Party[i].gameObject.SetActive(false);
             }
 
             InvokeCharChange();

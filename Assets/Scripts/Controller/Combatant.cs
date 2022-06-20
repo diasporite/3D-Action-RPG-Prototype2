@@ -15,23 +15,18 @@ namespace RPG_Project
 
         [Header("Progression")]
         [SerializeField] int level = 1;
-        //[SerializeField] int exp = 0;
-        //[SerializeField] int[] expAtLv;
 
         #region Stats
-        [Header("Resource Stats")]
-        [SerializeField] Stat vitality = new Stat(100, 255);
-        [SerializeField] Stat endurance = new Stat(100, 255);
+        [field: SerializeField] public Stat Vitality { get; private set; } = new Stat(100, 255);
+        [field: SerializeField] public Stat Endurance { get; private set; } = new Stat(100, 255);
 
-        [Header("Damage Stats")]
-        [SerializeField] Stat attack = new Stat(100, 255);
-        [SerializeField] Stat defence = new Stat(100, 255);
+        [field: SerializeField] public Stat Attack { get; private set; } = new Stat(100, 255);
+        [field: SerializeField] public Stat Defence { get; private set; } = new Stat(100, 255);
 
-        [SerializeField] Stat weight = new Stat(128, 255);
+        [field: SerializeField] public Stat Weight { get; private set; } = new Stat(128, 255);
 
-        [Header("Regen Stats")]
-        [SerializeField] Stat healthRegen = new Stat(4, 15);
-        [SerializeField] Stat staminaRegen = new Stat(32, 63);
+        [field: SerializeField] public Stat HealthRegen { get; private set; } = new Stat(4, 15);
+        [field: SerializeField] public Stat StaminaRegen { get; private set; } = new Stat(32, 63);
         #endregion
 
         #region StatAtLv
@@ -47,50 +42,47 @@ namespace RPG_Project
         #endregion
 
         // Only first 4 skills will be usable in combat
-        [SerializeField] List<ActionData> skillset = new List<ActionData>();
+        [field: SerializeField] public List<ActionData> Skillset { get; private set; } = new List<ActionData>();
 
         PartyController party;
         Controller controller;
         Health health;
         Stamina stamina;
 
-        public Stat Vitality => vitality;
-        public Stat Endurance => endurance;
+        public int Vit => Vitality.CurrentStatValue;
+        public int End => Endurance.CurrentStatValue;
 
-        public Stat Attack => attack;
-        public Stat Defence => defence;
+        public int Atk => Attack.CurrentStatValue;
+        public int Def => Defence.CurrentStatValue;
 
-        public Stat Weight => weight;
+        public int Wt => Weight.CurrentStatValue;
 
-        public Stat HealthRegen => healthRegen;
-        public Stat StaminaRegen => staminaRegen;
+        public int HRegen => HealthRegen.CurrentStatValue;
+        public int SRegen => StaminaRegen.CurrentStatValue;
 
-        public int Vit => vitality.CurrentStatValue;
-        public int End => endurance.CurrentStatValue;
-
-        public int Atk => attack.CurrentStatValue;
-        public int Def => defence.CurrentStatValue;
-
-        public int Wt => weight.CurrentStatValue;
-
-        public int HRegen => healthRegen.CurrentStatValue;
-        public int SRegen => staminaRegen.CurrentStatValue;
-
-        public List<ActionData> Skillset => skillset;
         public ActionData[] CurrentSkillset
         {
             get
             {
                 var skills = new ActionData[4];
 
-                for(int i = 0; i < skills.Length; i++)
+                for (int i = 0; i < skills.Length; i++)
                 {
-                    if (i < skillset.Count)
-                        skills[i] = skillset[i];
+                    if (i < Skillset.Count)
+                        skills[i] = Skillset[i];
                     else skills[i] = null;
                 }
                 return skills;
             }
+        }
+
+        public ActionData GetActionData(int index)
+        {
+            index = Mathf.Clamp(index, 0, 4);
+
+            if (index == 0) return data.DefendAction;
+
+            return data.Actions[index - 1];
         }
 
         private void Awake()
@@ -118,35 +110,35 @@ namespace RPG_Project
             health = party.Health;
             stamina = party.Stamina;
 
-            charName = data.charName;
+            charName = data.CharName;
 
             //expAtLv = combat.GetStatAtLv(StatID.ExpAtLv, data.baseExpAtLv);
             
-            vitAtLv = combat.GetStatAtLv(StatID.Vitality, data.baseVit);
-            endAtLv = combat.GetStatAtLv(StatID.Endurance, data.baseEnd);
+            vitAtLv = combat.GetStatAtLv(StatID.Vitality, data.BaseVit);
+            endAtLv = combat.GetStatAtLv(StatID.Endurance, data.BaseEnd);
 
-            atkAtLv = combat.GetStatAtLv(StatID.Attack, data.baseAtk);
-            defAtLv = combat.GetStatAtLv(StatID.Defence, data.baseDef);
+            atkAtLv = combat.GetStatAtLv(StatID.Attack, data.BaseAtk);
+            defAtLv = combat.GetStatAtLv(StatID.Defence, data.BaseDef);
 
-            hRegenAtLv = combat.GetStatAtLv(StatID.HealthRegen, data.baseHealthRegen);
-            sRegenAtLv = combat.GetStatAtLv(StatID.StaminaRegen, data.baseStaminaRegen);
+            hRegenAtLv = combat.GetStatAtLv(StatID.HealthRegen, data.BaseHealthRegen);
+            sRegenAtLv = combat.GetStatAtLv(StatID.StaminaRegen, data.BaseStaminaRegen);
 
             //this.exp = exp;
 
             //level = CalculateLv();
 
-            vitality = new Stat(vitAtLv[level - 1], 255);
-            endurance = new Stat(endAtLv[level - 1], 255);
+            Vitality = new Stat(vitAtLv[level - 1], 255);
+            Endurance = new Stat(endAtLv[level - 1], 255);
 
-            attack = new Stat(atkAtLv[level - 1], 255);
-            defence = new Stat(defAtLv[level - 1], 255);
+            Attack = new Stat(atkAtLv[level - 1], 255);
+            Defence = new Stat(defAtLv[level - 1], 255);
 
-            weight = new Stat(data.weight, 255);
+            Weight = new Stat(data.Weight, 255);
 
-            healthRegen = new Stat(hRegenAtLv[level - 1], 15);
-            staminaRegen = new Stat(sRegenAtLv[level - 1], 63);
+            HealthRegen = new Stat(hRegenAtLv[level - 1], 15);
+            StaminaRegen = new Stat(sRegenAtLv[level - 1], 63);
 
-            skillset = data.actions.ToList();
+            Skillset = data.Actions.ToList();
         }
 
         //int CalculateLv()
@@ -160,16 +152,16 @@ namespace RPG_Project
 
         public void SwapSkills(ActionData skill1, ActionData skill2)
         {
-            if (!skillset.Contains(skill1) || !skillset.Contains(skill2)) return;
+            if (!Skillset.Contains(skill1) || !Skillset.Contains(skill2)) return;
 
-            var i1 = skillset.IndexOf(skill1);
-            var i2 = skillset.IndexOf(skill2);
+            var i1 = Skillset.IndexOf(skill1);
+            var i2 = Skillset.IndexOf(skill2);
 
-            skillset.RemoveAt(i1);
-            skillset.Insert(i1, skill2);
+            Skillset.RemoveAt(i1);
+            Skillset.Insert(i1, skill2);
 
-            skillset.RemoveAt(i2);
-            skillset.Insert(i2, skill1);
+            Skillset.RemoveAt(i2);
+            Skillset.Insert(i2, skill1);
         }
     }
 }

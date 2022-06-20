@@ -14,6 +14,10 @@ namespace RPG_Project
         InputController inputController;
         ActionQueue actionQueue;
 
+        AnimationData animData;
+        float animNormTime;
+        float speed;
+
         public ControllerActionState(Controller controller)
         {
             this.controller = controller;
@@ -47,7 +51,7 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            actionQueue.StopChain();
         }
 
         void Command()
@@ -55,8 +59,30 @@ namespace RPG_Project
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
 
-            if (!controller.Movement.Grounded)
-                csm.ChangeState(StateID.ControllerFall);
+            if (!actionQueue.Executing)
+            {
+                if (!controller.Movement.Grounded)
+                    csm.ChangeState(StateID.ControllerFall);
+                else if (controller.Party.Stamina.Empty)
+                    csm.ChangeState(StateID.ControllerRecover);
+                else if (controller.TargetSphere.enabled)
+                    csm.ChangeState(StateID.ControllerStrafe);
+                else csm.ChangeState(StateID.ControllerMove);
+            }
+            else
+            {
+                animData = actionQueue.TopAction.Action.Animation;
+
+                if (animData.motion.Length > 0)
+                {
+                    animNormTime = 0f;
+                    animNormTime = controller.Model.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    Debug.Log(animNormTime);
+                    speed = animData.CurrentMoveData(animNormTime).ForwardSpeed;
+
+                    controller.Movement.MovePositionFree(speed, controller.transform.forward, Time.deltaTime, false);
+                }
+            }
         }
     }
 }

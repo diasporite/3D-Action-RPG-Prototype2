@@ -7,6 +7,7 @@ namespace RPG_Project
     public class CharacterModel : MonoBehaviour
     {
         [field: SerializeField] public bool InMotion { get; private set; }
+        public bool LockOnRotation { get; private set; }
 
         [SerializeField] GameObject charModel;
         [SerializeField] CameraFocus focus;
@@ -28,6 +29,8 @@ namespace RPG_Project
         CharacterController cc;
         CapsuleCollider col;
 
+        TargetSphere targetSphere;
+
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
             dir.x * transform.right;
 
@@ -42,18 +45,19 @@ namespace RPG_Project
         public void Init()
         {
             focus.Init(controller);
+
+            targetSphere = controller.TargetSphere;
         }
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.TargetSphere.enabled)
-                LookAt(controller.Pivot.targetPos);
+            if (targetSphere.enabled)
+                LookAt(targetSphere.CurrentTargetTransform.position);
             else
             {
                 if (dir != Vector3.zero)
                 {
                     target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-                    target -= controller.Party.Pivot.Theta;
 
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
@@ -150,6 +154,16 @@ namespace RPG_Project
         public void StopMotion()
         {
             InMotion = false;
+        }
+
+        public void EnableLockOnRotation()
+        {
+            LockOnRotation = true;
+        }
+
+        public void DisableLockOnRotation()
+        {
+            LockOnRotation = false;
         }
         #endregion
     }

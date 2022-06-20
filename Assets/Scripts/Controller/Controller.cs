@@ -23,59 +23,40 @@ namespace RPG_Project
         public readonly int actionR2Hash = Animator.StringToHash("ActionR2");
         #endregion
 
-        [SerializeField] bool isPlayer;
+        [field: SerializeField] public bool IsPlayer { get; private set; }
 
-        [SerializeField] StateID currentState;
-        [SerializeField] bool actionMovement;
+        [field: SerializeField] public StateID CurrentState { get; private set; }
 
-        PartyController party;
-        InputController inputController;
-        ActionQueue actionQueue;
+        public PartyController Party { get; private set; }
+        public InputController InputController { get; private set; }
+        public ActionQueue ActionQueue { get; private set; }
 
-        Movement movement;
-        Combatant combatant;
-        CharacterModel model;
+        public Movement Movement { get; private set; }
+        public Combatant Combatant { get; private set; }
+        public CharacterModel Model { get; private set; }
 
-        CameraPivot pivot;
-        TargetSphere targetSphere;
+        public TargetSphere TargetSphere { get; private set; }
 
         public readonly StateMachine sm = new StateMachine();
 
-        public bool IsPlayer => isPlayer;
-
-        public StateID CurrentState => currentState;
-        public bool ActionMovement => actionMovement;
-
-        public PartyController Party => party;
-        public InputController InputController => inputController;
-        public ActionQueue ActionQueue => actionQueue;
-
-        public Movement Movement => movement;
-        public Combatant Combatant => combatant;
-        public CharacterModel Model => model;
-
-        public CameraPivot Pivot => pivot;
-        public TargetSphere TargetSphere => targetSphere;
-
         public void Init(bool isPlayer)
         {
-            this.isPlayer = isPlayer;
+            IsPlayer = isPlayer;
 
-            party = GetComponentInParent<PartyController>();
-            inputController = party.InputController;
-            actionQueue = party.ActionQueue;
+            Party = GetComponentInParent<PartyController>();
+            InputController = Party.InputController;
+            ActionQueue = Party.ActionQueue;
 
-            movement = GetComponent<Movement>();
-            combatant = GetComponent<Combatant>();
+            Movement = GetComponent<Movement>();
+            Combatant = GetComponent<Combatant>();
 
-            model = GetComponentInChildren<CharacterModel>();
+            Model = GetComponentInChildren<CharacterModel>();
 
-            pivot = party.Pivot;
-            targetSphere = party.TargetSphere;
+            TargetSphere = Party.TargetSphere;
 
-            movement.Init();
-            combatant.Init(0);
-            model.Init();
+            Movement.Init();
+            Combatant.Init(0);
+            Model.Init();
 
             InitSM();
         }
@@ -94,61 +75,51 @@ namespace RPG_Project
 
         public void UpdateController()
         {
-            currentState = (StateID)sm.GetCurrentKey;
+            CurrentState = (StateID)sm.GetCurrentKey;
 
             sm.Update();
 
             // Test damage
-            if (Input.GetKeyDown("space")) combatant.OnDamage(new DamageInfo(combatant, 35, 10));
+            if (Input.GetKeyDown("space")) Combatant.OnDamage(new DamageInfo(Combatant, 35, 10));
         }
 
         public void AdvanceAction()
         {
-            actionQueue.AdvanceAction();
+            ActionQueue.AdvanceAction();
         }
 
         #region Movement
-        public void LockActionMovement()
-        {
-            actionMovement = false;
-        }
-
-        public void UnlockActionMovement()
-        {
-            actionMovement = true;
-        }
-
         public void MoveFree()
         {
-            movement.MovePositionFree(inputController.MoveCharXz, Time.deltaTime, false);
+            Movement.MovePositionFree(InputController.MoveCharXz, Time.deltaTime, false);
         }
 
         public void MoveFree(Vector3 ds)
         {
-            movement.MovePositionFree(ds, Time.deltaTime, false);
+            Movement.MovePositionFree(ds, Time.deltaTime, false);
         }
 
         public void MoveStrafe()
         {
-            movement.MovePositionStrafe(inputController.MoveCharXz, Time.deltaTime, false);
+            Movement.MovePositionStrafe(InputController.MoveCharXz, Time.deltaTime, false);
         }
 
         public void MoveStrafe(Vector3 ds)
         {
-            movement.MovePositionStrafe(ds, Time.deltaTime, false);
+            Movement.MovePositionStrafe(ds, Time.deltaTime, false);
         }
         #endregion
 
         public void Switch()
         {
-            var dpad = inputController.Dpad;
+            var dpad = InputController.Dpad;
 
-            if (dpad == Vector2.up) party.SwitchController(0);
-            else if (dpad == Vector2.left) party.SwitchController(1);
-            else if (dpad == Vector2.right) party.SwitchController(2);
-            else if (dpad == Vector2.down) party.SwitchController(3);
+            if (dpad == Vector2.up) Party.SwitchController(0);
+            else if (dpad == Vector2.left) Party.SwitchController(1);
+            else if (dpad == Vector2.right) Party.SwitchController(2);
+            else if (dpad == Vector2.down) Party.SwitchController(3);
 
-            inputController.ResetDpad();
+            InputController.ResetDpad();
         }
 
         public BattleAction GetAction(QueueAction action)
@@ -156,28 +127,28 @@ namespace RPG_Project
             switch (action)
             {
                 case QueueAction.ActionL1:
-                    return new BattleAction(this, "ActionL1", actionL1Hash, 20);
+                    return new BattleAction(this, Combatant.GetActionData(1), actionL1Hash);
                 case QueueAction.ActionL2:
-                    return new BattleAction(this, "ActionL2", actionL2Hash, 20);
+                    return new BattleAction(this, Combatant.GetActionData(2), actionL2Hash);
                 case QueueAction.ActionR1:
-                    return new BattleAction(this, "ActionR1", actionR1Hash, 20);
+                    return new BattleAction(this, Combatant.GetActionData(3), actionR1Hash);
                 case QueueAction.ActionR2:
-                    return new BattleAction(this, "ActionR2", actionR2Hash, 20);
+                    return new BattleAction(this, Combatant.GetActionData(4), actionR2Hash);
 
-                case QueueAction.Char1:
-                    return new BattleAction(this, "Char1");
-                case QueueAction.Char2:
-                    return new BattleAction(this, "Char2");
-                case QueueAction.Char3:
-                    return new BattleAction(this, "Char3");
-                case QueueAction.Char4:
-                    return new BattleAction(this, "Char4");
+                //case QueueAction.Char1:
+                //    return new BattleAction(this, "Char1");
+                //case QueueAction.Char2:
+                //    return new BattleAction(this, "Char2");
+                //case QueueAction.Char3:
+                //    return new BattleAction(this, "Char3");
+                //case QueueAction.Char4:
+                //    return new BattleAction(this, "Char4");
 
                 case QueueAction.Defend:
-                    if (targetSphere.enabled)
-                        return new BattleAction(this, inputController.MoveCharXz, 
-                            "Defend", defendHash, 20);
-                    return new BattleAction(this, "Defend", defendHash, 20);
+                    if (TargetSphere.enabled)
+                        return new BattleAction(this, InputController.MoveCharXz, 
+                            Combatant.GetActionData(0), defendHash);
+                    return new BattleAction(this, Combatant.GetActionData(0), defendHash);
 
                 default: return null;
             }
@@ -185,7 +156,7 @@ namespace RPG_Project
 
         public void AddAction(QueueAction action)
         {
-            actionQueue.AddAction(GetAction(action));
+            ActionQueue.AddAction(GetAction(action));
         }
 
         // For use with stagger and death animations

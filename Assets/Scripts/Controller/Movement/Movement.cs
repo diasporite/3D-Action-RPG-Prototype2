@@ -23,7 +23,9 @@ namespace RPG_Project
         [SerializeField] float currentSpeed;
 
         [Header("Forces")]
-        [SerializeField] Vector3 forceVelocity = new Vector3(0, 0, 0);
+        [SerializeField] Vector3 forceVelocity = 
+            new Vector3(0, 0, 0);
+        [field: SerializeField] public float DragTime { get; private set; }
 
         [Header("Gravity")]
         [SerializeField] float timeSinceGrounded = 0f;
@@ -34,12 +36,13 @@ namespace RPG_Project
         Controller controller;
         CharacterModel model;
         GroundCheck gc;
-        CameraPivot pivot;
+        TargetSphere targetSphere;
 
         CharacterController cc;
 
         public Vector3 dir;
         public Vector3 ds;
+        Vector3 dampingVelocity;
 
         Transform mainCamTransform;
 
@@ -72,13 +75,11 @@ namespace RPG_Project
 
         public bool Grounded => grounded;
 
-        public Vector3 ForceVelocity
-        {
-            get => forceVelocity;
-            set => forceVelocity = value;
-        }
-
         public Vector3 Move(Vector3 dir) => forceVelocity + (currentSpeed * dir);
+
+        public Vector3 Move(float speed, Vector3 dir) => forceVelocity + (speed * dir);
+
+        public Vector3 ForceVelocity { set => forceVelocity = value; }
 
         private void Update()
         {
@@ -92,7 +93,7 @@ namespace RPG_Project
 
             model = GetComponentInChildren<CharacterModel>();
             gc = GetComponentInChildren<GroundCheck>();
-            pivot = GetComponentInParent<PartyController>().Pivot;
+            targetSphere = controller.TargetSphere;
 
             mainCamTransform = Camera.main.transform;
 
@@ -103,7 +104,7 @@ namespace RPG_Project
 
         public void MovePositionFree(Vector3 dir, float dt, bool damping)
         {
-            RotateModel(dir, dt);
+            if (dir != transform.forward) RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -112,9 +113,20 @@ namespace RPG_Project
                 cc.Move(Move(transform.forward) * dt);
         }
 
+        public void MovePositionFree(float speed, Vector3 dir, float dt, bool damping)
+        {
+            if (dir != transform.forward) RotateModel(dir, dt);
+
+            model.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model.SetAnimDir(dir);
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, transform.forward) * dt);
+        }
+
         public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
-            LookAt(controller.TargetSphere.CurrentTargetTransform.position);
+            LookAt(targetSphere.CurrentTargetTransform.position);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -123,6 +135,19 @@ namespace RPG_Project
 
             if (dir != Vector3.zero)
                 cc.Move(Move(ds) * dt);
+        }
+
+        public void MovePositionStrafe(float speed, Vector3 dir, float dt, bool damping)
+        {
+            LookAt(targetSphere.CurrentTargetTransform.position);
+
+            model.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model.SetAnimDir(dir);
+
+            var ds = transform.forward * dir.z + transform.right * dir.x;
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, ds) * dt);
         }
 
         public void Fall(float dt)
@@ -145,10 +170,16 @@ namespace RPG_Project
             }
         }
 
+        public void UpdateForce()
+        {
+            forceVelocity = Vector3.SmoothDamp(forceVelocity, Vector3.zero,
+                ref dampingVelocity, DragTime);
+        }
+
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.TargetSphere.enabled)
-                LookAt(controller.Pivot.targetPos);
+            if (targetSphere.enabled)
+                LookAt(targetSphere.CurrentTargetTransform.position);
             else
             {
                 if (dir != Vector3.zero)
