@@ -84,22 +84,22 @@ namespace RPG_Project
 
         public void PlayAnimationFade(string stateName, int layer, float dt)
         {
-            Anim.CrossFade(stateName, dt);
+            Anim.CrossFadeInFixedTime(stateName, dt);
         }
 
         public void PlayAnimationFade(string stateName, int layer)
         {
-            Anim.CrossFade(stateName, fadeTime);
+            Anim.CrossFadeInFixedTime(stateName, fadeTime);
         }
 
         public void PlayAnimationFade(int stateHash, int layer, float dt)
         {
-            Anim.CrossFade(stateHash, dt);
+            Anim.CrossFadeInFixedTime(stateHash, dt);
         }
 
         public void PlayAnimationFade(int stateHash, int layer)
         {
-            Anim.CrossFade(stateHash, fadeTime);
+            Anim.CrossFadeInFixedTime(stateHash, fadeTime);
         }
 
         #region AnimParameters

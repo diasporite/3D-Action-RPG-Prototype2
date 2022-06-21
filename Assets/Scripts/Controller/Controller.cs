@@ -4,23 +4,37 @@ using UnityEngine;
 
 namespace RPG_Project
 {
+    public enum ControllerType
+    {
+        Player = 0,
+        Enemy = 1,
+        Boss = 2,
+    }
+
     public class Controller : MonoBehaviour
     {
+        // 1 = L1
+        // 2 = L2
+        // 3 = R1
+        // 4 = R2
+
         #region AnimatorHashes
         public readonly int moveHash = Animator.StringToHash("Move");
         public readonly int strafeHash = Animator.StringToHash("Strafe");
         public readonly int fallHash = Animator.StringToHash("Fall");
 
+        public readonly int guardHash = Animator.StringToHash("Guard");
         public readonly int defendHash = Animator.StringToHash("Defend");
         public readonly int strafeDefendHash = Animator.StringToHash("StrafeDefend");
 
         public readonly int staggerHash = Animator.StringToHash("Stagger");
         public readonly int deathHash = Animator.StringToHash("Death");
 
-        public readonly int actionL1Hash = Animator.StringToHash("ActionL1");
-        public readonly int actionL2Hash = Animator.StringToHash("ActionL2");
-        public readonly int actionR1Hash = Animator.StringToHash("ActionR1");
-        public readonly int actionR2Hash = Animator.StringToHash("ActionR2");
+        int[] attackHashes = new int[] { Animator.StringToHash("Action1"),
+            Animator.StringToHash("Action2"), Animator.StringToHash("Action3"),
+            Animator.StringToHash("Action4"), Animator.StringToHash("Action5"),
+            Animator.StringToHash("Action6"), Animator.StringToHash("Action7"),
+            Animator.StringToHash("Action8") };
         #endregion
 
         [field: SerializeField] public bool IsPlayer { get; private set; }
@@ -39,24 +53,39 @@ namespace RPG_Project
 
         public readonly StateMachine sm = new StateMachine();
 
-        public void Init(bool isPlayer)
+        private void Awake()
         {
-            IsPlayer = isPlayer;
-
             Party = GetComponentInParent<PartyController>();
-            InputController = Party.InputController;
-            ActionQueue = Party.ActionQueue;
 
             Movement = GetComponent<Movement>();
             Combatant = GetComponent<Combatant>();
 
             Model = GetComponentInChildren<CharacterModel>();
+        }
 
+        private void OnEnable()
+        {
+            if (InputController != null) SubscribeToDelegates();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromDelegates();
+        }
+
+        public void Init(bool isPlayer)
+        {
+            IsPlayer = isPlayer;
+
+            InputController = Party.InputController;
+            ActionQueue = Party.ActionQueue;
             TargetSphere = Party.TargetSphere;
 
             Movement.Init();
-            Combatant.Init(0);
+            Combatant.Init(1);
             Model.Init();
+
+            SubscribeToDelegates();
 
             InitSM();
         }
@@ -71,7 +100,35 @@ namespace RPG_Project
             sm.AddState(StateID.ControllerStagger, new ControllerStaggerState(this));
             sm.AddState(StateID.ControllerDeath, new ControllerDeathState(this));
             sm.AddState(StateID.ControllerStrafe, new ControllerStrafeState(this));
-            sm.AddState(StateID.controllerGuard, new ControllerGuardState(this));
+            sm.AddState(StateID.ControllerGuard, new ControllerGuardState(this));
+        }
+
+        void SubscribeToDelegates()
+        {
+            InputController.DpadAction += Dpad;
+
+            InputController.RunAction += Run;
+            InputController.WalkAction += Walk;
+
+            InputController.LockAction += ToggleLock;
+
+            InputController.RollAction += Roll;
+            InputController.GuardAction += Guard;
+            InputController.OnAction += Action;
+        }
+
+        void UnsubscribeFromDelegates()
+        {
+            InputController.DpadAction -= Dpad;
+
+            InputController.RunAction -= Run;
+            InputController.WalkAction -= Walk;
+
+            InputController.LockAction -= ToggleLock;
+
+            InputController.RollAction -= Roll;
+            InputController.GuardAction -= Guard;
+            InputController.OnAction -= Action;
         }
 
         public void UpdateController()
@@ -89,20 +146,77 @@ namespace RPG_Project
             ActionQueue.AdvanceAction();
         }
 
-        #region Movement
-        public void MoveFree()
+        #region ControllerActions
+        public void Move()
         {
-            Movement.MovePositionFree(InputController.MoveCharXz, Time.deltaTime, false);
+            var dir = InputController.MoveChar;
+            var ds = new Vector3(dir.x, 0, dir.y).normalized;
+
+            if (TargetSphere.enabled)
+                Movement.MovePositionStrafe(ds, Time.deltaTime, false);
+            else Movement.MovePositionFree(ds, Time.deltaTime, false);
         }
 
+        public void Look(Vector2 dir)
+        {
+
+        }
+
+        void Dpad(Vector2 dir)
+        {
+
+        }
+
+        void Run(Vector2 dir)
+        {
+            if (dir != Vector2.zero) sm.ChangeState(StateID.ControllerRun);
+        }
+
+        void Walk(Vector2 dir)
+        {
+            if (dir != Vector2.zero) sm.ChangeState(StateID.ControllerMove);
+        }
+
+        void ToggleLock()
+        {
+            if (CurrentState == StateID.ControllerMove)
+                sm.ChangeState(StateID.ControllerStrafe);
+            else if (CurrentState == StateID.ControllerStrafe)
+                sm.ChangeState(StateID.ControllerMove);
+        }
+
+        void Roll()
+        {
+            if (CurrentState == StateID.ControllerGuard) sm.ChangeState(StateID.ControllerMove);
+            else
+            {
+                BattleAction action;
+
+                if (TargetSphere.enabled)
+                    action = new BattleAction(this, new Vector3(InputController.MoveChar.x, 0, InputController.MoveChar.y),
+                        Combatant.GetActionData(0), defendHash);
+                else action = new BattleAction(this, Combatant.GetActionData(0), defendHash);
+
+                ActionQueue.AddAction(action);
+            }
+        }
+
+        void Guard()
+        {
+            sm.ChangeState(StateID.ControllerGuard);
+        }
+
+        void Action(int index)
+        {
+            index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
+            ActionQueue.AddAction(GetAttackAction(index));
+        }
+        #endregion
+
+        #region Movement
         public void MoveFree(Vector3 ds)
         {
             Movement.MovePositionFree(ds, Time.deltaTime, false);
-        }
-
-        public void MoveStrafe()
-        {
-            Movement.MovePositionStrafe(InputController.MoveCharXz, Time.deltaTime, false);
         }
 
         public void MoveStrafe(Vector3 ds)
@@ -123,18 +237,23 @@ namespace RPG_Project
             InputController.ResetDpad();
         }
 
+        BattleAction GetAttackAction(int index)
+        {
+            return new BattleAction(this, Combatant.GetActionData(index + 1), attackHashes[index]);
+        }
+
         public BattleAction GetAction(QueueAction action)
         {
             switch (action)
             {
-                case QueueAction.ActionL1:
-                    return new BattleAction(this, Combatant.GetActionData(1), actionL1Hash);
-                case QueueAction.ActionL2:
-                    return new BattleAction(this, Combatant.GetActionData(2), actionL2Hash);
-                case QueueAction.ActionR1:
-                    return new BattleAction(this, Combatant.GetActionData(3), actionR1Hash);
-                case QueueAction.ActionR2:
-                    return new BattleAction(this, Combatant.GetActionData(4), actionR2Hash);
+                //case QueueAction.ActionL1:
+                //    return new BattleAction(this, Combatant.GetActionData(1), actionL1Hash);
+                //case QueueAction.ActionL2:
+                //    return new BattleAction(this, Combatant.GetActionData(2), actionL2Hash);
+                //case QueueAction.ActionR1:
+                //    return new BattleAction(this, Combatant.GetActionData(3), actionR1Hash);
+                //case QueueAction.ActionR2:
+                //    return new BattleAction(this, Combatant.GetActionData(4), actionR2Hash);
 
                 //case QueueAction.Char1:
                 //    return new BattleAction(this, "Char1");
@@ -145,11 +264,11 @@ namespace RPG_Project
                 //case QueueAction.Char4:
                 //    return new BattleAction(this, "Char4");
 
-                case QueueAction.Defend:
-                    if (TargetSphere.enabled)
-                        return new BattleAction(this, InputController.MoveCharXz, 
-                            Combatant.GetActionData(0), defendHash);
-                    return new BattleAction(this, Combatant.GetActionData(0), defendHash);
+                //case QueueAction.Defend:
+                //    if (TargetSphere.enabled)
+                //        return new BattleAction(this, InputController.MoveCharXz, 
+                //            Combatant.GetActionData(0), defendHash);
+                //    return new BattleAction(this, Combatant.GetActionData(0), defendHash);
 
                 default: return null;
             }

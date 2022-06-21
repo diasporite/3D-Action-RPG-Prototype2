@@ -104,7 +104,7 @@ namespace RPG_Project
 
         public void MovePositionFree(Vector3 dir, float dt, bool damping)
         {
-            if (dir != transform.forward) RotateModel(dir, dt);
+            RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -115,7 +115,7 @@ namespace RPG_Project
 
         public void MovePositionFree(float speed, Vector3 dir, float dt, bool damping)
         {
-            if (dir != transform.forward) RotateModel(dir, dt);
+            RotateModel(dir, dt);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -148,6 +148,11 @@ namespace RPG_Project
 
             if (dir != Vector3.zero)
                 cc.Move(Move(speed, ds) * dt);
+        }
+
+        public void MovePositionForward(float speed, float dt, bool damping)
+        {
+            cc.Move(Move(speed, transform.forward) * dt);
         }
 
         public void Fall(float dt)

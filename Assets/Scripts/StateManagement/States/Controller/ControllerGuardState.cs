@@ -18,7 +18,7 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
-
+            controller.Model.PlayAnimationFade(controller.guardHash, 0);
         }
 
         public void ExecuteFrame()

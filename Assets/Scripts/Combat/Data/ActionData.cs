@@ -10,12 +10,8 @@ namespace RPG_Project
         [field: Header("Animation Info")]
         [field: SerializeField] public AnimationData Animation { get; private set; }
 
-        [field: Header("Stamina")]
+        [field: Header("Costs")]
         [field: SerializeField] public int SpCost { get; private set; } = 20;
-
-        [Header("Usage")]
-        public bool infiniteUse = false;
-        [Range(1, 40)]
-        public int uses = 20;
+        [field: SerializeField] public int MpCost { get; private set; } = 5;
     }
 }

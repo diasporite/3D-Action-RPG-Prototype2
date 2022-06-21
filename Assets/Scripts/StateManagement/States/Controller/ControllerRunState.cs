@@ -38,8 +38,6 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            ds = inputController.MoveCharXz;
-
             health.Tick();
             stamina.Tick();
 
@@ -49,7 +47,6 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerRecover);
             else if (ds == Vector3.zero)
                 csm.ChangeState(StateID.ControllerMove);
-            else controller.MoveFree(ds);
         }
 
         public void ExecuteFrameFixed()
@@ -69,31 +66,13 @@ namespace RPG_Project
 
         void Command()
         {
-            ds = inputController.MoveCharXz;
-
             health.Tick();
             stamina.Tick();
 
             if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            //else if (!inputController.Run())
-            //    csm.ChangeState(StateID.ControllerMove);
             else if (ds == Vector3.zero)
                 csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                        return;
-                    }
-                }
-
-                controller.MoveFree(ds);
-            }
         }
     }
 }

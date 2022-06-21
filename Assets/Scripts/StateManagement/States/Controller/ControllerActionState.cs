@@ -80,7 +80,8 @@ namespace RPG_Project
                     Debug.Log(animNormTime);
                     speed = animData.CurrentMoveData(animNormTime).ForwardSpeed;
 
-                    controller.Movement.MovePositionFree(speed, controller.transform.forward, Time.deltaTime, false);
+                    //controller.Movement.MovePositionFree(speed, controller.transform.forward, Time.deltaTime, false);
+                    controller.Movement.MovePositionForward(speed, Time.deltaTime, false);
                 }
             }
         }

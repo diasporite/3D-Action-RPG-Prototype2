@@ -25,45 +25,28 @@ namespace RPG_Project
 
     public class InputController : MonoBehaviour
     {
+        public event Action<Vector2> DpadAction;
+
+        public event Action<Vector2> RunAction;
+        public event Action<Vector2> WalkAction;
+
+        public event Action LockAction;
+        public event Action RollAction;
+        public event Action GuardAction;
+
+        // Action5-8 are for enemies
+        public event Action<int> OnAction;
+
         PartyController party;
 
-        [SerializeField] protected Vector2 moveChar;
-        [SerializeField] protected Vector2 moveCam;
-        [SerializeField] protected Vector2 dpad;
+        [field: SerializeField] public Vector2 MoveChar { get; protected set; }
+        [field: SerializeField] public Vector2 MoveCam { get; protected set; }
+        [field: SerializeField] public Vector2 Dpad { get; protected set; }
 
-        [SerializeField] protected bool run;
-        [SerializeField] protected bool defend;
-        //[SerializeField] protected InputButton run = new InputButton(true);
-        //[SerializeField] protected InputButton defend = new InputButton(false);
-
-        [SerializeField] protected bool toggleLock;
-        [SerializeField] protected bool selectNext;
-        [SerializeField] protected bool selectPrevious;
-
-        [SerializeField] protected bool actionL1;
-        [SerializeField] protected bool actionL2;
-        [SerializeField] protected bool actionR1;
-        [SerializeField] protected bool actionR2;
-
-        [SerializeField] protected bool char1;
-        [SerializeField] protected bool char2;
-        [SerializeField] protected bool char3;
-        [SerializeField] protected bool char4;
-
-        public readonly Dictionary<Func<bool>, QueueAction> actions =
-            new Dictionary<Func<bool>, QueueAction>();
-
-        public readonly Dictionary<ButtonID, bool> buttonDict = new Dictionary<ButtonID, bool>();
+        [field: SerializeField] public bool Run { get; protected set; }
+        [field: SerializeField] public bool Defend { get; protected set; }
 
         public Controller Controller => party.CurrentController;
-
-        public Vector2 MoveChar => moveChar;
-        public Vector3 MoveCharXz => new Vector3(moveChar.x, 0, moveChar.y);
-
-        public Vector2 MoveCam => moveCam;
-        public Vector3 MoveCamXz => new Vector3(moveCam.x, 0, moveCam.y);
-
-        public Vector2 Dpad => dpad;
 
         //public bool Defend()
         //{
@@ -128,18 +111,6 @@ namespace RPG_Project
         //public bool Char3() { return char3; }
         //public bool Char4() { return char4; }
 
-        public bool ButtonPressed(ButtonID id)
-        {
-            if (buttonDict.ContainsKey(id))
-            {
-                var pressed = buttonDict[id];
-                if (pressed) buttonDict[id] = false;
-                return pressed;
-            }
-
-            return false;
-        }
-
         private void Awake()
         {
             Init();
@@ -148,35 +119,48 @@ namespace RPG_Project
         protected void Init()
         {
             party = GetComponent<PartyController>();
-
-            InitDict();
-        }
-
-        protected void InitDict()
-        {
-            //actions.Add(ActionL1, QueueAction.ActionL1);
-            //actions.Add(ActionL2, QueueAction.ActionL2);
-            //actions.Add(ActionR1, QueueAction.ActionR1);
-            //actions.Add(ActionR2, QueueAction.ActionR2);
-            //actions.Add(Defend, QueueAction.Defend);
-            //actions.Add(Char1, QueueAction.Char1);
-            //actions.Add(Char2, QueueAction.Char2);
-            //actions.Add(Char3, QueueAction.Char3);
-            //actions.Add(Char4, QueueAction.Char4);
-
-            buttonDict.Add(ButtonID.Defend, defend);
-            buttonDict.Add(ButtonID.ToggleLock, toggleLock);
-            buttonDict.Add(ButtonID.SelectNext, selectNext);
-            buttonDict.Add(ButtonID.SelectPrevious, selectPrevious);
-            buttonDict.Add(ButtonID.ActionL1, actionL1);
-            buttonDict.Add(ButtonID.ActionL2, actionL2);
-            buttonDict.Add(ButtonID.ActionR1, actionR1);
-            buttonDict.Add(ButtonID.ActionR2, actionR2);
         }
 
         public void ResetDpad()
         {
-            dpad = Vector2.zero;
+            Dpad = Vector2.zero;
         }
+
+        #region InvokeMethods
+        protected void InvokeDpad(Vector2 dir)
+        {
+            DpadAction?.Invoke(dir);
+        }
+
+        protected void InvokeRun(Vector2 dir)
+        {
+            RunAction?.Invoke(dir);
+        }
+
+        protected void InvokeWalk(Vector2 dir)
+        {
+            WalkAction?.Invoke(dir);
+        }
+
+        protected void InvokeLock()
+        {
+            LockAction?.Invoke();
+        }
+
+        protected void InvokeRoll()
+        {
+            RollAction?.Invoke();
+        }
+
+        protected void InvokeGuard()
+        {
+            GuardAction?.Invoke();
+        }
+
+        protected void InvokeAction(int index)
+        {
+            OnAction?.Invoke(index);
+        }
+        #endregion
     }
 }

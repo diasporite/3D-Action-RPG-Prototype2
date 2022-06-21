@@ -2,7 +2,7 @@
 PROJECT NOTES
 
 TO DO
-- Use [field: SerializeField]
+- Use [field: SerializeField] [DONE]
 - Rewrite code for action queuing
   - Action state continually checks if chain is executing
   - Switch state logic is in action state instead of ActionQueue
@@ -12,11 +12,12 @@ TO DO
   - Levels are bought
   - Party shares level
   - Skills level at certain party levels
-- Fix targeting [done]
+- Fix targeting
 - Redo input system
-  - Make more event driven [done]
-  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy)
-- Redo animation structure (anim on CharacterModel)
+  - Make more event driven [DONE]
+  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy) [IN PROGRESS]
+	- Check roll input
+- Redo animation structure (anim on CharacterModel) [DONE]
   - No root motion
   - Create animation event functions in CharacterModel
 - BUG: Character freezes if an action is pressed the moment and action ends

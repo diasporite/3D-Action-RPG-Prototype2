@@ -52,11 +52,9 @@ namespace RPG_Project
                 return;
             }
 
-            if (controller.TargetSphere.enabled)
-                controller.MoveStrafe();
-            else if (!movement.Grounded)
+            if (!movement.Grounded)
                 csm.ChangeState(StateID.ControllerFall);
-            else controller.MoveFree();
+            else controller.Move();
         }
 
         public void ExecuteFrameFixed()

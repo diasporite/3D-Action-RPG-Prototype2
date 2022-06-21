@@ -33,8 +33,6 @@ namespace RPG_Project
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
 
-            movement.MovePositionFree(controller.InputController.MoveCharXz, Time.deltaTime, false);
-
             if (movement.Grounded)
                 csm.ChangeState(StateID.ControllerMove);
         }

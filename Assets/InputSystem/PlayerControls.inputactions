@@ -31,23 +31,15 @@
                 },
                 {
                     "name": "Run",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "c557603a-b2b2-4b0c-8b85-b390503c84a4",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Roll",
-                    "type": "Button",
-                    "id": "4a0004f2-c0c1-4cea-a245-e05706aec978",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
+                    "interactions": "Hold(duration=0.1)"
                 },
                 {
                     "name": "Guard",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "8ff475d2-308e-4a96-b93e-aed0b8745ce1",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -224,28 +216,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bc91dcfe-2213-4dea-abca-f08c26da9e4e",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Roll",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "df6e4cc3-7838-4517-9a86-03931bd84752",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

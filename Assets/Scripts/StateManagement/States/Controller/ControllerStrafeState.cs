@@ -72,9 +72,9 @@ namespace RPG_Project
             if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
             else
             {
-                var dir = inputController.MoveCharXz;
-                controller.MoveStrafe(dir);
-                controller.Model.SetAnimDir(dir);
+                //var dir = inputController.MoveCharXz;
+                //controller.MoveStrafe(dir);
+                //controller.Model.SetAnimDir(dir);
             }
         }
     }

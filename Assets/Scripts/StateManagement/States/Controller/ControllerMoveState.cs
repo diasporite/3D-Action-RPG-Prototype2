@@ -47,7 +47,7 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            ds = controller.InputController.MoveCharXz;
+            ds = controller.InputController.MoveChar;
 
             if (ds != Vector3.zero) health.Tick();
             else health.Tick(0);
@@ -58,7 +58,7 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerFall);
             else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else controller.MoveFree(ds);
+            else controller.Move();
         }
 
         public void ExecuteFrameFixed()
@@ -74,48 +74,6 @@ namespace RPG_Project
         public void Exit()
         {
 
-        }
-
-        void Command()
-        {
-            ds = inputController.MoveCharXz;
-
-            stamina.Tick();
-
-            if (stamina.Empty)
-                csm.ChangeState(StateID.ControllerRecover);
-            else
-            {
-                //if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
-                //if (inputController.Run())
-                //{
-                //    if (ds != Vector3.zero)
-                //        csm.ChangeState(StateID.ControllerRun);
-                //}
-                //else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
-                if (Action()) csm.ChangeState(StateID.ControllerAction);
-                else if (inputController.Dpad != Vector2.zero) controller.Switch();
-                else
-                {
-                    controller.MoveFree(ds);
-
-                    if (ds != Vector3.zero) health.Tick();
-                    else health.Tick(0);
-                }
-            }
-        }
-
-        bool Action()
-        {
-            foreach(var inp in inputController.actions.Keys)
-            {
-                if (inp.Invoke())
-                {
-                    controller.AddAction(inputController.actions[inp]);
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

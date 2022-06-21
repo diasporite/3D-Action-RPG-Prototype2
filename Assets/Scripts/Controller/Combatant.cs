@@ -13,8 +13,8 @@ namespace RPG_Project
 
         [SerializeField] string charName;
 
-        [Header("Progression")]
-        [SerializeField] int level = 1;
+        [field: Header("Progression")]
+        [field: SerializeField] public Stat Level { get; private set; }
 
         #region Stats
         [field: SerializeField] public Stat Vitality { get; private set; } = new Stat(100, 255);
@@ -103,9 +103,11 @@ namespace RPG_Project
             else if (stamina.Empty) controller.sm.ChangeState(StateID.ControllerStagger);
         }
 
-        public void Init(int exp)
+        public void Init(int lv)
         {
             combat = GameManager.instance.combat;
+
+            Level = new Stat(lv, 99);
 
             health = party.Health;
             stamina = party.Stamina;
@@ -127,16 +129,16 @@ namespace RPG_Project
 
             //level = CalculateLv();
 
-            Vitality = new Stat(vitAtLv[level - 1], 255);
-            Endurance = new Stat(endAtLv[level - 1], 255);
+            Vitality = new Stat(vitAtLv[Level.StatValue - 1], 255);
+            Endurance = new Stat(endAtLv[Level.StatValue - 1], 255);
 
-            Attack = new Stat(atkAtLv[level - 1], 255);
-            Defence = new Stat(defAtLv[level - 1], 255);
+            Attack = new Stat(atkAtLv[Level.StatValue - 1], 255);
+            Defence = new Stat(defAtLv[Level.StatValue - 1], 255);
 
             Weight = new Stat(data.Weight, 255);
 
-            HealthRegen = new Stat(hRegenAtLv[level - 1], 15);
-            StaminaRegen = new Stat(sRegenAtLv[level - 1], 63);
+            HealthRegen = new Stat(hRegenAtLv[Level.StatValue - 1], 15);
+            StaminaRegen = new Stat(sRegenAtLv[Level.StatValue - 1], 63);
 
             Skillset = data.Actions.ToList();
         }
