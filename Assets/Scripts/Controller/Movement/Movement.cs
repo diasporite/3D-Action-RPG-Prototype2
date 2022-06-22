@@ -126,6 +126,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
+            print(3);
             LookAt(targetSphere.CurrentTargetTransform.position);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
@@ -153,6 +154,11 @@ namespace RPG_Project
         public void MovePositionForward(float speed, float dt, bool damping)
         {
             cc.Move(Move(speed, transform.forward) * dt);
+        }
+
+        public void MoveTo(Vector3 pos)
+        {
+            cc.Move(pos - transform.position);
         }
 
         public void Fall(float dt)

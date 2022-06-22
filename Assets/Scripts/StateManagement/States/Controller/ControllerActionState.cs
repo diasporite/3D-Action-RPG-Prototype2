@@ -77,6 +77,7 @@ namespace RPG_Project
                 {
                     animNormTime = 0f;
                     animNormTime = controller.Model.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    animNormTime -= Mathf.Floor(animNormTime);  // % operator doesn't work on floats
                     Debug.Log(animNormTime);
                     speed = animData.CurrentMoveData(animNormTime).ForwardSpeed;
 

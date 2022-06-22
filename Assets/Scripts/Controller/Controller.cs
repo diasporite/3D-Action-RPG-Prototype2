@@ -133,7 +133,7 @@ namespace RPG_Project
 
         public void UpdateController()
         {
-            CurrentState = (StateID)sm.GetCurrentKey;
+            CurrentState = (StateID)sm.CurrentStateKey;
 
             sm.Update();
 
@@ -169,26 +169,29 @@ namespace RPG_Project
 
         void Run(Vector2 dir)
         {
-            if (dir != Vector2.zero) sm.ChangeState(StateID.ControllerRun);
+            if (sm.InState(StateID.ControllerMove) && dir != Vector2.zero)
+                sm.ChangeState(StateID.ControllerRun);
         }
 
         void Walk(Vector2 dir)
         {
-            if (dir != Vector2.zero) sm.ChangeState(StateID.ControllerMove);
+            if (sm.InState(StateID.ControllerRun) && dir != Vector2.zero)
+                sm.ChangeState(StateID.ControllerMove);
         }
 
         void ToggleLock()
         {
-            if (CurrentState == StateID.ControllerMove)
+            if (sm.InState(StateID.ControllerMove))
                 sm.ChangeState(StateID.ControllerStrafe);
-            else if (CurrentState == StateID.ControllerStrafe)
+            else if (sm.InState(StateID.ControllerStrafe))
                 sm.ChangeState(StateID.ControllerMove);
         }
 
         void Roll()
         {
-            if (CurrentState == StateID.ControllerGuard) sm.ChangeState(StateID.ControllerMove);
-            else
+            if (sm.InState(StateID.ControllerGuard)) sm.ChangeState(StateID.ControllerMove);
+            else if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
+                StateID.ControllerStrafe, StateID.ControllerAction))
             {
                 BattleAction action;
 
@@ -203,86 +206,38 @@ namespace RPG_Project
 
         void Guard()
         {
-            sm.ChangeState(StateID.ControllerGuard);
+            if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
+                StateID.ControllerStrafe))
+                sm.ChangeState(StateID.ControllerGuard);
         }
 
         void Action(int index)
         {
-            index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
-            ActionQueue.AddAction(GetAttackAction(index));
+            print(0);
+            if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
+                StateID.ControllerAction, StateID.ControllerStrafe))
+            {
+                print(1);
+                index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
+                ActionQueue.AddAction(GetAttackAction(index));
+            }
         }
         #endregion
-
-        #region Movement
-        public void MoveFree(Vector3 ds)
-        {
-            Movement.MovePositionFree(ds, Time.deltaTime, false);
-        }
-
-        public void MoveStrafe(Vector3 ds)
-        {
-            Movement.MovePositionStrafe(ds, Time.deltaTime, false);
-        }
-        #endregion
-
-        public void Switch()
-        {
-            var dpad = InputController.Dpad;
-
-            if (dpad == Vector2.up) Party.SwitchController(0);
-            else if (dpad == Vector2.left) Party.SwitchController(1);
-            else if (dpad == Vector2.right) Party.SwitchController(2);
-            else if (dpad == Vector2.down) Party.SwitchController(3);
-
-            InputController.ResetDpad();
-        }
 
         BattleAction GetAttackAction(int index)
         {
             return new BattleAction(this, Combatant.GetActionData(index + 1), attackHashes[index]);
         }
 
-        public BattleAction GetAction(QueueAction action)
-        {
-            switch (action)
-            {
-                //case QueueAction.ActionL1:
-                //    return new BattleAction(this, Combatant.GetActionData(1), actionL1Hash);
-                //case QueueAction.ActionL2:
-                //    return new BattleAction(this, Combatant.GetActionData(2), actionL2Hash);
-                //case QueueAction.ActionR1:
-                //    return new BattleAction(this, Combatant.GetActionData(3), actionR1Hash);
-                //case QueueAction.ActionR2:
-                //    return new BattleAction(this, Combatant.GetActionData(4), actionR2Hash);
-
-                //case QueueAction.Char1:
-                //    return new BattleAction(this, "Char1");
-                //case QueueAction.Char2:
-                //    return new BattleAction(this, "Char2");
-                //case QueueAction.Char3:
-                //    return new BattleAction(this, "Char3");
-                //case QueueAction.Char4:
-                //    return new BattleAction(this, "Char4");
-
-                //case QueueAction.Defend:
-                //    if (TargetSphere.enabled)
-                //        return new BattleAction(this, InputController.MoveCharXz, 
-                //            Combatant.GetActionData(0), defendHash);
-                //    return new BattleAction(this, Combatant.GetActionData(0), defendHash);
-
-                default: return null;
-            }
-        }
-
-        public void AddAction(QueueAction action)
-        {
-            ActionQueue.AddAction(GetAction(action));
-        }
-
-        // For use with stagger and death animations
+        // For use with stagger animation
         public void ReturnToMoveState()
         {
             sm.ChangeState(StateID.ControllerMove);
+        }
+
+        public void MoveTo(Vector3 pos)
+        {
+            Movement.MoveTo(pos);
         }
     }
 }

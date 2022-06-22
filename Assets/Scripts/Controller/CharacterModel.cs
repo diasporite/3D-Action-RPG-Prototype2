@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 namespace RPG_Project
 {
@@ -10,6 +11,7 @@ namespace RPG_Project
         public bool LockOnRotation { get; private set; }
 
         [SerializeField] GameObject charModel;
+        [SerializeField] Transform cameraView;
         [SerializeField] CameraFocus focus;
 
         [field: SerializeField] public float WalkSpeed { get; private set; } = 3.5f;
@@ -26,27 +28,52 @@ namespace RPG_Project
         Controller controller;
         [field: SerializeField] public Animator Anim { get; private set; }
 
+        PartyController party;
+
         CharacterController cc;
         CapsuleCollider col;
 
         TargetSphere targetSphere;
+
+        [SerializeField] CinemachineStateDrivenCamera stateCam;
+        [SerializeField] CinemachineFreeLook freeLook;
+        [SerializeField] CinemachineVirtualCamera vcam;
+        [SerializeField] CinemachineTargetGroup targetGroup;
+
+        public Transform CameraView => cameraView;
 
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
             dir.x * transform.right;
 
         private void Awake()
         {
+            party = GetComponentInParent<PartyController>();
+
             controller = GetComponentInParent<Controller>();
             cc = GetComponentInParent<CharacterController>();
 
             Anim = GetComponent<Animator>();
+
+            stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
+            freeLook = GetComponentInChildren<CinemachineFreeLook>();
+
+            targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
         }
 
         public void Init()
         {
+            focus = party.CamFocus;
+
             focus.Init(controller);
 
             targetSphere = controller.TargetSphere;
+
+            stateCam.Follow = focus.transform;
+            freeLook.Follow = focus.transform;
+            vcam.Follow = focus.transform;
+
+            targetGroup.AddMember(focus.transform, 1, 1);
+            targetGroup.AddMember(targetSphere.TargetFocus, 1, 2);
         }
 
         public void RotateModel(Vector3 dir, float dt)

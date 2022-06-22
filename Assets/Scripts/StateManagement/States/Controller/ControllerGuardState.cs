@@ -44,6 +44,9 @@ namespace RPG_Project
 
         void Command()
         {
+            controller.Party.Health.Tick(0);
+            controller.Party.Stamina.Tick(0);
+
             if (controller.Party.Stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
         }

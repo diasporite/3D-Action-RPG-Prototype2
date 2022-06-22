@@ -33,7 +33,7 @@ namespace RPG_Project
 
         [Header("Defence")]
         [SerializeField] DefenceMode mainDefence;
-        [Range(0, resistTotal)]
+        [Range(10, resistTotal)]
         [SerializeField] int mainResist = 45;
         const int resistTotal = 90;
 

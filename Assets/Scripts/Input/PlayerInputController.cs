@@ -147,7 +147,7 @@ namespace RPG_Project
         {
             Dpad = context.ReadValue<Vector2>();
 
-            InvokeDpad(Dpad);
+            if (context.performed) InvokeDpad(Dpad);
         }
 
         public void OnAction1(InputAction.CallbackContext context)

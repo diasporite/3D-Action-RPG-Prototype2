@@ -69,13 +69,9 @@ namespace RPG_Project
             health.Tick();
             stamina.Tick();
 
-            if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                //var dir = inputController.MoveCharXz;
-                //controller.MoveStrafe(dir);
-                //controller.Model.SetAnimDir(dir);
-            }
+            if (controller.TargetSphere.NoTargets)
+                csm.ChangeState(StateID.ControllerMove);
+            else controller.Move();
         }
     }
 }

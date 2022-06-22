@@ -3,7 +3,7 @@ PROJECT NOTES
 
 TO DO
 - Use [field: SerializeField] [DONE]
-- Rewrite code for action queuing
+- Rewrite code for action queuing [DONE]
   - Action state continually checks if chain is executing
   - Switch state logic is in action state instead of ActionQueue
 - Implement skillset using ScriptableObjects
@@ -15,12 +15,14 @@ TO DO
 - Fix targeting
 - Redo input system
   - Make more event driven [DONE]
-  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy) [IN PROGRESS]
+  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy) [DONE]
 	- Check roll input
 - Redo animation structure (anim on CharacterModel) [DONE]
   - No root motion
   - Create animation event functions in CharacterModel
-- BUG: Character freezes if an action is pressed the moment and action ends
+- BUG: Character freezes if an action is pressed the moment and action ends	[FIXED]
+- Look at single camera for party controller
+  - Currently camera moves when switching as values are not shared between camera
 
 IDEAS
 - Max stamina gradually [DITCHED]

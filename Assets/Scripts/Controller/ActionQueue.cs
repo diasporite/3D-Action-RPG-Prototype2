@@ -4,23 +4,6 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    public enum QueueAction
-    {
-        Unqueuable = 0,
-
-        Defend = 1,
-
-        ActionL1 = 5,
-        ActionL2 = 6,
-        ActionR1 = 7,
-        ActionR2 = 8,
-
-        Char1 = 10,
-        Char2 = 11,
-        Char3 = 12,
-        Char4 = 13,
-    }
-
     public class ActionQueue : MonoBehaviour
     {
         [field: SerializeField] public bool Executing { get; private set; }

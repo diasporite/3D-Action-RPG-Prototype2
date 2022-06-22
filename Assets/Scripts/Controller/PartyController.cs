@@ -21,8 +21,8 @@ namespace RPG_Project
         [field: SerializeField]
         public List<Controller> Party { get; private set; } = 
             new List<Controller>();
-        [field: SerializeField] public int CurrentIndex { get; private set; }
 
+        [field: SerializeField] public Controller CurrentController { get; private set; }
         [field: SerializeField] public Vector3 CurrentPosition { get; private set; }
         [field: SerializeField] public Vector3 CurrentForward { get; private set; }
 
@@ -31,16 +31,9 @@ namespace RPG_Project
         public InputController InputController { get; private set; }
         public ActionQueue ActionQueue { get; private set; }
 
+        public CameraFocus CamFocus { get; private set; }
         public TargetSphere TargetSphere { get; private set; }
 
-        public Controller CurrentController
-        {
-            get
-            {
-                if (Party.Count > 0) return Party[CurrentIndex];
-                return null;
-            }
-        }
         public Transform CurrentControllerTransform => CurrentController?.transform;
         public Combatant CurrentCombatant => CurrentController?.Combatant;
 
@@ -91,7 +84,18 @@ namespace RPG_Project
             InputController = GetComponent<InputController>();
             ActionQueue = GetComponent<ActionQueue>();
 
+            CamFocus = GetComponentInChildren<CameraFocus>();
             TargetSphere = GetComponentInChildren<TargetSphere>();
+        }
+
+        private void OnEnable()
+        {
+            InputController.DpadAction += DpadInput;
+        }
+
+        private void OnDisable()
+        {
+            InputController.DpadAction -= DpadInput;
         }
 
         private void Start()
@@ -101,14 +105,9 @@ namespace RPG_Project
 
         private void Update()
         {
-            //if (InputController.Char1()) SwitchController(0);
-            //else if (InputController.Char2()) SwitchController(1);
-            //else
-            //{
             CurrentController.UpdateController();
 
             UpdatePosition();
-            //}
         }
 
         private void OnDrawGizmos()
@@ -130,12 +129,12 @@ namespace RPG_Project
                 }
             }
 
-            SwitchController(0);
+            SetCharsActive(0);
+
+            CurrentController.sm.ChangeState(StateID.ControllerMove);
 
             Health.Init(Hp, Hp, CurrentCombatant.HRegen, healthCap);
             Stamina.Init(Sp, Sp, CurrentCombatant.SRegen, staminaCap);
-
-            CurrentController.sm.ChangeState(StateID.ControllerMove);
         }
 
         void UpdatePosition()
@@ -149,22 +148,44 @@ namespace RPG_Project
 
         public void SwitchController(int index)
         {
-            if (index == CurrentIndex) return;
+            if (Party[index] == CurrentController) return;
 
-            CurrentIndex = Mathf.Clamp(index, 0, Party.Count - 1);
+            if (index >= Party.Count) return;
 
-            for(int i = 0; i < Party.Count; i++)
-            {
-                if (i == CurrentIndex)
-                {
-                    Party[i].gameObject.SetActive(true);
-                    CurrentController.transform.position = CurrentPosition;
-                    CurrentController.Model.transform.forward = CurrentForward;
-                }
-                else Party[i].gameObject.SetActive(false);
-            }
+            UpdatePosition();
+
+            var state = CurrentController.CurrentState;
+
+            SetCharsActive(index);
+
+            CurrentController.sm.ChangeState(state);
 
             InvokeCharChange();
+        }
+
+        void SetCharsActive(int index)
+        {
+            foreach (var p in Party) p.gameObject.SetActive(false);
+
+            Party[index].gameObject.SetActive(true);
+            CurrentController = Party[index];
+
+            CurrentController.MoveTo(CurrentPosition);
+            CurrentController.transform.forward = CurrentForward;
+        }
+
+        void DpadInput(Vector2 dirInput)
+        {
+            print(1);
+            if (CurrentController.sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
+                StateID.ControllerStrafe))
+            {
+                print(2);
+                if (dirInput == Vector2.up) SwitchController(0);
+                else if (dirInput == Vector2.left) SwitchController(1);
+                else if (dirInput == Vector2.right) SwitchController(2);
+                else if (dirInput == Vector2.down) SwitchController(3);
+            }
         }
 
         #region Delegates

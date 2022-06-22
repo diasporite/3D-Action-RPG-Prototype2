@@ -10,15 +10,18 @@ namespace RPG_Project
 
         [SerializeField] Transform targetFocus;
 
-        [SerializeField] List<Target> targets = new List<Target>();
+        [field: SerializeField] public List<Target> Targets { get; private set; } = 
+            new List<Target>();
 
         Camera mainCam;
 
         [field: SerializeField] public Target CurrentTarget { get; private set; }
 
+        public Transform TargetFocus => targetFocus;
+
         public Transform CurrentTargetTransform => CurrentTarget?.transform;
 
-        public bool NoTargets => targets.Count <= 0;
+        public bool NoTargets => Targets.Count <= 0;
 
         private void Awake()
         {
@@ -32,7 +35,7 @@ namespace RPG_Project
             if (CurrentTarget != null && party.CurrentControllerTransform != null)
             {
                 transform.position = party.CurrentControllerTransform.position;
-                targetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position +
+                TargetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position +
                     CurrentTargetTransform.position);
             }
         }
@@ -47,15 +50,15 @@ namespace RPG_Project
             var target = other.GetComponentInChildren<Target>();
 
             if (target != null)
-                if (target.transform.root != transform.root && !targets.Contains(target))
-                    targets.Add(target);
+                if (target.transform.root != transform.root && !Targets.Contains(target))
+                    Targets.Add(target);
         }
 
         private void OnTriggerExit(Collider other)
         {
             var target = other.GetComponentInChildren<Target>();
 
-            if (target != null && targets.Contains(target)) targets.Remove(target);
+            if (target != null && Targets.Contains(target)) Targets.Remove(target);
         }
 
         private void OnDrawGizmos()
@@ -71,7 +74,7 @@ namespace RPG_Project
             Target closestTarget = null;
             float closestSqrDist = Mathf.Infinity;
 
-            foreach (var target in targets)
+            foreach (var target in Targets)
             {
                 Vector2 screenPos = mainCam.WorldToViewportPoint(target.transform.position);
 

@@ -5,68 +5,73 @@ namespace RPG_Project
 {
     public class StateMachine
     {
-        object currentStateKey;
-        IState currentState = new EmptyState();
-        Dictionary<object, IState> states = new Dictionary<object, IState>();
+        public StateID CurrentStateKey { get; private set; }
+        public IState CurrentState { get; private set; } = new EmptyState();
+        public Dictionary<StateID, IState> States { get; private set; } = 
+            new Dictionary<StateID, IState>();
 
-        public object GetCurrentKey => currentStateKey;
-        public IState _currentState => currentState;
-        public Dictionary<object, IState> _states => states;
-        public int _stateCount => states.Count;
-
-        public IState GetState(object id)
+        public IState GetState(StateID id)
         {
-            if (states.ContainsKey(id))
+            if (States.ContainsKey(id))
             {
-                return states[id];
+                return States[id];
             }
             
             return null;
         }
 
+        public bool InState(params StateID[] ids)
+        {
+            foreach (var id in ids)
+                if (CurrentStateKey == id)
+                    return true;
+
+            return false;
+        }
+
         public void Update()
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.ExecuteFrame();
+                CurrentState.ExecuteFrame();
             }
         }
 
         public void UpdateFixed()
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.ExecuteFrameFixed();
+                CurrentState.ExecuteFrameFixed();
             }
         }
 
         public void UpdateLate()
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.ExecuteFrameLate();
+                CurrentState.ExecuteFrameLate();
             }
         }
 
-        public void AddState(object id, IState state)
+        public void AddState(StateID id, IState state)
         {
-            if (!states.ContainsKey(id))
+            if (!States.ContainsKey(id))
             {
-                states.Add(id, state);
+                States.Add(id, state);
             }
         }
 
-        public void ChangeState(object id, params object[] args)
+        public void ChangeState(StateID id, params object[] args)
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.Exit();
+                CurrentState.Exit();
 
-                if (states.ContainsKey(id))
+                if (States.ContainsKey(id))
                 {
-                    currentStateKey = id;
-                    currentState = states[id];
-                    currentState.Enter(args);
+                    CurrentStateKey = id;
+                    CurrentState = States[id];
+                    CurrentState.Enter(args);
                 }
             }
             else Debug.LogError("State machine does not contain the state " + id);
@@ -74,14 +79,14 @@ namespace RPG_Project
 
         public void ClearStates()
         {
-            states.Clear();
+            States.Clear();
         }
 
-        public void RemoveState(object id)
+        public void RemoveState(StateID id)
         {
-            if (states.ContainsKey(id))
+            if (States.ContainsKey(id))
             {
-                states.Remove(id);
+                States.Remove(id);
             }
         }
     }

@@ -15,8 +15,6 @@ namespace RPG_Project
         Stamina stamina;
         InputController inputController;
 
-        Vector3 ds;
-
         public ControllerRunState(Controller controller)
         {
             this.controller = controller;
@@ -45,8 +43,9 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerFall);
             else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else if (ds == Vector3.zero)
+            else if (controller.InputController.MoveChar == Vector2.zero)
                 csm.ChangeState(StateID.ControllerMove);
+            else controller.Move();
         }
 
         public void ExecuteFrameFixed()
@@ -62,17 +61,6 @@ namespace RPG_Project
         public void Exit()
         {
 
-        }
-
-        void Command()
-        {
-            health.Tick();
-            stamina.Tick();
-
-            if (stamina.Empty)
-                csm.ChangeState(StateID.ControllerRecover);
-            else if (ds == Vector3.zero)
-                csm.ChangeState(StateID.ControllerMove);
         }
     }
 }
