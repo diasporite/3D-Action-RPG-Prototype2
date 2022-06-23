@@ -6,6 +6,8 @@ namespace RPG_Project
 {
     public class TargetSphere : MonoBehaviour
     {
+        [field: SerializeField] public bool Active { get; set; } = false;
+
         PartyController party;
 
         [SerializeField] Transform targetFocus;
@@ -35,14 +37,10 @@ namespace RPG_Project
             if (CurrentTarget != null && party.CurrentControllerTransform != null)
             {
                 transform.position = party.CurrentControllerTransform.position;
-                TargetFocus.transform.position = 0.5f * (party.CurrentControllerTransform.position +
-                    CurrentTargetTransform.position);
+                TargetFocus.transform.position = 
+                    Vector3.Lerp(party.CurrentControllerTransform.position, 
+                    CurrentTargetTransform.position, 0.75f);
             }
-        }
-
-        private void OnEnable()
-        {
-            FindTarget();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -67,10 +65,8 @@ namespace RPG_Project
             Gizmos.DrawWireSphere(transform.position, 0.5f * transform.lossyScale.x);
         }
 
-        public void FindTarget()
+        public bool FindTarget()
         {
-            if (NoTargets) return;
-
             Target closestTarget = null;
             float closestSqrDist = Mathf.Infinity;
 
@@ -87,12 +83,13 @@ namespace RPG_Project
                     closestTarget = target;
                     closestSqrDist = dirToCentre.sqrMagnitude;
                 }
-
             }
 
-            if (closestTarget == null) return;
+            if (closestTarget == null) return false;
 
             CurrentTarget = closestTarget;
+
+            return true;
         }
 
         public void SelectTarget(int index)

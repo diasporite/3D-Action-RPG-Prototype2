@@ -45,7 +45,7 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerRecover);
             else if (controller.InputController.MoveChar == Vector2.zero)
                 csm.ChangeState(StateID.ControllerMove);
-            else controller.Move();
+            else controller.Move(false);
         }
 
         public void ExecuteFrameFixed()

@@ -11,15 +11,19 @@ namespace RPG_Project
 
         float fadeTime = 0.1f;
 
+        Animator anim;
+
         public ControllerDeathState(Controller controller)
         {
             this.controller = controller;
             csm = controller.sm;
+
+            anim = controller.Model.Anim;
         }
 
         public void Enter(params object[] args)
         {
-            controller.TargetSphere.enabled = false;
+            controller.TargetSphere.Active = false;
 
             controller.Model.PlayAnimationFade(controller.deathHash, 0, fadeTime);
 

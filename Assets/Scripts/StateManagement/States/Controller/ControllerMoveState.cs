@@ -38,8 +38,6 @@ namespace RPG_Project
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
 
-            controller.TargetSphere.enabled = false;
-
             controller.Model.PlayAnimationFade(controller.moveHash, 0);
 
             actionQueue.ClearActions();
@@ -58,7 +56,7 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerFall);
             else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else controller.Move();
+            else controller.Move(controller.TargetSphere.Active);
         }
 
         public void ExecuteFrameFixed()

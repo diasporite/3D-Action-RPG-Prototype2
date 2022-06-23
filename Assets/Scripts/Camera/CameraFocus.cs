@@ -45,12 +45,11 @@ namespace RPG_Project
             party.OnCharacterChanged -= UpdateCameras;
         }
 
-        public void Init(Controller controller)
+        public void Init()
         {
             pos = transform.localPosition + freeOffset;
 
-            this.controller = controller;
-            targetSphere = controller.TargetSphere;
+            targetSphere = party.TargetSphere;
 
             freeLook = party.GetComponentInChildren<CinemachineFreeLook>();
             vcam = party.GetComponentInChildren<CinemachineVirtualCamera>();
@@ -61,16 +60,13 @@ namespace RPG_Project
             if (party.CurrentControllerTransform != controllerTransform)
                 controllerTransform = party.CurrentControllerTransform;
 
-            if (targetSphere.enabled) offset = lockedOffset;
+            if (targetSphere.Active) offset = lockedOffset;
             else offset = freeOffset;
 
-            newPos = controllerTransform.position + offset.x * controllerTransform.right + 
+            transform.position = controllerTransform.position +
                 offset.y * controllerTransform.up + offset.z * controllerTransform.forward;
 
-            transform.position = Vector3.MoveTowards(transform.position, newPos,
-                updateSpeed * Time.deltaTime);
-
-            if (targetSphere.enabled) transform.rotation = controller.transform.rotation;
+            if (targetSphere.Active) transform.rotation = controllerTransform.rotation;
             else transform.rotation = Quaternion.identity;
         }
 

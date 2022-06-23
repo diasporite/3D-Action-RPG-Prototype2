@@ -152,63 +152,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   m_CustomBlends: {fileID: 0}
-  m_ParentHash:
-  - m_Hash: 1718862356
-    m_ParentHash: 756556552
-  - m_Hash: -1745423234
-    m_ParentHash: 1718862356
-  - m_Hash: -968672450
-    m_ParentHash: 1718862356
-  - m_Hash: -2031908635
-    m_ParentHash: 1718862356
-  - m_Hash: -1293573312
-    m_ParentHash: 756556552
-  - m_Hash: 1093322905
-    m_ParentHash: -1293573312
-  - m_Hash: -1723516171
-    m_ParentHash: -1293573312
-  - m_Hash: 983021616
-    m_ParentHash: -1293573312
-  - m_Hash: 2021722158
-    m_ParentHash: -1293573312
-  - m_Hash: 278857689
-    m_ParentHash: -1293573312
-  - m_Hash: -1776615973
-    m_ParentHash: 756556552
-  - m_Hash: 1914514016
-    m_ParentHash: 756556552
-  - m_Hash: -1108227253
-    m_ParentHash: 756556552
-  - m_Hash: 620272369
-    m_ParentHash: 756556552
-  - m_Hash: -845463612
-    m_ParentHash: 756556552
-  - m_Hash: 1409264231
-    m_ParentHash: 756556552
-  - m_Hash: -1970460730
-    m_ParentHash: 756556552
-  - m_Hash: -1773290367
-    m_ParentHash: -1970460730
-  - m_Hash: 1844446611
-    m_ParentHash: -1970460730
-  - m_Hash: 1607282377
-    m_ParentHash: -1970460730
-  - m_Hash: -1017738996
-    m_ParentHash: -1970460730
-  - m_Hash: -1546996312
-    m_ParentHash: 756556552
-  - m_Hash: 428770071
-    m_ParentHash: 756556552
-  - m_Hash: -1164177582
-    m_ParentHash: 756556552
-  - m_Hash: 596991720
-    m_ParentHash: 756556552
-  - m_Hash: 1418882686
-    m_ParentHash: 756556552
-  - m_Hash: -1003654161
-    m_ParentHash: 756556552
-  - m_Hash: -341871798
-    m_ParentHash: 756556552
+  m_ParentHash: []
 --- !u!1 &1906460563264543085
 GameObject:
   m_ObjectHideFlags: 3
@@ -328,8 +272,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PositionMode: 1
   m_RotationMode: 0
-  m_UpdateMethod: 0
-  m_Targets: []
+  m_UpdateMethod: 2
+  m_Targets:
+  - target: {fileID: 0}
+    weight: 1
+    radius: 1
+  - target: {fileID: 0}
+    weight: 1
+    radius: 2
 --- !u!1 &5086519831969278352
 GameObject:
   m_ObjectHideFlags: 0

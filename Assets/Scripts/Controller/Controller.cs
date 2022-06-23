@@ -147,12 +147,12 @@ namespace RPG_Project
         }
 
         #region ControllerActions
-        public void Move()
+        public void Move(bool strafe)
         {
             var dir = InputController.MoveChar;
             var ds = new Vector3(dir.x, 0, dir.y).normalized;
 
-            if (TargetSphere.enabled)
+            if (strafe)
                 Movement.MovePositionStrafe(ds, Time.deltaTime, false);
             else Movement.MovePositionFree(ds, Time.deltaTime, false);
         }
@@ -181,10 +181,31 @@ namespace RPG_Project
 
         void ToggleLock()
         {
-            if (sm.InState(StateID.ControllerMove))
-                sm.ChangeState(StateID.ControllerStrafe);
-            else if (sm.InState(StateID.ControllerStrafe))
-                sm.ChangeState(StateID.ControllerMove);
+            if (sm.InState(StateID.ControllerMove, StateID.ControllerStrafe, 
+                StateID.ControllerRecover))
+            {
+                TargetSphere.Active = !TargetSphere.Active;
+
+                if (TargetSphere.Active)
+                {
+                    var targetFound = TargetSphere.FindTarget();
+
+                    if (targetFound)
+                    {
+                        if (sm.InState(StateID.ControllerMove))
+                            sm.ChangeState(StateID.ControllerStrafe);
+                    }
+                    else
+                    {
+                        TargetSphere.Active = false;
+                        sm.ChangeState(StateID.ControllerMove);
+                    }
+                }
+                else
+                {
+                    sm.ChangeState(StateID.ControllerMove);
+                }
+            }
         }
 
         void Roll()
@@ -195,7 +216,7 @@ namespace RPG_Project
             {
                 BattleAction action;
 
-                if (TargetSphere.enabled)
+                if (TargetSphere.Active)
                     action = new BattleAction(this, new Vector3(InputController.MoveChar.x, 0, InputController.MoveChar.y),
                         Combatant.GetActionData(0), defendHash);
                 else action = new BattleAction(this, Combatant.GetActionData(0), defendHash);
@@ -213,11 +234,9 @@ namespace RPG_Project
 
         void Action(int index)
         {
-            print(0);
             if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
                 StateID.ControllerAction, StateID.ControllerStrafe))
             {
-                print(1);
                 index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
                 ActionQueue.AddAction(GetAttackAction(index));
             }

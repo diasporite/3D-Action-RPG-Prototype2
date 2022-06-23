@@ -114,12 +114,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   grounded: 0
-  walkSpeed: 2.803
-  runSpeed: 7.74
+  <WalkSpeed>k__BackingField: 2.803
+  <RunSpeed>k__BackingField: 7.74
+  <StrafeSpeed>k__BackingField: 2.2957
   currentSpeed: 0
   forceVelocity: {x: 0, y: 0, z: 0}
   <DragTime>k__BackingField: 0
   timeSinceGrounded: 0
+  verticalVelocity: 0
   terminalVelocity: 40
   damageSpeedThreshold: 6
   dir: {x: 0, y: 0, z: 0}

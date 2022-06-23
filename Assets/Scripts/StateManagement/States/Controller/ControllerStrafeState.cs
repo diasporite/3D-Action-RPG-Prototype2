@@ -29,14 +29,6 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            controller.TargetSphere.enabled = true;
-
-            if (controller.TargetSphere.NoTargets)
-            {
-                csm.ChangeState(StateID.ControllerMove);
-                return;
-            }
-
             movement.State = MovementState.Walk;
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
@@ -70,8 +62,11 @@ namespace RPG_Project
             stamina.Tick();
 
             if (controller.TargetSphere.NoTargets)
+            {
+                controller.TargetSphere.Active = false;
                 csm.ChangeState(StateID.ControllerMove);
-            else controller.Move();
+            }
+            else controller.Move(true);
         }
     }
 }

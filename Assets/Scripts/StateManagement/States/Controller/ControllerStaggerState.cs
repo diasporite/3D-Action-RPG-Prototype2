@@ -19,7 +19,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            controller.TargetSphere.enabled = false;
+            controller.TargetSphere.Active = false;
 
             controller.Model.PlayAnimationFade(controller.staggerHash, 0, fadeTime);
 

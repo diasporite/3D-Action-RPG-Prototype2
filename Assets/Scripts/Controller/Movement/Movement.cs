@@ -17,9 +17,10 @@ namespace RPG_Project
         [SerializeField] MovementState state;
         [SerializeField] bool grounded;
 
-        [Header("Speed")]
-        public float walkSpeed = 4f;
-        public float runSpeed = 6f;
+        [field: Header("Speed")]
+        [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
+        [field: SerializeField] public float RunSpeed { get; private set; } = 6f;
+        [field: SerializeField] public float StrafeSpeed { get; private set; } = 3f;
         [SerializeField] float currentSpeed;
 
         [Header("Forces")]
@@ -29,6 +30,7 @@ namespace RPG_Project
 
         [Header("Gravity")]
         [SerializeField] float timeSinceGrounded = 0f;
+        [SerializeField] float verticalVelocity = 0f;
         [SerializeField] float terminalVelocity = 40f;
         float gravity = -9.81f;
         public float damageSpeedThreshold = 20f;
@@ -62,10 +64,10 @@ namespace RPG_Project
                 switch (state)
                 {
                     case MovementState.Walk:
-                        currentSpeed = walkSpeed;
+                        currentSpeed = WalkSpeed;
                         break;
                     case MovementState.Run:
-                        currentSpeed = runSpeed;
+                        currentSpeed = RunSpeed;
                         break;
                     default:
                         break;
@@ -126,8 +128,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
-            print(3);
-            LookAt(targetSphere.CurrentTargetTransform.position);
+            RotateTowards(targetSphere.CurrentTargetTransform);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -140,7 +141,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(float speed, Vector3 dir, float dt, bool damping)
         {
-            LookAt(targetSphere.CurrentTargetTransform.position);
+            RotateTowards(targetSphere.CurrentTargetTransform);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -168,16 +169,16 @@ namespace RPG_Project
             if (grounded)
             {
                 timeSinceGrounded = 0;
-                forceVelocity.y = 0;
+                verticalVelocity = 0;
 
                 cc.Move(gravity * transform.up * dt);
             }
             else
             {
                 timeSinceGrounded += dt;
-                forceVelocity.y = Mathf.Clamp(forceVelocity.y + gravity * dt, 
+                verticalVelocity = Mathf.Clamp(verticalVelocity + gravity * dt, 
                     -terminalVelocity, terminalVelocity);
-                cc.Move(forceVelocity * dt);
+                cc.Move(verticalVelocity * transform.up * dt);
             }
         }
 
@@ -189,8 +190,8 @@ namespace RPG_Project
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (targetSphere.enabled)
-                LookAt(targetSphere.CurrentTargetTransform.position);
+            if (targetSphere.Active)
+                RotateTowards(targetSphere.CurrentTargetTransform);
             else
             {
                 if (dir != Vector3.zero)
@@ -205,16 +206,12 @@ namespace RPG_Project
             }
         }
 
-        public void LookAt(Vector3 look)
+        public void RotateTowards(Transform target)
         {
-            look.y = transform.position.y;
-            transform.LookAt(look);
-        }
+            var ds = target.position - transform.position;
+            ds.y = 0;
 
-        public void LookTowards(Vector3 look)
-        {
-            look.y = 0;
-            Quaternion.LookRotation(look);
+            transform.rotation = Quaternion.LookRotation(Vector3.MoveTowards(transform.forward, ds, 10f));
         }
     }
 }

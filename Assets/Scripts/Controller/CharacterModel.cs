@@ -14,11 +14,6 @@ namespace RPG_Project
         [SerializeField] Transform cameraView;
         [SerializeField] CameraFocus focus;
 
-        [field: SerializeField] public float WalkSpeed { get; private set; } = 3.5f;
-        [field: SerializeField] public float RunSpeed { get; private set; } = 7f;
-        [field: SerializeField] public float StrafeSpeed { get; private set; } = 5f;
-        [field: SerializeField] public float RollSpeed { get; private set; } = 3f;
-
         [SerializeField] float fadeTime = 0.1f;
 
         float angle;
@@ -35,11 +30,6 @@ namespace RPG_Project
 
         TargetSphere targetSphere;
 
-        [SerializeField] CinemachineStateDrivenCamera stateCam;
-        [SerializeField] CinemachineFreeLook freeLook;
-        [SerializeField] CinemachineVirtualCamera vcam;
-        [SerializeField] CinemachineTargetGroup targetGroup;
-
         public Transform CameraView => cameraView;
 
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
@@ -53,32 +43,20 @@ namespace RPG_Project
             cc = GetComponentInParent<CharacterController>();
 
             Anim = GetComponent<Animator>();
-
-            stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
-            freeLook = GetComponentInChildren<CinemachineFreeLook>();
-
-            targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
         }
 
         public void Init()
         {
             focus = party.CamFocus;
 
-            focus.Init(controller);
+            focus.Init();
 
             targetSphere = controller.TargetSphere;
-
-            stateCam.Follow = focus.transform;
-            freeLook.Follow = focus.transform;
-            vcam.Follow = focus.transform;
-
-            targetGroup.AddMember(focus.transform, 1, 1);
-            targetGroup.AddMember(targetSphere.TargetFocus, 1, 2);
         }
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (targetSphere.enabled)
+            if (targetSphere.Active)
                 LookAt(targetSphere.CurrentTargetTransform.position);
             else
             {

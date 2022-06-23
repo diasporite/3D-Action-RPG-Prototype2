@@ -176,11 +176,9 @@ namespace RPG_Project
 
         void DpadInput(Vector2 dirInput)
         {
-            print(1);
             if (CurrentController.sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
                 StateID.ControllerStrafe))
             {
-                print(2);
                 if (dirInput == Vector2.up) SwitchController(0);
                 else if (dirInput == Vector2.left) SwitchController(1);
                 else if (dirInput == Vector2.right) SwitchController(2);

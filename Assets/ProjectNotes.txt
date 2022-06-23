@@ -43,3 +43,6 @@ Using custom cameras with Cinemachine
 - https://forum.unity.com/threads/using-cinemachine-alongside-scripted-camera.537044/
 Character controller and root motion
 - https://www.youtube.com/watch?v=mNxEetKzc04
+State driven camera programming
+- https://forum.unity.com/threads/can-you-add-and-define-a-state-on-a-state-driven-camera-via-c.749063/
+- https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineStateDrivenCamera.html
