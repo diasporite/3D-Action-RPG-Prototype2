@@ -1787,10 +1787,6 @@ MonoBehaviour:
   charModel: {fileID: 1173982583439564448}
   cameraView: {fileID: 8272717789290287956}
   focus: {fileID: 0}
-  <WalkSpeed>k__BackingField: 4.3477
-  <RunSpeed>k__BackingField: 8.5613
-  <StrafeSpeed>k__BackingField: 2.307
-  <RollSpeed>k__BackingField: 3
   fadeTime: 0.1
   <Anim>k__BackingField: {fileID: 0}
 --- !u!1 &1173982584596517723
@@ -2801,7 +2797,8 @@ MonoBehaviour:
   timeSinceGrounded: 0
   verticalVelocity: 0
   terminalVelocity: 40
-  damageSpeedThreshold: 8
+  damageSpeedThreshold: 12
+  fallDamageScaling: 0.12
   dir: {x: 0, y: 0, z: 0}
   ds: {x: 0, y: 0, z: 0}
 --- !u!114 &1173982585362856020

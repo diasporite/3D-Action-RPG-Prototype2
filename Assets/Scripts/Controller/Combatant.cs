@@ -99,8 +99,10 @@ namespace RPG_Project
             health.ChangeValue(-hDamage);
             stamina.ChangeValue(-sDamage);
 
-            if (health.Empty) controller.sm.ChangeState(StateID.ControllerDeath);
-            else if (stamina.Empty) controller.sm.ChangeState(StateID.ControllerStagger);
+            if (health.Empty)
+                controller.sm.ChangeState(StateID.ControllerDeath);
+            else if (stamina.Empty)
+                controller.sm.ChangeState(StateID.ControllerStagger);
         }
 
         public void Init(int lv)

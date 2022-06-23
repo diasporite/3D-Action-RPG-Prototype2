@@ -33,7 +33,8 @@ namespace RPG_Project
         [SerializeField] float verticalVelocity = 0f;
         [SerializeField] float terminalVelocity = 40f;
         float gravity = -9.81f;
-        public float damageSpeedThreshold = 20f;
+        [SerializeField] float damageSpeedThreshold = 20f;
+        [SerializeField] float fallDamageScaling = 0.05f;
 
         Controller controller;
         CharacterModel model;
@@ -168,6 +169,9 @@ namespace RPG_Project
 
             if (grounded)
             {
+                if (Mathf.Abs(verticalVelocity) > Mathf.Abs(damageSpeedThreshold))
+                    ApplyFallDamage();
+
                 timeSinceGrounded = 0;
                 verticalVelocity = 0;
 
@@ -212,6 +216,15 @@ namespace RPG_Project
             ds.y = 0;
 
             transform.rotation = Quaternion.LookRotation(Vector3.MoveTowards(transform.forward, ds, 10f));
+        }
+
+        void ApplyFallDamage()
+        {
+            var dv = Mathf.Abs(verticalVelocity) - damageSpeedThreshold;
+            var damage = Mathf.RoundToInt(controller.Party.Health.ResourceStatValue *
+                dv * fallDamageScaling);
+
+            controller.Combatant.OnDamage(new DamageInfo(controller.Combatant, damage, 0));
         }
     }
 }

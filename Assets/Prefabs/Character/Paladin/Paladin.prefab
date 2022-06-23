@@ -123,7 +123,8 @@ MonoBehaviour:
   timeSinceGrounded: 0
   verticalVelocity: 0
   terminalVelocity: 40
-  damageSpeedThreshold: 6
+  damageSpeedThreshold: 9
+  fallDamageScaling: 0.2
   dir: {x: 0, y: 0, z: 0}
   ds: {x: 0, y: 0, z: 0}
 --- !u!114 &4612440993909077042
@@ -394,7 +395,7 @@ PrefabInstance:
     - target: {fileID: 1657734003659942035, guid: c9e1e69e60c852e4498a05c78c00b346,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.05
+      value: -1.08
       objectReference: {fileID: 0}
     - target: {fileID: 1657734003659942035, guid: c9e1e69e60c852e4498a05c78c00b346,
         type: 3}

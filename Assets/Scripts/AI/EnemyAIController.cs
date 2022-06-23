@@ -6,6 +6,6 @@ namespace RPG_Project
 {
     public class EnemyAIController : MonoBehaviour
     {
-        [SerializeField] float timer = 3f;
+        [SerializeField] float timerLength = 3f;
     }
 }

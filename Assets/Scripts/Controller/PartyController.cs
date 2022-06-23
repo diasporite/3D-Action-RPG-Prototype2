@@ -68,9 +68,7 @@ namespace RPG_Project
                     foreach (var c in Party)
                         sp += c.Combatant.End;
 
-                    sp = Mathf.RoundToInt(sp / Party.Count);
-
-                    return Mathf.RoundToInt(sp * (1 + 0.15f * (Party.Count - 1)));
+                    return Mathf.RoundToInt(sp / Party.Count);
                 }
 
                 return 1;

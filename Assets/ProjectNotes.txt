@@ -23,6 +23,12 @@ TO DO
 - BUG: Character freezes if an action is pressed the moment and action ends	[FIXED]
 - Look at single camera for party controller
   - Currently camera moves when switching as values are not shared between camera
+- CONSIDER REWRITING PLAYER PARTY CONTROLLER
+  - CharacterController, Controller on party level
+  - Animator, Movement, Combatant on model level
+  - Models are attached as children of party instead of controllers
+    - Characters share movement functionality
+
 
 IDEAS
 - Max stamina gradually [DITCHED]
