@@ -36,6 +36,7 @@ namespace RPG_Project
         [SerializeField] float damageSpeedThreshold = 20f;
         [SerializeField] float fallDamageScaling = 0.05f;
 
+        PartyController party;
         Controller controller;
         CharacterModel model;
         GroundCheck gc;
@@ -52,6 +53,7 @@ namespace RPG_Project
         float target = 0f;
         float angle = 0f;
         float turnVelocity = 0f;
+        float turnTime = 0.1f;
 
         float dropSpeed;
 
@@ -83,6 +85,11 @@ namespace RPG_Project
         public Vector3 Move(float speed, Vector3 dir) => forceVelocity + (speed * dir);
 
         public Vector3 ForceVelocity { set => forceVelocity = value; }
+
+        private void Awake()
+        {
+            party = GetComponentInParent<PartyController>();
+        }
 
         private void Update()
         {
@@ -129,7 +136,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
-            RotateTowards(targetSphere.CurrentTargetTransform);
+            RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -142,7 +149,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(float speed, Vector3 dir, float dt, bool damping)
         {
-            RotateTowards(targetSphere.CurrentTargetTransform);
+            RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
             model.SetAnimSpeed(dir.magnitude * currentSpeed);
             model.SetAnimDir(dir);
@@ -195,7 +202,7 @@ namespace RPG_Project
         public void RotateModel(Vector3 dir, float dt)
         {
             if (targetSphere.Active)
-                RotateTowards(targetSphere.CurrentTargetTransform);
+                RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
             else
             {
                 if (dir != Vector3.zero)
@@ -203,19 +210,19 @@ namespace RPG_Project
                     target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
                     if (controller.IsPlayer) target += mainCamTransform.eulerAngles.y;
 
-                    angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
-                        target, ref turnVelocity, 0.1f);
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
+                    angle = Mathf.SmoothDampAngle(party.transform.eulerAngles.y,
+                        target, ref turnVelocity, turnTime);
+                    party.transform.rotation = Quaternion.Euler(0, angle, 0);
                 }
             }
         }
 
-        public void RotateTowards(Transform target)
+        public void RotateTowards(Transform t, Transform target)
         {
             var ds = target.position - transform.position;
             ds.y = 0;
 
-            transform.rotation = Quaternion.LookRotation(Vector3.MoveTowards(transform.forward, ds, 10f));
+            t.rotation = Quaternion.LookRotation(Vector3.MoveTowards(transform.forward, ds, 10f));
         }
 
         void ApplyFallDamage()

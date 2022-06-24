@@ -32,7 +32,6 @@ namespace RPG_Project
 
         void ChangeAnimatedTarget()
         {
-            stateCam.m_LookAt = party.CurrentController.Model.CameraView;
             stateCam.m_AnimatedTarget = party.CurrentController.Model.Anim;
         }
     }

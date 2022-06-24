@@ -167,9 +167,6 @@ namespace RPG_Project
 
             Party[index].gameObject.SetActive(true);
             CurrentController = Party[index];
-
-            CurrentController.MoveTo(CurrentPosition);
-            CurrentController.transform.forward = CurrentForward;
         }
 
         void DpadInput(Vector2 dirInput)

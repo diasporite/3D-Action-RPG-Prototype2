@@ -10,11 +10,9 @@ namespace RPG_Project
         [field: SerializeField] public bool InMotion { get; private set; }
         public bool LockOnRotation { get; private set; }
 
-        [SerializeField] GameObject charModel;
-        [SerializeField] Transform cameraView;
-        [SerializeField] CameraFocus focus;
+        [field: SerializeField] public Transform Hips { get; private set; }
 
-        [SerializeField] float fadeTime = 0.1f;
+        [field: SerializeField] public float FadeTime { get; private set; } = 0.1f;
 
         float angle;
         float target;
@@ -29,8 +27,6 @@ namespace RPG_Project
         CapsuleCollider col;
 
         TargetSphere targetSphere;
-
-        public Transform CameraView => cameraView;
 
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
             dir.x * transform.right;
@@ -47,10 +43,6 @@ namespace RPG_Project
 
         public void Init()
         {
-            focus = party.CamFocus;
-
-            focus.Init();
-
             targetSphere = controller.TargetSphere;
         }
 
@@ -66,15 +58,15 @@ namespace RPG_Project
 
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
-                    charModel.transform.rotation = Quaternion.Euler(0, angle, 0);
+                    Hips.transform.rotation = Quaternion.Euler(0, angle, 0);
                 }
             }
         }
 
         public void LookAt(Vector3 look)
         {
-            look.y = charModel.transform.position.y;
-            charModel.transform.LookAt(look);
+            look.y = Hips.transform.position.y;
+            Hips.transform.LookAt(look);
         }
 
         public void PlayAnimation(string stateName, int layer)
@@ -94,7 +86,7 @@ namespace RPG_Project
 
         public void PlayAnimationFade(string stateName, int layer)
         {
-            Anim.CrossFadeInFixedTime(stateName, fadeTime);
+            Anim.CrossFadeInFixedTime(stateName, FadeTime);
         }
 
         public void PlayAnimationFade(int stateHash, int layer, float dt)
@@ -104,7 +96,7 @@ namespace RPG_Project
 
         public void PlayAnimationFade(int stateHash, int layer)
         {
-            Anim.CrossFadeInFixedTime(stateHash, fadeTime);
+            Anim.CrossFadeInFixedTime(stateHash, FadeTime);
         }
 
         #region AnimParameters

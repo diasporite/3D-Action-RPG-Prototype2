@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 namespace RPG_Project
 {
@@ -26,13 +25,14 @@ namespace RPG_Project
         TargetSphere targetSphere;
         Transform controllerTransform;
 
-        CinemachineFreeLook freeLook;
-        CinemachineVirtualCamera vcam;
-        CinemachineTargetGroup targetGroup;
-
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
+        }
+
+        private void Start()
+        {
+            Init();
         }
 
         private void OnEnable()
@@ -47,27 +47,23 @@ namespace RPG_Project
 
         public void Init()
         {
-            pos = transform.localPosition + freeOffset;
+            pos = transform.localPosition;
 
             targetSphere = party.TargetSphere;
-
-            freeLook = party.GetComponentInChildren<CinemachineFreeLook>();
-            vcam = party.GetComponentInChildren<CinemachineVirtualCamera>();
         }
 
         private void Update()
         {
-            if (party.CurrentControllerTransform != controllerTransform)
-                controllerTransform = party.CurrentControllerTransform;
-
-            if (targetSphere.Active) offset = lockedOffset;
-            else offset = freeOffset;
-
-            transform.position = controllerTransform.position +
-                offset.y * controllerTransform.up + offset.z * controllerTransform.forward;
-
-            if (targetSphere.Active) transform.rotation = controllerTransform.rotation;
-            else transform.rotation = Quaternion.identity;
+            if (targetSphere.Active)
+            {
+                transform.localPosition = lockedOffset;
+                transform.rotation = party.transform.rotation;
+            }
+            else
+            {
+                transform.position = party.transform.position + freeOffset;
+                transform.rotation = Quaternion.identity;
+            }
         }
 
         void UpdateCameras()

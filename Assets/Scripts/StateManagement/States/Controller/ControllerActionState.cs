@@ -94,7 +94,8 @@ namespace RPG_Project
                 if (targetSphere.Active)
                 {
                     if (model.LockOnRotation)
-                        movement.RotateTowards(targetSphere.CurrentTargetTransform);
+                        movement.RotateTowards(controller.Party.transform, 
+                            targetSphere.CurrentTargetTransform);
                 }
             }
         }

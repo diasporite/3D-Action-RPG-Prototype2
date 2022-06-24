@@ -29,7 +29,8 @@ TO DO
   - Models are attached as children of party instead of controllers
     - Characters share movement functionality
   - PROGRESS
-    - 1st char model rotates, 2nd char doesn't
+    - 1st char model rotates, 2nd char doesn't	[FIXED]
+	  - Set priority values so that state cam > free cam > vcam
 
 
 IDEAS
