@@ -35,6 +35,9 @@ namespace RPG_Project
             set => count = Mathf.Clamp(value * cooldown, 0, cooldown);
         }
 
+        public bool Empty => count == 0;
+        public bool Full => count == cooldown;
+
         public Cooldown(float cooldown)
         {
             this.cooldown = cooldown;

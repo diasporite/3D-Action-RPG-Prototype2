@@ -1,7 +1,7 @@
 
 PROJECT NOTES
 
-TO DO
+BEFORE 24/6/22
 - Use [field: SerializeField] [DONE]
 - Rewrite code for action queuing [DONE]
   - Action state continually checks if chain is executing
@@ -32,9 +32,13 @@ TO DO
     - 1st char model rotates, 2nd char doesn't	[FIXED]
 	  - Set priority values so that state cam > free cam > vcam
 
+24/6/22
+- BUG: Duplication in ActioQueue [FIXED]
+- Started work on enemy AI
+
 
 IDEAS
-- Max stamina gradually [DITCHED]
+- Max stamina gradually changes [DITCHED]
   - Very slow with time
   - Slow with movement
   - Actions have max sp costs

@@ -12,6 +12,7 @@ namespace RPG_Project
         public event Action OnHealthChanged;
         public event Action OnStaminaChanged;
 
+        public event Action OnDamage;
         public event Action OnDeath;
 
         int partyCap = 4;
@@ -195,6 +196,11 @@ namespace RPG_Project
         public void InvokeSpChange()
         {
             OnStaminaChanged?.Invoke();
+        }
+
+        public void InvokeDamage()
+        {
+            OnDamage?.Invoke();
         }
 
         public void InvokeDeath()

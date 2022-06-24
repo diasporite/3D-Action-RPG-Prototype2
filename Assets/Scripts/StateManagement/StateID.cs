@@ -13,5 +13,9 @@ namespace RPG_Project
         ControllerDeath = 7,
         ControllerStrafe = 8,
         ControllerGuard = 9,
+
+        EnemyIdle = 21,
+        EnemyChase = 22,
+        EnemyAttack = 23,
     }
 }

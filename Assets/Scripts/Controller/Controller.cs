@@ -142,11 +142,6 @@ namespace RPG_Project
             if (Input.GetKeyDown("tab")) Combatant.OnDamage(new DamageInfo(Combatant, 10, 35));
         }
 
-        public void AdvanceAction()
-        {
-            ActionQueue.AdvanceAction();
-        }
-
         #region ControllerActions
         public void Move(bool strafe)
         {

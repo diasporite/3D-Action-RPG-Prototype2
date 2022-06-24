@@ -2061,7 +2061,7 @@ PrefabInstance:
     - target: {fileID: 1243595669598872747, guid: 9b94029198e12834f80af0cabaf6de26,
         type: 3}
       propertyPath: m_Text
-      value: MP 999/999
+      value: AP 999/999
       objectReference: {fileID: 0}
     - target: {fileID: 1243595669598872747, guid: 9b94029198e12834f80af0cabaf6de26,
         type: 3}
@@ -2196,7 +2196,7 @@ PrefabInstance:
     - target: {fileID: 6737612878352029848, guid: 9b94029198e12834f80af0cabaf6de26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 145.4
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 6737612878352029848, guid: 9b94029198e12834f80af0cabaf6de26,
         type: 3}
