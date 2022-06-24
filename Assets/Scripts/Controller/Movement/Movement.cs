@@ -92,10 +92,10 @@ namespace RPG_Project
         public void Init()
         {
             controller = GetComponent<Controller>();
-            cc = GetComponent<CharacterController>();
+            cc = GetComponentInParent<CharacterController>();
 
-            model = GetComponentInChildren<CharacterModel>();
-            gc = GetComponentInChildren<GroundCheck>();
+            model = GetComponent<CharacterModel>();
+            gc = GetComponentInParent<PartyController>().GetComponentInChildren<GroundCheck>();
             targetSphere = controller.TargetSphere;
 
             mainCamTransform = Camera.main.transform;

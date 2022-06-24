@@ -88,7 +88,7 @@ namespace RPG_Project
         private void Awake()
         {
             party = GetComponentInParent<PartyController>();
-            controller = GetComponent<Controller>();
+            controller = GetComponentInParent<Controller>();
         }
 
         public void OnDamage(DamageInfo damage)

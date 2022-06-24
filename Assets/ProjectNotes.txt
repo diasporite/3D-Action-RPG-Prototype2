@@ -28,6 +28,8 @@ TO DO
   - Animator, Movement, Combatant on model level
   - Models are attached as children of party instead of controllers
     - Characters share movement functionality
+  - PROGRESS
+    - 1st char model rotates, 2nd char doesn't
 
 
 IDEAS

@@ -60,7 +60,7 @@ namespace RPG_Project
             Movement = GetComponent<Movement>();
             Combatant = GetComponent<Combatant>();
 
-            Model = GetComponentInChildren<CharacterModel>();
+            Model = GetComponent<CharacterModel>();
         }
 
         private void OnEnable()
