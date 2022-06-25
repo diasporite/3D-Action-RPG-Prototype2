@@ -40,8 +40,19 @@ BEFORE 24/6/22
 - BUGS
   - State driven cam doesn't work
     - Camera remains in free look state when strafing
+	- Use PlayerCameraController to replace state driven cam
   - Characters start in falling animation
-
+- IDEAS
+  - Jumping
+    - Press run button to jump (similar to guard/roll)
+  - Different camera views
+    - Top down, side
+	- Different movement states needed
+	  - Consider sub state machine for move state
+  - Projectile enemies
+    - Static objects that emit damaging projectiles (spheres)
+- TO DO
+  - Work on PlayerCameraController
 
 
 IDEAS
