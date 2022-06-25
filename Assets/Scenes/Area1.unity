@@ -837,8 +837,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e3d89eac2ad3745b2f80114ce49c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerLength: 1.5
-  chaseRange: 6
+  timerLength: 2.5
+  chaseRange: 16
   attackRange: 1.2
   <Timer>k__BackingField:
     cooldown: 0

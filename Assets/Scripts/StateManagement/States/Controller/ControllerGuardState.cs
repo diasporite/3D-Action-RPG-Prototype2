@@ -18,7 +18,7 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
-            controller.Model.PlayAnimationFade(controller.guardHash, 0);
+            controller.Model.PlayAnimationFade(controller.guardHash, 0, false);
         }
 
         public void ExecuteFrame()
@@ -46,6 +46,12 @@ namespace RPG_Project
         {
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
+
+            if (controller.TargetSphere.Active)
+            {
+                controller.Movement.RotateTowards(controller.Party.transform,
+                    controller.TargetSphere.CurrentTargetTransform);
+            }
 
             if (controller.Party.Stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);

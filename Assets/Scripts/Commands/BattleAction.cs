@@ -37,7 +37,7 @@ namespace RPG_Project
         public virtual void Execute()
         {
             if (dir != Vector3.zero) controller.transform.rotation = Quaternion.LookRotation(dir);
-            controller.Model.PlayAnimation(animStateHash, 0);
+            controller.Model.PlayAnimationFade(animStateHash, 0, true);
             controller.Party.Stamina.ChangeValue(-Mathf.Abs(Action.SpCost));
         }
 

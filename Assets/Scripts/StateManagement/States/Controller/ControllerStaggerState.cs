@@ -21,7 +21,7 @@ namespace RPG_Project
         {
             controller.TargetSphere.Active = false;
 
-            controller.Model.PlayAnimationFade(controller.staggerHash, 0);
+            controller.Model.PlayAnimationFade(controller.staggerHash, 0, false);
 
             controller.ActionQueue.ClearActions();
         }
@@ -47,7 +47,8 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            // Reset stamina to full to avoid stunlock
+            controller.Party.Stamina.ChangeValue(999);
         }
     }
 }

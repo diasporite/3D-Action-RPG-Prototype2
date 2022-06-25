@@ -9,9 +9,8 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
-        float fadeTime = 0.1f;
-
         Animator anim;
+        float animNormTime;
 
         public ControllerDeathState(Controller controller)
         {
@@ -25,7 +24,7 @@ namespace RPG_Project
         {
             controller.TargetSphere.Active = false;
 
-            controller.Model.PlayAnimationFade(controller.deathHash, 0, fadeTime);
+            controller.Model.PlayAnimationFade(controller.deathHash, 0, false);
 
             controller.ActionQueue.ClearActions();
         }
@@ -34,6 +33,13 @@ namespace RPG_Project
         {
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
+
+            animNormTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (animNormTime >= 1f)
+            {
+                controller.Destroy();
+                csm.ChangeState(StateID.Empty);
+            }
         }
 
         public void ExecuteFrameFixed()

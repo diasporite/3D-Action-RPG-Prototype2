@@ -10,6 +10,8 @@ namespace RPG_Project
 
         PartyController party;
 
+        [Range(0f, 1f)]
+        [SerializeField] float focalPoint = 0.5f;
         [SerializeField] Transform targetFocus;
 
         [field: SerializeField] public List<Target> Targets { get; private set; } = 
@@ -34,12 +36,16 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (CurrentTarget != null && party.CurrentControllerTransform != null)
+            if (CurrentTarget == null) Active = false;
+            else
             {
-                transform.position = party.CurrentControllerTransform.position;
-                TargetFocus.transform.position = 
-                    Vector3.Lerp(party.CurrentControllerTransform.position, 
-                    CurrentTargetTransform.position, 0.75f);
+                if (party.CurrentControllerTransform != null)
+                {
+                    transform.position = party.CurrentControllerTransform.position;
+                    TargetFocus.transform.position =
+                        Vector3.Lerp(party.CurrentControllerTransform.position,
+                        CurrentTargetTransform.position, focalPoint);
+                }
             }
         }
 

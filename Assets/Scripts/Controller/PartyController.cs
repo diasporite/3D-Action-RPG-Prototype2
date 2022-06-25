@@ -7,6 +7,7 @@ namespace RPG_Project
 {
     public class PartyController : MonoBehaviour
     {
+        public event Action OnSpawn;
         public event Action OnCharacterChanged;
 
         public event Action OnHealthChanged;
@@ -183,6 +184,11 @@ namespace RPG_Project
         }
 
         #region Delegates
+        public void InvokeSpawn()
+        {
+            OnSpawn?.Invoke();
+        }
+
         public void InvokeCharChange()
         {
             OnCharacterChanged?.Invoke();

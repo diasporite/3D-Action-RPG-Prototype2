@@ -34,14 +34,14 @@ namespace RPG_Project
 
             if (enemy.Timer.Full)
             {
-                input.OnAttack(1);
+                input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count));
                 enemy.Timer.Reset();
             }
 
             if (!enemy.ActionQueue.Executing) enemy.Timer.Tick();
 
             input.OnMove(Vector3.zero);
-            party.CurrentController.Move(false);
+            //party.CurrentController.Move(false);
         }
 
         public void ExecuteFrameFixed()

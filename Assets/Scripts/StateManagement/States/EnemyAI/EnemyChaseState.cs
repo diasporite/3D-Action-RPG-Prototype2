@@ -35,7 +35,6 @@ namespace RPG_Project
             enemy.Timer.Tick();
 
             input.OnMove(enemy.DirToPlayer.normalized);
-            party.CurrentController.Move(false);
         }
 
         public void ExecuteFrameFixed()

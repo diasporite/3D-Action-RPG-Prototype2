@@ -55,6 +55,7 @@ namespace RPG_Project
         {
             sm.AddState(StateID.EnemyIdle, new EnemyIdleState(this));
             sm.AddState(StateID.EnemyChase, new EnemyChaseState(this));
+            sm.AddState(StateID.EnemyAttack, new EnemyAttackState(this));
 
             sm.ChangeState(StateID.EnemyIdle);
         }

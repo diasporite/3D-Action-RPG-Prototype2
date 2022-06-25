@@ -14,8 +14,6 @@ namespace RPG_Project
         Health health;
         Stamina stamina;
 
-        float fadeTime = 0.1f;
-
         public ControllerRecoverState(Controller controller)
         {
             this.controller = controller;
@@ -34,8 +32,8 @@ namespace RPG_Project
             stamina.State = ResourceState.Recover;
 
             if (controller.TargetSphere.Active)
-                controller.Model.PlayAnimationFade(controller.strafeHash, 0, fadeTime);
-            else controller.Model.PlayAnimationFade(controller.moveHash, 0, fadeTime);
+                controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
+            else controller.Model.PlayAnimationFade(controller.moveHash, 0, false);
         }
 
         public void ExecuteFrame()

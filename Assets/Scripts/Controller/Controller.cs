@@ -92,6 +92,8 @@ namespace RPG_Project
 
         void InitSM()
         {
+            sm.AddState(StateID.Empty, new EmptyState());
+
             sm.AddState(StateID.ControllerMove, new ControllerMoveState(this));
             sm.AddState(StateID.ControllerRun, new ControllerRunState(this));
             sm.AddState(StateID.ControllerFall, new ControllerFallState(this));
@@ -253,6 +255,15 @@ namespace RPG_Project
         public void MoveTo(Vector3 pos)
         {
             Movement.MoveTo(pos);
+        }
+
+        public void Destroy()
+        {
+            Party.Party.Remove(this);
+
+            Party.InvokeDeath();
+
+            Destroy(gameObject);
         }
     }
 }

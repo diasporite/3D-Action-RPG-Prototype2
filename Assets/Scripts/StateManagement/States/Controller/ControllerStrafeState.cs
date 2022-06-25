@@ -33,7 +33,7 @@ namespace RPG_Project
             health.State = ResourceState.Regen;
             stamina.State = ResourceState.Regen;
 
-            controller.Model.PlayAnimationFade(controller.strafeHash, 0);
+            controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
         }
 
         public void ExecuteFrame()

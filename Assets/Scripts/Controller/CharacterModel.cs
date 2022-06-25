@@ -69,34 +69,14 @@ namespace RPG_Project
             Hips.transform.LookAt(look);
         }
 
-        public void PlayAnimation(string stateName, int layer)
+        public void PlayAnimationFade(int stateHash, int layer, bool allowReentry)
         {
-            Anim.Play(stateName, 0);
-        }
-
-        public void PlayAnimation(int stateHash, int layer)
-        {
-            Anim.Play(stateHash, 0);
-        }
-
-        public void PlayAnimationFade(string stateName, int layer, float dt)
-        {
-            Anim.CrossFadeInFixedTime(stateName, dt);
-        }
-
-        public void PlayAnimationFade(string stateName, int layer)
-        {
-            Anim.CrossFadeInFixedTime(stateName, FadeTime);
-        }
-
-        public void PlayAnimationFade(int stateHash, int layer, float dt)
-        {
-            Anim.CrossFadeInFixedTime(stateHash, dt);
-        }
-
-        public void PlayAnimationFade(int stateHash, int layer)
-        {
-            Anim.CrossFadeInFixedTime(stateHash, FadeTime);
+            if (!allowReentry)
+            {
+                if (stateHash != Anim.GetCurrentAnimatorStateInfo(0).shortNameHash)
+                    Anim.CrossFadeInFixedTime(stateHash, FadeTime);
+            }
+            else Anim.CrossFadeInFixedTime(stateHash, FadeTime);
         }
 
         #region AnimParameters

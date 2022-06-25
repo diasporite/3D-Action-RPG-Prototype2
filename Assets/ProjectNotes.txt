@@ -36,6 +36,13 @@ BEFORE 24/6/22
 - BUG: Duplication in ActioQueue [FIXED]
 - Started work on enemy AI
 
+25/6/22
+- BUGS
+  - State driven cam doesn't work
+    - Camera remains in free look state when strafing
+  - Characters start in falling animation
+
+
 
 IDEAS
 - Max stamina gradually changes [DITCHED]

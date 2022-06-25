@@ -116,8 +116,8 @@ namespace RPG_Project
         {
             RotateModel(dir, dt);
 
-            model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimDir(dir);
+            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
                 cc.Move(Move(transform.forward) * dt);
@@ -127,8 +127,8 @@ namespace RPG_Project
         {
             RotateModel(dir, dt);
 
-            model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimDir(dir);
+            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
                 cc.Move(Move(speed, transform.forward) * dt);
@@ -138,8 +138,8 @@ namespace RPG_Project
         {
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
-            model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimDir(dir);
+            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimDir(dir);
 
             var ds = transform.forward * dir.z + transform.right * dir.x;
 
@@ -151,8 +151,8 @@ namespace RPG_Project
         {
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
-            model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimDir(dir);
+            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimDir(dir);
 
             var ds = transform.forward * dir.z + transform.right * dir.x;
 

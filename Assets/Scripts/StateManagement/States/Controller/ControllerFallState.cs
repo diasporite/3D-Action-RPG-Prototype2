@@ -11,8 +11,6 @@ namespace RPG_Project
 
         Movement movement;
 
-        float fadeTime = 0.25f;
-
         public ControllerFallState(Controller controller)
         {
             this.controller = controller;
@@ -23,7 +21,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            controller.Model.PlayAnimationFade(controller.fallHash, 0, fadeTime);
+            controller.Model.PlayAnimationFade(controller.fallHash, 0, false);
         }
 
         public void ExecuteFrame()

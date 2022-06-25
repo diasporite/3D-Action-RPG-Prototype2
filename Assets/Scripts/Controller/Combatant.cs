@@ -93,6 +93,8 @@ namespace RPG_Project
 
         public void OnDamage(DamageInfo damage)
         {
+            if (controller.sm.InState(StateID.ControllerDeath)) return;
+
             int hDamage = combat.HealthDamage(damage, this);
             int sDamage = combat.StaminaDamage(damage, this);
 
