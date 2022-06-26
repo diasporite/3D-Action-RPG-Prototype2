@@ -186,7 +186,7 @@ namespace RPG_Project
 
                 if (TargetSphere.Active)
                 {
-                    var targetFound = TargetSphere.FindTarget();
+                    var targetFound = TargetSphere.SelectTargets();
 
                     if (targetFound)
                     {

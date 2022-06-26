@@ -34,6 +34,7 @@ namespace RPG_Project
         public ActionQueue ActionQueue { get; private set; }
 
         public CameraFocus CamFocus { get; private set; }
+        public Target Target { get; private set; }
         public TargetSphere TargetSphere { get; private set; }
 
         public Transform CurrentControllerTransform => CurrentController?.transform;
@@ -85,6 +86,7 @@ namespace RPG_Project
             ActionQueue = GetComponent<ActionQueue>();
 
             CamFocus = GetComponentInChildren<CameraFocus>();
+            Target = GetComponentInChildren<Target>();
             TargetSphere = GetComponentInChildren<TargetSphere>();
         }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,9 @@ namespace RPG_Project
 {
     public class TargetSphere : MonoBehaviour
     {
+        public event Action OnLockOn;
+        public event Action OnLockOff;
+
         [field: SerializeField] public bool Active { get; set; } = false;
 
         PartyController party;
@@ -36,10 +39,10 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (CurrentTarget == null) Active = false;
+            if (NoTargets) Active = false;
             else
             {
-                if (party.CurrentControllerTransform != null)
+                if (CurrentTarget != null && party.CurrentControllerTransform != null)
                 {
                     transform.position = party.CurrentControllerTransform.position;
                     TargetFocus.transform.position =
@@ -54,15 +57,24 @@ namespace RPG_Project
             var target = other.GetComponentInChildren<Target>();
 
             if (target != null)
+            {
                 if (target.transform.root != transform.root && !Targets.Contains(target))
+                {
                     Targets.Add(target);
+                    target.TargetSphere = this;
+                }
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
             var target = other.GetComponentInChildren<Target>();
 
-            if (target != null && Targets.Contains(target)) Targets.Remove(target);
+            if (target != null && Targets.Contains(target))
+            {
+                target.TargetSphere = null;
+                Targets.Remove(target);
+            }
         }
 
         private void OnDrawGizmos()
@@ -71,7 +83,17 @@ namespace RPG_Project
             Gizmos.DrawWireSphere(transform.position, 0.5f * transform.lossyScale.x);
         }
 
-        public bool FindTarget()
+        public void InvokeLockOn()
+        {
+            OnLockOn?.Invoke();
+        }
+
+        public void InvokeLockOff()
+        {
+            OnLockOff?.Invoke();
+        }
+
+        public bool SelectTargets()
         {
             Target closestTarget = null;
             float closestSqrDist = Mathf.Infinity;
@@ -98,14 +120,29 @@ namespace RPG_Project
             return true;
         }
 
-        public void SelectTarget(int index)
-        {
-
-        }
-
         bool OutsideScreen(Vector2 screenPos)
         {
             return screenPos.x < 0 || screenPos.x > 1 || screenPos.y < 0 || screenPos.y > 1;
+        }
+
+        public void RemoveTarget(Target target)
+        {
+            if (Targets.Contains(target))
+            {
+                Targets.Remove(target);
+
+                SelectTargets();
+
+                if (Active)
+                {
+                    if (NoTargets) Active = false;
+                }
+            }
+        }
+
+        void SetInactive()
+        {
+
         }
     }
 }

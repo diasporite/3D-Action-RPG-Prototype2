@@ -10,6 +10,7 @@ namespace RPG_Project
         [field: SerializeField] public bool Locked { get; private set; }
 
         PartyController party;
+        InputController input;
 
         CinemachineStateDrivenCamera stateCam;
         CinemachineFreeLook freeLook;
@@ -19,6 +20,7 @@ namespace RPG_Project
         private void Awake()
         {
             party = GetComponent<PartyController>();
+            input = GetComponent<PlayerInputController>();
 
             stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
             freeLook = GetComponentInChildren<CinemachineFreeLook>();
@@ -28,13 +30,13 @@ namespace RPG_Project
         private void OnEnable()
         {
             party.OnCharacterChanged += ChangeAnimatedTarget;
-            party.InputController.LockAction += ToggleCam;
+            input.LockAction += ToggleCam;
         }
 
         private void OnDisable()
         {
             party.OnCharacterChanged -= ChangeAnimatedTarget;
-            party.InputController.LockAction -= ToggleCam;
+            input.LockAction -= ToggleCam;
         }
 
         void ChangeAnimatedTarget()

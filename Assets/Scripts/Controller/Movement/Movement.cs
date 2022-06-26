@@ -11,10 +11,19 @@ namespace RPG_Project
         Fall = 2,
     }
 
+    // Strafing is separate from mode
+    public enum MovementMode
+    {
+        ThirdPerson = 0,
+        TopDown = 1,
+        SideScroll = 2,
+    }
+
     public class Movement : MonoBehaviour
     {
         [Header("Info")]
         [SerializeField] MovementState state;
+        [SerializeField] MovementMode mode;
         [SerializeField] bool grounded;
 
         [field: Header("Speed")]
@@ -136,6 +145,8 @@ namespace RPG_Project
 
         public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
         {
+            if (currentSpeed != StrafeSpeed) currentSpeed = StrafeSpeed;
+
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
             model?.SetAnimSpeed(dir.magnitude * currentSpeed);
@@ -149,6 +160,8 @@ namespace RPG_Project
 
         public void MovePositionStrafe(float speed, Vector3 dir, float dt, bool damping)
         {
+            if (currentSpeed != StrafeSpeed) currentSpeed = StrafeSpeed;
+
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
             model?.SetAnimSpeed(dir.magnitude * currentSpeed);

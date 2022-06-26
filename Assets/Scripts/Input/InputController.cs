@@ -31,6 +31,7 @@ namespace RPG_Project
         public event Action<Vector2> WalkAction;
 
         public event Action LockAction;
+
         public event Action RollAction;
         public event Action GuardAction;
 
