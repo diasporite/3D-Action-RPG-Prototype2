@@ -10,11 +10,6 @@ namespace RPG_Project
     {
         PlayerControls playerControls;
 
-        bool CanAct => Controller.CurrentState != StateID.ControllerFall &&
-            Controller.CurrentState != StateID.ControllerRecover &&
-            Controller.CurrentState != StateID.ControllerStagger &&
-            Controller.CurrentState != StateID.ControllerDeath;
-
         private void Awake()
         {
             playerControls = new PlayerControls();

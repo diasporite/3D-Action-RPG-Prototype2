@@ -24,6 +24,8 @@ namespace RPG_Project
             controller.Model.PlayAnimationFade(controller.staggerHash, 0, false);
 
             controller.ActionQueue.ClearActions();
+
+            animNormTime = 0;
         }
 
         public void ExecuteFrame()
@@ -32,6 +34,7 @@ namespace RPG_Project
             controller.Party.Stamina.Tick(0);
 
             animNormTime = controller.Model.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            animNormTime -= Mathf.Floor(animNormTime);
             if (animNormTime >= 1f) csm.ChangeState(StateID.ControllerMove);
         }
 

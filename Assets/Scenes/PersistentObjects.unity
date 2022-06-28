@@ -174,7 +174,7 @@ MonoBehaviour:
   m_IgnoreTag: Player
   m_TransparentLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_MinimumDistanceFromTarget: 0.1
   m_AvoidObstacles: 1
   m_DistanceLimit: 0
@@ -228,6 +228,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 852679900}
     m_Modifications:
+    - target: {fileID: 185970707, guid: c9e1e69e60c852e4498a05c78c00b346, type: 3}
+      propertyPath: grounded
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1657734003659942035, guid: c9e1e69e60c852e4498a05c78c00b346,
         type: 3}
       propertyPath: m_RootOrder
@@ -622,7 +626,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535891123}
-  m_LocalRotation: {x: 0.09853762, y: -0.0000000042806607, z: 4.2386888e-10, w: 0.99513334}
+  m_LocalRotation: {x: 0.098537624, y: 0.000000004280661, z: -4.2386897e-10, w: 0.99513334}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -696,7 +700,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644342023}
-  m_LocalRotation: {x: 0.098537624, y: -0.000000004280661, z: 4.2386897e-10, w: 0.99513334}
+  m_LocalRotation: {x: 0.09853762, y: 0.0000000042806607, z: -4.2386888e-10, w: 0.99513334}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1030,7 +1034,7 @@ GameObject:
   - component: {fileID: 852679891}
   m_Layer: 12
   m_Name: Party
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1112,7 +1116,6 @@ MonoBehaviour:
     cooldown: 0
     speed: 0
     count: 0
-  state: 0
   regen: 0
   currentRegen: 0
 --- !u!114 &852679896
@@ -1135,7 +1138,6 @@ MonoBehaviour:
     cooldown: 0
     speed: 0
     count: 0
-  state: 0
   regen: 0
   currentRegen: 0
 --- !u!114 &852679897
@@ -1179,7 +1181,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852679890}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -1372,7 +1374,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.09853762, y: 0.0000000042806616, z: -4.2386902e-10, w: 0.99513334}
+  m_LocalRotation: {x: 0.098537624, y: 0.000000004280661, z: -4.2386894e-10, w: 0.99513334}
   m_LocalPosition: {x: 0, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1573,7 +1575,7 @@ MonoBehaviour:
   m_IgnoreTag: Player
   m_TransparentLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_MinimumDistanceFromTarget: 0.1
   m_AvoidObstacles: 1
   m_DistanceLimit: 0

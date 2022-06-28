@@ -135,14 +135,16 @@ namespace RPG_Project
 
                 if (Active)
                 {
-                    if (NoTargets) Active = false;
+                    if (NoTargets) SetInactive();
                 }
             }
         }
 
         void SetInactive()
         {
+            Active = false;
 
+            InvokeLockOff();
         }
     }
 }

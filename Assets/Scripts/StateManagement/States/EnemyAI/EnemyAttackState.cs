@@ -34,7 +34,7 @@ namespace RPG_Project
 
             if (enemy.Timer.Full)
             {
-                input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count));
+                input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
                 enemy.Timer.Reset();
             }
 

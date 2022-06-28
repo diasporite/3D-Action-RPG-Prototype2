@@ -102,7 +102,8 @@ namespace RPG_Project
 
         private void Start()
         {
-            Init(true);
+            if (gameObject.tag == "Player") Init(true);
+            else Init(false);
         }
 
         private void Update()

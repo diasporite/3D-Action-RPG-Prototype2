@@ -27,6 +27,11 @@ namespace RPG_Project
             controller.Model.PlayAnimationFade(controller.deathHash, 0, false);
 
             controller.ActionQueue.ClearActions();
+
+            animNormTime = 0;
+
+            controller.GetComponentInParent<CharacterController>().enabled = false;
+            controller.GetComponent<Collider>().enabled = false;
         }
 
         public void ExecuteFrame()
@@ -35,6 +40,8 @@ namespace RPG_Project
             controller.Party.Stamina.Tick(0);
 
             animNormTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            animNormTime -= Mathf.Floor(animNormTime);
+
             if (animNormTime >= 1f)
             {
                 controller.Destroy();

@@ -28,8 +28,8 @@ namespace RPG_Project
         {
             base.UpdateUI();
 
-            if (state == ResourceState.Recover) fill.color = Color.grey;
-            else fill.color = new Color(0, 0, 0.7843f);
+            //if (state == ResourceState.Recover) fill.color = Color.grey;
+            //else fill.color = new Color(0, 0, 0.7843f);
         }
     }
 }

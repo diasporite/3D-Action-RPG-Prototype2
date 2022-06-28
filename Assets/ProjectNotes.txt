@@ -55,7 +55,15 @@ BEFORE 24/6/22
   - Work on PlayerCameraController
   - Figure out how to remove target from target list when target is killed
 
-
+28/6/22
+- NOTES
+  - Weird enemy movement caused by IsPlayer being true (links camera rotation to movement)
+- BUG: Hold interactions only cause once
+  - FIX: Change button to pass through + button
+    - https://answers.unity.com/questions/1862547/new-input-system-hold-interaction-called-only-once.html
+- TO DO:
+  - In strafe state, player does not face towards target after rolling
+  
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

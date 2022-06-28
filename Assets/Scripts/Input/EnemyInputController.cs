@@ -6,7 +6,6 @@ namespace RPG_Project
 {
     public class EnemyInputController : InputController
     {
-
         public void OnMove(Vector3 dir)
         {
             MoveChar = new Vector2(dir.x, dir.z);

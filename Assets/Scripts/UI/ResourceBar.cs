@@ -7,8 +7,6 @@ namespace RPG_Project
 {
     public class ResourceBar : MonoBehaviour
     {
-        [SerializeField] protected ResourceState state;
-
         [SerializeField] protected PartyController party;
         [SerializeField] protected Resource resource;
 
@@ -52,8 +50,6 @@ namespace RPG_Project
 
         public virtual void UpdateUI()
         {
-            state = resource.State;
-
             fill.fillAmount = resource.ResourceFraction;
 
             fillShadow.fillAmount = Mathf.MoveTowards(fillShadow.fillAmount, 

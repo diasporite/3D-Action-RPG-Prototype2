@@ -28,8 +28,6 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Walk;
-            health.State = ResourceState.Recover;
-            stamina.State = ResourceState.Recover;
 
             if (controller.TargetSphere.Active)
                 controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
@@ -39,7 +37,7 @@ namespace RPG_Project
         public void ExecuteFrame()
         {
             health.Tick(0);
-            stamina.Tick();
+            stamina.Tick(2.5f * Time.deltaTime);
 
             if (stamina.Full)
             {

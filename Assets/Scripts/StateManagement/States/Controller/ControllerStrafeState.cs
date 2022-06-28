@@ -30,8 +30,6 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Walk;
-            health.State = ResourceState.Regen;
-            stamina.State = ResourceState.Regen;
 
             controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
         }

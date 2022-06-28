@@ -34,6 +34,7 @@ namespace RPG_Project
 
         public event Action RollAction;
         public event Action GuardAction;
+        public event Action GuardCancel;
 
         // Action5-8 are for enemies
         public event Action<int> OnAction;

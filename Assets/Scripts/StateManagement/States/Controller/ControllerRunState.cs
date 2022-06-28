@@ -30,14 +30,12 @@ namespace RPG_Project
         public void Enter(params object[] args)
         {
             movement.State = MovementState.Run;
-            health.State = ResourceState.Run;
-            stamina.State = ResourceState.Run;
         }
 
         public void ExecuteFrame()
         {
-            health.Tick();
-            stamina.Tick();
+            health.Tick(0);
+            stamina.Tick(-0.5f * Time.deltaTime);
 
             if (!movement.Grounded)
                 csm.ChangeState(StateID.ControllerFall);

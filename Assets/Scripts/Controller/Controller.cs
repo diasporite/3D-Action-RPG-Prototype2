@@ -116,6 +116,7 @@ namespace RPG_Project
 
             InputController.RollAction += Roll;
             InputController.GuardAction += Guard;
+
             InputController.OnAction += Action;
         }
 
@@ -130,6 +131,7 @@ namespace RPG_Project
 
             InputController.RollAction -= Roll;
             InputController.GuardAction -= Guard;
+
             InputController.OnAction -= Action;
         }
 
@@ -186,6 +188,8 @@ namespace RPG_Project
 
                 if (TargetSphere.Active)
                 {
+                    TargetSphere.InvokeLockOn();
+
                     var targetFound = TargetSphere.SelectTargets();
 
                     if (targetFound)
@@ -201,6 +205,8 @@ namespace RPG_Project
                 }
                 else
                 {
+                    TargetSphere.InvokeLockOff();
+
                     sm.ChangeState(StateID.ControllerMove);
                 }
             }
@@ -208,6 +214,7 @@ namespace RPG_Project
 
         void Roll()
         {
+            print("roll");
             if (sm.InState(StateID.ControllerGuard)) sm.ChangeState(StateID.ControllerMove);
             else if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
                 StateID.ControllerStrafe, StateID.ControllerAction))
@@ -225,9 +232,16 @@ namespace RPG_Project
 
         void Guard()
         {
+            print("guard");
             if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
                 StateID.ControllerStrafe))
                 sm.ChangeState(StateID.ControllerGuard);
+        }
+
+        void GuardCancel()
+        {
+            if (sm.InState(StateID.ControllerGuard))
+                sm.ChangeState(StateID.ControllerMove);
         }
 
         void Action(int index)
