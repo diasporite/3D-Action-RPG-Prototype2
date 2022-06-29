@@ -12,7 +12,6 @@ namespace RPG_Project
         PartyController party;
         InputController input;
 
-        CinemachineStateDrivenCamera stateCam;
         CinemachineFreeLook freeLook;
         [SerializeField] CinemachineVirtualCamera vcam;
         CinemachineTargetGroup targetGroup;
@@ -22,26 +21,18 @@ namespace RPG_Project
             party = GetComponent<PartyController>();
             input = GetComponent<PlayerInputController>();
 
-            stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
             freeLook = GetComponentInChildren<CinemachineFreeLook>();
             targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
         }
 
         private void OnEnable()
         {
-            party.OnCharacterChanged += ChangeAnimatedTarget;
             input.LockAction += ToggleCam;
         }
 
         private void OnDisable()
         {
-            party.OnCharacterChanged -= ChangeAnimatedTarget;
             input.LockAction -= ToggleCam;
-        }
-
-        void ChangeAnimatedTarget()
-        {
-            stateCam.m_AnimatedTarget = party.CurrentController.Model.Anim;
         }
 
         void ToggleCam()

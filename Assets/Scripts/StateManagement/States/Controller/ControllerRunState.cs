@@ -29,7 +29,7 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Run;
+
         }
 
         public void ExecuteFrame()
@@ -43,7 +43,7 @@ namespace RPG_Project
                 csm.ChangeState(StateID.ControllerRecover);
             else if (controller.InputController.MoveChar == Vector2.zero)
                 csm.ChangeState(StateID.ControllerMove);
-            else controller.Move(false);
+            else controller.Run();
         }
 
         public void ExecuteFrameFixed()

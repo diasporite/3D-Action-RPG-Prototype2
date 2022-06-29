@@ -27,8 +27,6 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Walk;
-
             if (controller.TargetSphere.Active)
                 controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
             else controller.Model.PlayAnimationFade(controller.moveHash, 0, false);

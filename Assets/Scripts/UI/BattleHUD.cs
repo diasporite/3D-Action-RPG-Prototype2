@@ -10,17 +10,17 @@ namespace RPG_Project
         [SerializeField] PartyController player;
 
         [SerializeField] CharInfo charInfo;
+        [SerializeField] SkillsetUI skillsetUI;
 
-        public void InitUI(PartyController player)
+        private void Awake()
         {
-            this.player = player;
-
-            charInfo.InitUI(player);
+            charInfo = GetComponentInChildren<CharInfo>();
+            skillsetUI = GetComponentInChildren<SkillsetUI>();
         }
 
         private void OnEnable()
         {
-            SubscribeToDelegates();
+            if (player != null) SubscribeToDelegates();
         }
 
         private void OnDisable()
@@ -28,14 +28,24 @@ namespace RPG_Project
             UnsubscribeFromDelegates();
         }
 
+        public void InitUI(PartyController player)
+        {
+            this.player = player;
+
+            charInfo.InitUI(player);
+            skillsetUI.InitUI(player);
+        }
+
         private void SubscribeToDelegates()
         {
-            
+            charInfo.SubscribeToDelegates();
+            skillsetUI.SubscribeToDelegates();
         }
 
         private void UnsubscribeFromDelegates()
         {
-            
+            charInfo.UnsubscribeFromDelegates();
+            skillsetUI.UnsubscribeFromDelegates();
         }
     }
 }

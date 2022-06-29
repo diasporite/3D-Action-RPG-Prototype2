@@ -34,8 +34,6 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Walk;
-
             controller.Model.PlayAnimationFade(controller.moveHash, 0, true);
 
             actionQueue.ClearActions();

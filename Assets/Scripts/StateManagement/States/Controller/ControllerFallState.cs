@@ -26,8 +26,6 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            movement.State = MovementState.Fall;
-
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
 

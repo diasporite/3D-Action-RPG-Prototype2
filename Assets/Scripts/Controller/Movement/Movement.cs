@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    public enum MovementState
-    {
-        Walk = 0,
-        Run = 1,
-        Fall = 2,
-    }
-
     // Strafing is separate from mode
-    public enum MovementMode
+    public enum MovementState
     {
         ThirdPerson = 0,
         TopDown = 1,
@@ -23,14 +16,12 @@ namespace RPG_Project
     {
         [Header("Info")]
         [SerializeField] MovementState state;
-        [SerializeField] MovementMode mode;
         [SerializeField] bool grounded;
 
         [field: Header("Speed")]
         [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
         [field: SerializeField] public float RunSpeed { get; private set; } = 6f;
         [field: SerializeField] public float StrafeSpeed { get; private set; } = 3f;
-        [SerializeField] float currentSpeed;
 
         [Header("Forces")]
         [SerializeField] Vector3 forceVelocity = 
@@ -66,30 +57,7 @@ namespace RPG_Project
 
         float dropSpeed;
 
-        public MovementState State
-        {
-            get => state;
-            set
-            {
-                state = value;
-
-                switch (state)
-                {
-                    case MovementState.Walk:
-                        currentSpeed = WalkSpeed;
-                        break;
-                    case MovementState.Run:
-                        currentSpeed = RunSpeed;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         public bool Grounded => grounded;
-
-        public Vector3 Move(Vector3 dir) => forceVelocity + (currentSpeed * dir);
 
         public Vector3 Move(float speed, Vector3 dir) => forceVelocity + (speed * dir);
 
@@ -102,6 +70,8 @@ namespace RPG_Project
 
         private void Update()
         {
+            UpdateForce();
+
             Fall(Time.deltaTime);
         }
 
@@ -116,55 +86,60 @@ namespace RPG_Project
 
             mainCamTransform = Camera.main.transform;
 
-            State = MovementState.Walk;
-
             dropSpeed = -Mathf.Tan(cc.slopeLimit * Mathf.Deg2Rad);
         }
 
-        public void MovePositionFree(Vector3 dir, float dt, bool damping)
+        public void MovePositionFree(Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
 
-            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimSpeed(dir.magnitude * WalkSpeed);
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(Move(transform.forward) * dt);
+                cc.Move(Move(WalkSpeed, transform.forward) * dt);
         }
 
-        public void MovePositionFree(float speed, Vector3 dir, float dt, bool damping)
+        public void MovePositionFree(float speed, Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
 
-            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimSpeed(dir.magnitude * speed);
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
                 cc.Move(Move(speed, transform.forward) * dt);
         }
 
-        public void MovePositionStrafe(Vector3 dir, float dt, bool damping)
+        public void MovePositionRun(Vector3 dir, float dt)
         {
-            if (currentSpeed != StrafeSpeed) currentSpeed = StrafeSpeed;
+            RotateModel(dir, dt);
 
+            model?.SetAnimSpeed(dir.magnitude * RunSpeed);
+            model?.SetAnimDir(dir);
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(RunSpeed, transform.forward) * dt);
+        }
+
+        public void MovePositionStrafe(Vector3 dir, float dt)
+        {
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
-            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimSpeed(dir.magnitude * StrafeSpeed);
             model?.SetAnimDir(dir);
 
             var ds = transform.forward * dir.z + transform.right * dir.x;
 
             if (dir != Vector3.zero)
-                cc.Move(Move(ds) * dt);
+                cc.Move(Move(StrafeSpeed, ds) * dt);
         }
 
-        public void MovePositionStrafe(float speed, Vector3 dir, float dt, bool damping)
+        public void MovePositionStrafe(float speed, Vector3 dir, float dt)
         {
-            if (currentSpeed != StrafeSpeed) currentSpeed = StrafeSpeed;
-
             RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
 
-            model?.SetAnimSpeed(dir.magnitude * currentSpeed);
+            model?.SetAnimSpeed(dir.magnitude * speed);
             model?.SetAnimDir(dir);
 
             var ds = transform.forward * dir.z + transform.right * dir.x;

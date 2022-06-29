@@ -153,8 +153,16 @@ namespace RPG_Project
             var ds = new Vector3(dir.x, 0, dir.y).normalized;
 
             if (strafe)
-                Movement.MovePositionStrafe(ds, Time.deltaTime, false);
-            else Movement.MovePositionFree(ds, Time.deltaTime, false);
+                Movement.MovePositionStrafe(ds, Time.deltaTime);
+            else Movement.MovePositionFree(ds, Time.deltaTime);
+        }
+
+        public void Run()
+        {
+            var dir = InputController.MoveChar;
+            var ds = new Vector3(dir.x, 0, dir.y).normalized;
+
+            Movement.MovePositionRun(ds, Time.deltaTime);
         }
 
         public void Look(Vector2 dir)

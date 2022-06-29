@@ -63,7 +63,13 @@ BEFORE 24/6/22
     - https://answers.unity.com/questions/1862547/new-input-system-hold-interaction-called-only-once.html
 - TO DO:
   - In strafe state, player does not face towards target after rolling
-  
+ 
+29/6/22
+- NOTES
+  - Maria sword hitbox fixed (attach to RightHand)
+- TO DO:
+  - Finish UI
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

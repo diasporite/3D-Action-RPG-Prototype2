@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace RPG_Project
 {
-    public class ResourceBar : MonoBehaviour
+    public class ResourceBar : MonoBehaviour, IBattleUIElement
     {
         [SerializeField] protected PartyController party;
         [SerializeField] protected Resource resource;
@@ -22,11 +22,6 @@ namespace RPG_Project
 
         string Text => textHeader + resource.ResourcePointValue + "/" + 
             resource.ResourceStatValue;
-
-        private void OnDisable()
-        {
-            UnsubscribeFromDelegates();
-        }
 
         public virtual void InitUI(PartyController party)
         {

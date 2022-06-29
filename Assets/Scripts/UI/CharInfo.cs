@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace RPG_Project
 {
-    public class CharInfo : MonoBehaviour
+    public class CharInfo : MonoBehaviour, IBattleUIElement
     {
         [SerializeField] ResourceBar healthBar;
         [SerializeField] ResourceBar staminaBar;
@@ -14,6 +14,20 @@ namespace RPG_Project
         {
             healthBar.InitUI(party);
             staminaBar.InitUI(party);
+
+            SubscribeToDelegates();
+        }
+
+        public void SubscribeToDelegates()
+        {
+            healthBar.SubscribeToDelegates();
+            staminaBar.SubscribeToDelegates();
+        }
+
+        public void UnsubscribeFromDelegates()
+        {
+            healthBar.UnsubscribeFromDelegates();
+            staminaBar.UnsubscribeFromDelegates();
         }
     }
 }
