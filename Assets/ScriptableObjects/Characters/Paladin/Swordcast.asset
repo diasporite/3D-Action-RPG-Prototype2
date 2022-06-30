@@ -15,5 +15,5 @@ MonoBehaviour:
   <Animation>k__BackingField:
     <animation>k__BackingField: {fileID: 0}
     <motion>k__BackingField: []
-  <SpCost>k__BackingField: 20
+  <SpCost>k__BackingField: 35
   <MpCost>k__BackingField: 5

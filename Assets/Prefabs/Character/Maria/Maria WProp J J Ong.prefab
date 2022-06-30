@@ -1204,8 +1204,8 @@ GameObject:
   - component: {fileID: 3560312788845355522}
   - component: {fileID: 1138122886}
   - component: {fileID: 6040125515043442811}
-  - component: {fileID: 1138122881}
   - component: {fileID: 1138122882}
+  - component: {fileID: 1138122881}
   m_Layer: 0
   m_Name: Maria WProp J J Ong
   m_TagString: Untagged
@@ -1294,6 +1294,32 @@ MonoBehaviour:
   <Hips>k__BackingField: {fileID: 8109970045243544863}
   <FadeTime>k__BackingField: 0.1
   <Anim>k__BackingField: {fileID: 0}
+--- !u!114 &1138122882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4005921810296270641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9061bad93c2ab7247a01d2348a3cb5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  grounded: 0
+  <WalkSpeed>k__BackingField: 4.3477
+  <RunSpeed>k__BackingField: 8.5613
+  <StrafeSpeed>k__BackingField: 2.307
+  forceVelocity: {x: 0, y: 0, z: 0}
+  <DragTime>k__BackingField: 0
+  timeSinceGrounded: 0
+  verticalVelocity: 0
+  terminalVelocity: 40
+  damageSpeedThreshold: 12
+  fallDamageScaling: 0.12
+  dir: {x: 0, y: 0, z: 0}
+  ds: {x: 0, y: 0, z: 0}
 --- !u!114 &1138122881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1306,8 +1332,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5109ed5f8f0802f469fc094b7cfff9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 4ca8563c788888a44af890b3065858f9, type: 2}
-  charName: 
+  <Data>k__BackingField: {fileID: 11400000, guid: 4ca8563c788888a44af890b3065858f9,
+    type: 2}
+  <CharName>k__BackingField: 
   <Level>k__BackingField:
     statValue: 0
     currentStatValue: 0
@@ -1339,34 +1366,6 @@ MonoBehaviour:
   hRegenAtLv: 
   sRegenAtLv: 
   <Skillset>k__BackingField: []
---- !u!114 &1138122882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4005921810296270641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9061bad93c2ab7247a01d2348a3cb5d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  mode: 0
-  grounded: 0
-  <WalkSpeed>k__BackingField: 4.3477
-  <RunSpeed>k__BackingField: 8.5613
-  <StrafeSpeed>k__BackingField: 2.307
-  currentSpeed: 0
-  forceVelocity: {x: 0, y: 0, z: 0}
-  <DragTime>k__BackingField: 0
-  timeSinceGrounded: 0
-  verticalVelocity: 0
-  terminalVelocity: 40
-  damageSpeedThreshold: 12
-  fallDamageScaling: 0.12
-  dir: {x: 0, y: 0, z: 0}
-  ds: {x: 0, y: 0, z: 0}
 --- !u!1 &4128022964105285670
 GameObject:
   m_ObjectHideFlags: 0

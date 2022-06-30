@@ -9,8 +9,6 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
-        float animNormTime;
-
         public ControllerStaggerState(Controller controller)
         {
             this.controller = controller;
@@ -24,18 +22,12 @@ namespace RPG_Project
             controller.Model.PlayAnimationFade(controller.staggerHash, 0, false);
 
             controller.ActionQueue.ClearActions();
-
-            animNormTime = 0;
         }
 
         public void ExecuteFrame()
         {
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
-
-            animNormTime = controller.Model.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            animNormTime -= Mathf.Floor(animNormTime);
-            if (animNormTime >= 1f) csm.ChangeState(StateID.ControllerMove);
         }
 
         public void ExecuteFrameFixed()

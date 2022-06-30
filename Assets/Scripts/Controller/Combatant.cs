@@ -9,9 +9,9 @@ namespace RPG_Project
     {
         CombatDatabase combat;
 
-        [SerializeField] CharData data;
+        [field: SerializeField] public CharData Data { get; private set; }
 
-        [SerializeField] string charName;
+        [field: SerializeField] public string CharName { get; private set; }
 
         [field: Header("Progression")]
         [field: SerializeField] public Stat Level { get; private set; }
@@ -80,9 +80,9 @@ namespace RPG_Project
         {
             index = Mathf.Clamp(index, 0, 4);
 
-            if (index == 0) return data.DefendAction;
+            if (index == 0) return Data.DefendAction;
 
-            return data.Actions[index - 1];
+            return Data.Actions[index - 1];
         }
 
         private void Awake()
@@ -116,18 +116,18 @@ namespace RPG_Project
             health = party.Health;
             stamina = party.Stamina;
 
-            charName = data.CharName;
+            CharName = Data.CharName;
 
             //expAtLv = combat.GetStatAtLv(StatID.ExpAtLv, data.baseExpAtLv);
             
-            vitAtLv = combat.GetStatAtLv(StatID.Vitality, data.BaseVit);
-            endAtLv = combat.GetStatAtLv(StatID.Endurance, data.BaseEnd);
+            vitAtLv = combat.GetStatAtLv(StatID.Vitality, Data.BaseVit);
+            endAtLv = combat.GetStatAtLv(StatID.Endurance, Data.BaseEnd);
 
-            atkAtLv = combat.GetStatAtLv(StatID.Attack, data.BaseAtk);
-            defAtLv = combat.GetStatAtLv(StatID.Defence, data.BaseDef);
+            atkAtLv = combat.GetStatAtLv(StatID.Attack, Data.BaseAtk);
+            defAtLv = combat.GetStatAtLv(StatID.Defence, Data.BaseDef);
 
-            hRegenAtLv = combat.GetStatAtLv(StatID.HealthRegen, data.BaseHealthRegen);
-            sRegenAtLv = combat.GetStatAtLv(StatID.StaminaRegen, data.BaseStaminaRegen);
+            hRegenAtLv = combat.GetStatAtLv(StatID.HealthRegen, Data.BaseHealthRegen);
+            sRegenAtLv = combat.GetStatAtLv(StatID.StaminaRegen, Data.BaseStaminaRegen);
 
             //this.exp = exp;
 
@@ -139,12 +139,12 @@ namespace RPG_Project
             Attack = new Stat(atkAtLv[Level.StatValue - 1], 255);
             Defence = new Stat(defAtLv[Level.StatValue - 1], 255);
 
-            Weight = new Stat(data.Weight, 255);
+            Weight = new Stat(Data.Weight, 255);
 
             HealthRegen = new Stat(hRegenAtLv[Level.StatValue - 1], 15);
             StaminaRegen = new Stat(sRegenAtLv[Level.StatValue - 1], 63);
 
-            Skillset = data.Actions.ToList();
+            Skillset = Data.Actions.ToList();
         }
 
         //int CalculateLv()

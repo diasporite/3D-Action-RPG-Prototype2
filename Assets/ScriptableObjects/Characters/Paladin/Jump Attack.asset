@@ -27,5 +27,5 @@ MonoBehaviour:
     - <StartInNormTime>k__BackingField: 0.6857
       <ForwardSpeed>k__BackingField: 0
       <DragTime>k__BackingField: 0
-  <SpCost>k__BackingField: 20
+  <SpCost>k__BackingField: 50
   <MpCost>k__BackingField: 5
