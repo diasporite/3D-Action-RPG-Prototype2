@@ -6,28 +6,25 @@ namespace RPG_Project
 {
     public class Health : Resource
     {
-        public override ResourceState State
+        public override void Tick()
         {
-            get => base.State;
-            set
-            {
-                switch (value)
-                {
-                    case ResourceState.Regen:
-                        currentRegen = regen;
-                        break;
-                    case ResourceState.Run:
-                        currentRegen = 0;
-                        break;
-                    case ResourceState.Recover:
-                        currentRegen = 0;
-                        break;
-                }
+            base.Tick();
 
-                resourceCooldown.Speed = currentRegen;
+            party.InvokeHpChange();
+        }
 
-                state = value;
-            }
+        public override void Tick(float dt)
+        {
+            base.Tick(dt);
+
+            party.InvokeHpChange();
+        }
+
+        public override void ChangeValue(int amount)
+        {
+            base.ChangeValue(amount);
+
+            party.InvokeHpChange();
         }
     }
 }

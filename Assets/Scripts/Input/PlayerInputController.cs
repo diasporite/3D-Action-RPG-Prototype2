@@ -6,56 +6,78 @@ using UnityEngine.InputSystem;
 
 namespace RPG_Project
 {
-    public class PlayerInputController : InputController
+    public class PlayerInputController : InputController, PlayerControls.IPlayerActions
     {
-        public void OnMove(InputValue value)
+        PlayerControls playerControls;
+
+        private void Awake()
         {
-            moveChar = value.Get<Vector2>();
+            playerControls = new PlayerControls();
+            playerControls.Player.SetCallbacks(this);
         }
 
-        public void OnRotate(InputValue value)
+        private void OnEnable()
         {
-            moveCam = value.Get<Vector2>();
+            playerControls.Player.Enable();
         }
 
-        public void OnDpad(InputValue value)
+        private void OnDisable()
         {
-            dpad = value.Get<Vector2>();
+            playerControls.Player.Disable();
         }
 
-        public void OnToggleLock(InputValue value)
+        public void OnMove(InputAction.CallbackContext context)
         {
-            toggleLock = value.isPressed;
+            MoveChar = context.ReadValue<Vector2>();
         }
 
-        public void OnRun(InputValue value)
+        public void OnRotate(InputAction.CallbackContext context)
         {
-            run = value.isPressed;
+            MoveCam = context.ReadValue<Vector2>();
         }
 
-        public void OnDefend(InputValue value)
+        public void OnDpad(InputAction.CallbackContext context)
         {
-            defend = value.isPressed;
+            Dpad = context.ReadValue<Vector2>();
+
+            if (context.performed) InvokeDpad(Dpad);
         }
 
-        public void OnActionL1(InputValue value)
+        public void OnAction1(InputAction.CallbackContext context)
         {
-            actionL1 = value.isPressed;
+            if (context.performed) InvokeAction(0);
         }
 
-        public void OnActionL2(InputValue value)
+        public void OnAction2(InputAction.CallbackContext context)
         {
-            actionL2 = value.isPressed;
+            if (context.performed) InvokeAction(1);
         }
 
-        public void OnActionR1(InputValue value)
+        public void OnAction3(InputAction.CallbackContext context)
         {
-            actionR1 = value.isPressed;
+            if (context.performed) InvokeAction(2);
         }
 
-        public void OnActionR2(InputValue value)
+        public void OnAction4(InputAction.CallbackContext context)
         {
-            actionR2 = value.isPressed;
+            if (context.performed) InvokeAction(3);
+        }
+
+        public void OnGuard(InputAction.CallbackContext context)
+        {
+            if (context.canceled) InvokeRoll();
+            else if (context.performed) InvokeGuard();
+        }
+
+        public void OnRun(InputAction.CallbackContext context)
+        {
+            if (context.canceled) InvokeWalk(MoveChar);
+            else if (context.performed) InvokeRun(MoveChar);
+        }
+
+        public void OnToggleLock(InputAction.CallbackContext context)
+        {
+            if (context.performed) InvokeLock();
         }
     }
 }

@@ -31,22 +31,22 @@
                 },
                 {
                     "name": "Run",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "c557603a-b2b2-4b0c-8b85-b390503c84a4",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Hold(duration=0.1)"
                 },
                 {
-                    "name": "Defend",
-                    "type": "Button",
-                    "id": "4a0004f2-c0c1-4cea-a245-e05706aec978",
+                    "name": "Guard",
+                    "type": "PassThrough",
+                    "id": "8ff475d2-308e-4a96-b93e-aed0b8745ce1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Hold(duration=0.1)"
                 },
                 {
-                    "name": "ActionL1",
+                    "name": "Action1",
                     "type": "Button",
                     "id": "9994636f-6bf1-4421-8943-ce98338bd911",
                     "expectedControlType": "Button",
@@ -54,7 +54,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionL2",
+                    "name": "Action2",
                     "type": "Button",
                     "id": "27b8560b-6714-4755-a910-428836c47c6f",
                     "expectedControlType": "Button",
@@ -62,7 +62,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionR1",
+                    "name": "Action3",
                     "type": "Button",
                     "id": "b46ae25a-2a24-4b27-9462-6381f680ddbd",
                     "expectedControlType": "Button",
@@ -70,7 +70,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ActionR2",
+                    "name": "Action4",
                     "type": "Button",
                     "id": "d22625e0-8df7-4d01-a51c-157a74f68a5e",
                     "expectedControlType": "Button",
@@ -220,28 +220,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "bc91dcfe-2213-4dea-abca-f08c26da9e4e",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Defend",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "df6e4cc3-7838-4517-9a86-03931bd84752",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Defend",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "2D Vector",
                     "id": "6b4c91ea-4124-4b54-bfce-4789f3d94093",
                     "path": "2DVector",
@@ -358,7 +336,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionL1",
+                    "action": "Action1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -369,7 +347,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionL1",
+                    "action": "Action1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -380,7 +358,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionL2",
+                    "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -391,7 +369,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionL2",
+                    "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -402,7 +380,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionR1",
+                    "action": "Action3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -413,7 +391,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionR1",
+                    "action": "Action3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -424,7 +402,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ActionR2",
+                    "action": "Action4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -435,7 +413,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ActionR2",
+                    "action": "Action4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -530,7 +508,7 @@
                 {
                     "name": "up",
                     "id": "66fb856c-33e2-4b10-b61a-292f30120bcb",
-                    "path": "<Gamepad>/rightStick/up",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -541,7 +519,7 @@
                 {
                     "name": "down",
                     "id": "d264baa0-87dc-4b82-8f05-7cd84752f9b7",
-                    "path": "<Gamepad>/rightStick/down",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -552,7 +530,7 @@
                 {
                     "name": "left",
                     "id": "a6ca2155-ce01-431f-8692-af4affd0cd1f",
-                    "path": "<Gamepad>/rightStick/left",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -563,13 +541,35 @@
                 {
                     "name": "right",
                     "id": "68687700-11b3-4bd1-b601-9aa4159d58ee",
-                    "path": "<Gamepad>/rightStick/right",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Dpad",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f78026b7-7d42-42c0-8902-e97aec12bd62",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cee9d37-3582-453d-854b-1075c2d555f6",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

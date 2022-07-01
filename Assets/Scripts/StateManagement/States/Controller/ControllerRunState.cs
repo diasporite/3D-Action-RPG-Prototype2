@@ -11,6 +11,7 @@ namespace RPG_Project
 
         Movement movement;
 
+        Health health;
         Stamina stamina;
         InputController inputController;
 
@@ -21,37 +22,28 @@ namespace RPG_Project
 
             movement = controller.Movement;
 
+            health = controller.Party.Health;
             stamina = controller.Party.Stamina;
             inputController = controller.InputController;
         }
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Run;
-            stamina.State = ResourceState.Run;
+
         }
 
         public void ExecuteFrame()
         {
-            if (stamina.Empty)
+            health.Tick(0);
+            stamina.Tick(-0.5f * Time.deltaTime);
+
+            if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
+            else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else if (!inputController.Run())
+            else if (controller.InputController.MoveChar == Vector2.zero)
                 csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.ActionQueue.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                    }
-                }
-
-                controller.Move();
-            }
-
-            stamina.Tick();
+            else controller.Run();
         }
 
         public void ExecuteFrameFixed()

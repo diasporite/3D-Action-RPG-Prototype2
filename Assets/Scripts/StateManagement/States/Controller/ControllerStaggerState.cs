@@ -9,8 +9,6 @@ namespace RPG_Project
         Controller controller;
         StateMachine csm;
 
-        int actionIndex;
-
         public ControllerStaggerState(Controller controller)
         {
             this.controller = controller;
@@ -19,12 +17,17 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
+            controller.TargetSphere.Active = false;
 
+            controller.Model.PlayAnimationFade(controller.staggerHash, 0, false);
+
+            controller.ActionQueue.ClearActions();
         }
 
         public void ExecuteFrame()
         {
-
+            controller.Party.Health.Tick(0);
+            controller.Party.Stamina.Tick(0);
         }
 
         public void ExecuteFrameFixed()
@@ -39,7 +42,8 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            // Reset stamina to full to avoid stunlock
+            controller.Party.Stamina.ChangeValue(999);
         }
     }
 }

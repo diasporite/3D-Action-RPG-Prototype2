@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 209bb17cd6285b44a8f4480ea65343d4, type: 3}
+  m_Name: Slash
+  m_EditorClassIdentifier: 
+  <Animation>k__BackingField:
+    <animation>k__BackingField: {fileID: 0}
+    <motion>k__BackingField:
+    - <StartInNormTime>k__BackingField: 0
+      <ForwardSpeed>k__BackingField: 1.3368
+      <DragTime>k__BackingField: 0
+    - <StartInNormTime>k__BackingField: 0.217
+      <ForwardSpeed>k__BackingField: 1.0059
+      <DragTime>k__BackingField: 0
+    - <StartInNormTime>k__BackingField: 0.5942
+      <ForwardSpeed>k__BackingField: 0.615
+      <DragTime>k__BackingField: 0
+  <SpCost>k__BackingField: 30
+  <MpCost>k__BackingField: 5

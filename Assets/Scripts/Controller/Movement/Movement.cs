@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace RPG_Project
 {
+    // Strafing is separate from mode
     public enum MovementState
     {
-        Walk = 0,
-        Run = 1,
-        Fall = 2,
+        ThirdPerson = 0,
+        TopDown = 1,
+        SideScroll = 2,
     }
 
     public class Movement : MonoBehaviour
@@ -16,151 +17,230 @@ namespace RPG_Project
         [Header("Info")]
         [SerializeField] MovementState state;
         [SerializeField] bool grounded;
+        [SerializeField] float targetUpdateSpeed = 10f;
 
-        [Header("Speed")]
-        public float walkSpeed = 4f;
-        public float runSpeed = 6f;
+        [field: Header("Speed")]
+        [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
+        [field: SerializeField] public float RunSpeed { get; private set; } = 6f;
+        [field: SerializeField] public float StrafeSpeed { get; private set; } = 3f;
 
-        [SerializeField] float currentSpeed;
+        [Header("Forces")]
+        [SerializeField] Vector3 forceVelocity = 
+            new Vector3(0, 0, 0);
+        [field: SerializeField] public float DragTime { get; private set; }
 
         [Header("Gravity")]
         [SerializeField] float timeSinceGrounded = 0f;
-        [SerializeField] float verticalSpeed = 0f;
+        [SerializeField] float verticalVelocity = 0f;
         [SerializeField] float terminalVelocity = 40f;
         float gravity = -9.81f;
-        public float damageSpeedThreshold = 20f;
+        [SerializeField] float damageSpeedThreshold = 20f;
+        [SerializeField] float fallDamageScaling = 0.05f;
 
+        PartyController party;
         Controller controller;
         CharacterModel model;
         GroundCheck gc;
-        CameraPivot pivot;
+        TargetSphere targetSphere;
 
         CharacterController cc;
-        Vector3 ds;
+
+        public Vector3 dir;
+        public Vector3 ds;
+        Vector3 dampingVelocity;
+
+        Transform mainCamTransform;
 
         float target = 0f;
         float angle = 0f;
+        float targetAngle = 0f;
         float turnVelocity = 0f;
+        float targetTurnVelocity = 0f;
+        float turnTime = 0.1f;
+        float targetTurnTime = 0f;
 
-        public MovementState State
-        {
-            get => state;
-            set
-            {
-                state = value;
-
-                switch (state)
-                {
-                    case MovementState.Walk:
-                        currentSpeed = walkSpeed;
-                        break;
-                    case MovementState.Run:
-                        currentSpeed = runSpeed;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        float dropSpeed;
 
         public bool Grounded => grounded;
 
-        private void Update()
+        public Vector3 Move(float speed, Vector3 dir) => forceVelocity + (speed * dir);
+
+        public Vector3 ForceVelocity { set => forceVelocity = value; }
+
+        private void Awake()
         {
-            Fall(Time.deltaTime);
+            party = GetComponentInParent<PartyController>();
         }
 
-        private void OnDrawGizmos()
+        private void Update()
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, ds);
-            Gizmos.color = Color.red;
-            if (model != null)
-                Gizmos.DrawRay(transform.position, model.AbsoluteDir(ds));
-            Gizmos.color = Color.blue;
-            if (model != null)
-                Gizmos.DrawRay(transform.position, model.transform.forward);
+            UpdateForce();
+
+            Fall(Time.deltaTime);
         }
 
         public void Init()
         {
             controller = GetComponent<Controller>();
-            cc = GetComponent<CharacterController>();
+            cc = GetComponentInParent<CharacterController>();
 
-            model = GetComponentInChildren<CharacterModel>();
-            gc = GetComponentInChildren<GroundCheck>();
-            pivot = GetComponentInParent<PartyController>().Pivot;
+            model = GetComponent<CharacterModel>();
+            gc = GetComponentInParent<PartyController>().GetComponentInChildren<GroundCheck>();
+            targetSphere = controller.TargetSphere;
 
-            State = MovementState.Walk;
+            mainCamTransform = Camera.main.transform;
+
+            dropSpeed = -Mathf.Tan(cc.slopeLimit * Mathf.Deg2Rad);
         }
 
-        public void MovePosition(Vector3 dir, float dt)
+        public void MovePositionFree(Vector3 dir, float dt)
         {
-            //model.RotateModel(dir, dt);
             RotateModel(dir, dt);
 
-            model.SetAnimSpeed(dir.magnitude * currentSpeed);
-            model.SetAnimHorizontal(dir.x);
-            model.SetAnimVertical(dir.z);
+            model?.SetAnimSpeed(dir.magnitude * WalkSpeed);
+            model?.SetAnimDir(dir);
 
-            cc.Move(currentSpeed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
+            if (dir != Vector3.zero)
+                cc.Move(Move(WalkSpeed, transform.forward) * dt);
         }
 
-        public void MovePositionAction(float speed, Vector3 dir, float dt)
+        public void MovePositionFree(float speed, Vector3 dir, float dt)
         {
-            model.RotateModel(dir, dt);
+            RotateModel(dir, dt);
 
-            cc.Move(speed * (Quaternion.Euler(0, -pivot.Theta, 0) * dir) * dt);
+            model?.SetAnimSpeed(dir.magnitude * speed);
+            model?.SetAnimDir(dir);
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, transform.forward) * dt);
+        }
+
+        public void MovePositionRun(Vector3 dir, float dt)
+        {
+            RotateModel(dir, dt);
+
+            model?.SetAnimSpeed(dir.magnitude * RunSpeed);
+            model?.SetAnimDir(dir);
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(RunSpeed, transform.forward) * dt);
+        }
+
+        public void MovePositionStrafe(Vector3 dir, float dt)
+        {
+            RotateTowards(targetSphere.CurrentTargetTransform);
+
+            model?.SetAnimSpeed(dir.magnitude * StrafeSpeed);
+            model?.SetAnimDir(dir);
+
+            var ds = transform.forward * dir.z + transform.right * dir.x;
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(StrafeSpeed, ds) * dt);
+        }
+
+        public void MovePositionStrafe(float speed, Vector3 dir, float dt)
+        {
+            RotateTowards(targetSphere.CurrentTargetTransform);
+
+            model?.SetAnimSpeed(dir.magnitude * speed);
+            model?.SetAnimDir(dir);
+
+            var ds = transform.forward * dir.z + transform.right * dir.x;
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, ds) * dt);
+        }
+
+        public void MovePositionForward(float speed, float dt, bool damping)
+        {
+            cc.Move(Move(speed, transform.forward) * dt);
+        }
+
+        public void MoveTo(Vector3 pos)
+        {
+            cc.Move(pos - transform.position);
         }
 
         public void Fall(float dt)
         {
-            //grounded = cc.isGrounded;
             grounded = gc.IsGrounded;
 
             if (grounded)
             {
-                if (controller.CurrentState == StateID.ControllerFall)
-                    controller.sm.ChangeState(StateID.ControllerMove);
+                if (Mathf.Abs(verticalVelocity) > Mathf.Abs(damageSpeedThreshold))
+                    ApplyFallDamage();
 
                 timeSinceGrounded = 0;
-                verticalSpeed = 0;
+                verticalVelocity = 0;
+
+                cc.Move(gravity * transform.up * dt);
             }
             else
             {
-                if (controller.CurrentState != StateID.ControllerFall)
-                    controller.sm.ChangeState(StateID.ControllerFall);
-
                 timeSinceGrounded += dt;
-                verticalSpeed = Mathf.Clamp(verticalSpeed + gravity * dt, 
+                verticalVelocity = Mathf.Clamp(verticalVelocity + gravity * dt, 
                     -terminalVelocity, terminalVelocity);
-                cc.Move(verticalSpeed * transform.up * dt);
+                cc.Move(verticalVelocity * transform.up * dt);
             }
+        }
+
+        public void UpdateForce()
+        {
+            forceVelocity = Vector3.SmoothDamp(forceVelocity, Vector3.zero,
+                ref dampingVelocity, DragTime);
         }
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.TargetSphere.enabled)
-                LookAt(controller.Pivot.targetPos);
+            if (targetSphere.Active)
+                RotateTowards(targetSphere.CurrentTargetTransform);
             else
             {
                 if (dir != Vector3.zero)
                 {
                     target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-                    target -= controller.Party.Pivot.Theta;
+                    if (controller.IsPlayer) target += mainCamTransform.eulerAngles.y;
 
-                    angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
-                        target, ref turnVelocity, 0.1f);
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
-                    //print(angle + " " + transform.eulerAngles);
+                    angle = Mathf.SmoothDampAngle(party.transform.eulerAngles.y,
+                        target, ref turnVelocity, turnTime);
+                    party.transform.rotation = Quaternion.Euler(0, angle, 0);
                 }
             }
         }
 
-        public void LookAt(Vector3 look)
+        public void RotateTowards(Transform target)
         {
-            look.y = transform.position.y;
-            transform.LookAt(look);
+            //var ds = target.position - transform.position;
+            //ds.y = 0;
+
+            //party.transform.rotation = 
+            //    Quaternion.LookRotation(Vector3.MoveTowards(party.transform.forward, 
+            //    ds, targetUpdateSpeed));
+
+            var dir = target.position - party.transform.position;
+            targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+
+            angle = Mathf.SmoothDampAngle(party.transform.eulerAngles.y,
+                targetAngle, ref targetTurnVelocity, targetTurnTime);
+            party.transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
+
+        public void FaceTarget(Transform target)
+        {
+            var ds = target.position - transform.position;
+            ds.y = 0;
+
+            party.transform.rotation = Quaternion.LookRotation(ds);
+        }
+
+        void ApplyFallDamage()
+        {
+            var dv = Mathf.Abs(verticalVelocity) - damageSpeedThreshold;
+            var damage = Mathf.RoundToInt(controller.Party.Health.ResourceStatValue *
+                dv * fallDamageScaling);
+
+            controller.Combatant.OnDamage(new DamageInfo(controller.Combatant, damage, 0));
         }
     }
 }

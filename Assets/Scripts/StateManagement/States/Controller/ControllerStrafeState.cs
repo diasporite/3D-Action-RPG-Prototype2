@@ -29,41 +29,12 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            if (controller.TargetSphere.NoTargets)
-            {
-                csm.ChangeState(StateID.ControllerMove);
-                return;
-            }
-
-            controller.Pivot.ToggleLock(true);
-
-            movement.State = MovementState.Walk;
-            health.State = ResourceState.Regen;
-            stamina.State = ResourceState.Regen;
-
-            controller.Model.PlayAnimationFade("Strafe", 0, 0.1f);
+            controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
         }
 
         public void ExecuteFrame()
         {
-            health.Tick();
-            stamina.Tick();
-
-            if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerMove);
-            else if (controller.TargetSphere.NoTargets) csm.ChangeState(StateID.ControllerMove);
-            else
-            {
-                foreach (var inp in inputController.actions.Keys)
-                {
-                    if (inp.Invoke())
-                    {
-                        controller.ActionQueue.AddAction(inputController.actions[inp]);
-                        csm.ChangeState(StateID.ControllerAction);
-                    }
-                }
-
-                movement.MovePosition(inputController.MoveCharXz, Time.deltaTime);
-            }
+            Command();
         }
 
         public void ExecuteFrameFixed()
@@ -79,6 +50,19 @@ namespace RPG_Project
         public void Exit()
         {
 
+        }
+
+        void Command()
+        {
+            health.Tick();
+            stamina.Tick();
+
+            if (controller.TargetSphere.NoTargets)
+            {
+                controller.TargetSphere.Active = false;
+                csm.ChangeState(StateID.ControllerMove);
+            }
+            else controller.Move(true);
         }
     }
 }

@@ -1,5 +1,100 @@
 
 PROJECT NOTES
 
+BEFORE 24/6/22
+- Use [field: SerializeField] [DONE]
+- Rewrite code for action queuing [DONE]
+  - Action state continually checks if chain is executing
+  - Switch state logic is in action state instead of ActionQueue
+- Implement skillset using ScriptableObjects
+- Implement skill UI
+- Rework progression system
+  - Levels are bought
+  - Party shares level
+  - Skills level at certain party levels
+- Fix targeting
+- Redo input system
+  - Make more event driven [DONE]
+  - Implement delegates (performed, canceled) for roll/guard hold interaction (check Udemy) [DONE]
+	- Check roll input
+- Redo animation structure (anim on CharacterModel) [DONE]
+  - No root motion
+  - Create animation event functions in CharacterModel
+- BUG: Character freezes if an action is pressed the moment and action ends	[FIXED]
+- Look at single camera for party controller
+  - Currently camera moves when switching as values are not shared between camera
+- CONSIDER REWRITING PLAYER PARTY CONTROLLER
+  - CharacterController, Controller on party level
+  - Animator, Movement, Combatant on model level
+  - Models are attached as children of party instead of controllers
+    - Characters share movement functionality
+  - PROGRESS
+    - 1st char model rotates, 2nd char doesn't	[FIXED]
+	  - Set priority values so that state cam > free cam > vcam
+
+24/6/22
+- BUG: Duplication in ActioQueue [FIXED]
+- Started work on enemy AI
+
+25/6/22
+- BUGS
+  - State driven cam doesn't work
+    - Camera remains in free look state when strafing
+	- Use PlayerCameraController to replace state driven cam
+  - Characters start in falling animation
+- IDEAS
+  - Jumping
+    - Press run button to jump (similar to guard/roll)
+  - Different camera views
+    - Top down, side
+	- Different movement states needed
+	  - Consider sub state machine for move state
+  - Projectile enemies
+    - Static objects that emit damaging projectiles (spheres)
+- TO DO
+  - Work on PlayerCameraController
+  - Figure out how to remove target from target list when target is killed
+
+28/6/22
+- NOTES
+  - Weird enemy movement caused by IsPlayer being true (links camera rotation to movement)
+- BUG: Hold interactions only cause once
+  - FIX: Change button to pass through + button
+    - https://answers.unity.com/questions/1862547/new-input-system-hold-interaction-called-only-once.html
+- TO DO:
+  - In strafe state, player does not face towards target after rolling
+ 
+29/6/22
+- NOTES
+  - Maria sword hitbox fixed (attach to RightHand)
+- TO DO:
+  - Finish UI
+
+1/7/22
+- NOTES
+  - Basic enemy hp/sp bars implementation
+- TO DO:
+  - Find way to turn character controller collision off when enemy is dead
+
+IDEAS
+- Max stamina gradually changes [DITCHED]
+  - Very slow with time
+  - Slow with movement
+  - Actions have max sp costs
+  - Purpose is to serve as hunger meter
+- Use MP bar instead of actions having individual uses
+- Guard vs roll
+  - 90 resistance points spread between guard and roll
+  - 1 res. point = 1% reduced damage (if timed well for rolls)
+- Teleportation
+
 RESOURCES
+3rd person combat course
 - https://www.udemy.com/course/unity-3rd-person-combat-traversal/
+Using custom cameras with Cinemachine
+- https://forum.unity.com/threads/using-cinemachine-alongside-scripted-camera.537044/
+Character controller and root motion
+- https://www.youtube.com/watch?v=mNxEetKzc04
+State driven camera programming
+- https://forum.unity.com/threads/can-you-add-and-define-a-state-on-a-state-driven-camera-via-c.749063/
+- https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineStateDrivenCamera.html

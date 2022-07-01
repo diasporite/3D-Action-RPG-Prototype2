@@ -7,43 +7,38 @@ namespace RPG_Project
 {
     public class PartyController : MonoBehaviour
     {
-        public Action OnCharacterChanged;
+        public event Action OnSpawn;
+        public event Action OnCharacterChanged;
 
-        public Action OnHealthChanged;
-        public Action OnStaminaChanged;
+        public event Action OnHealthChanged;
+        public event Action OnStaminaChanged;
 
-        public Action OnDeath;
+        public event Action OnDamage;
+        public event Action OnDeath;
 
         int partyCap = 4;
+        int healthCap = 3999;
+        int staminaCap = 999;
 
-        [SerializeField] List<Controller> party = new List<Controller>();
-        [SerializeField] int currentIndex;
+        [field: SerializeField]
+        public List<Controller> Party { get; private set; } = 
+            new List<Controller>();
 
-        [SerializeField] Vector3 currentPosition;
-        [SerializeField] Vector3 currentForward;
+        [field: SerializeField] public Controller CurrentController { get; private set; }
+        [field: SerializeField] public Vector3 CurrentPosition { get; private set; }
+        [field: SerializeField] public Vector3 CurrentForward { get; private set; }
 
-        Health health;
-        Stamina stamina;
-        InputController inputController;
-        ActionQueue actionQueue;
+        public Health Health { get; private set; }
+        public Stamina Stamina { get; private set; }
+        public InputController InputController { get; private set; }
+        public ActionQueue ActionQueue { get; private set; }
 
-        CameraPivot pivot;
+        public CameraFocus CamFocus { get; private set; }
+        public Target Target { get; private set; }
+        public TargetSphere TargetSphere { get; private set; }
 
-        public Controller CurrentController
-        {
-            get
-            {
-                if (party.Count > 0) return party[currentIndex];
-                return null;
-            }
-        }
-
-        public Health Health => health;
-        public Stamina Stamina => stamina;
-        public InputController InputController => inputController;
-        public ActionQueue ActionQueue => actionQueue;
-
-        public CameraPivot Pivot => pivot;
+        public Transform CurrentControllerTransform => CurrentController?.transform;
+        public Combatant CurrentCombatant => CurrentController?.Combatant;
 
         public int Hp
         {
@@ -51,14 +46,14 @@ namespace RPG_Project
             {
                 var hp = 0;
 
-                if (party.Count > 0)
+                if (Party.Count > 0)
                 {
-                    foreach (var c in party)
-                        hp += c.Combatant.Vitality.CurrentStatValue;
+                    foreach (var c in Party)
+                        hp += c.Combatant.Vit;
 
-                    hp = Mathf.RoundToInt(hp / party.Count);
+                    hp = Mathf.RoundToInt(hp / Party.Count);
 
-                    return hp;
+                    return Mathf.RoundToInt(hp * (1 + 0.75f * (Party.Count - 1)));
                 }
 
                 return 1;
@@ -71,14 +66,12 @@ namespace RPG_Project
             {
                 var sp = 0;
 
-                if (party.Count > 0)
+                if (Party.Count > 0)
                 {
-                    foreach (var c in party)
-                        sp += c.Combatant.Endurance.CurrentStatValue;
+                    foreach (var c in Party)
+                        sp += c.Combatant.End;
 
-                    sp = Mathf.RoundToInt(sp / party.Count);
-
-                    return sp;
+                    return Mathf.RoundToInt(sp / Party.Count);
                 }
 
                 return 1;
@@ -87,88 +80,142 @@ namespace RPG_Project
 
         private void Awake()
         {
-            health = GetComponent<Health>();
-            stamina = GetComponent<Stamina>();
-            inputController = GetComponent<InputController>();
-            actionQueue = GetComponent<ActionQueue>();
+            Health = GetComponent<Health>();
+            Stamina = GetComponent<Stamina>();
+            InputController = GetComponent<InputController>();
+            ActionQueue = GetComponent<ActionQueue>();
 
-            pivot = GetComponentInChildren<CameraPivot>();
+            CamFocus = GetComponentInChildren<CameraFocus>();
+            Target = GetComponentInChildren<Target>();
+            TargetSphere = GetComponentInChildren<TargetSphere>();
+        }
+
+        private void OnEnable()
+        {
+            InputController.DpadAction += DpadInput;
+        }
+
+        private void OnDisable()
+        {
+            InputController.DpadAction -= DpadInput;
         }
 
         private void Start()
         {
-            Init();
+            if (gameObject.tag == "Player") Init(true);
+            else Init(false);
         }
 
         private void Update()
         {
-            if (InputController.Char1()) SwitchController(0);
-            else if (InputController.Char2()) SwitchController(1);
-            else
-            {
-                CurrentController.UpdateController();
+            CurrentController.UpdateController();
 
-                UpdatePosition();
-            }
+            UpdatePosition();
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(currentPosition, 1.5f);
+            Gizmos.DrawWireSphere(CurrentPosition, 1.5f);
         }
 
-        public void Init()
+        public void Init(bool isPlayerParty)
         {
             var controllers = GetComponentsInChildren<Controller>();
 
             foreach (var c in controllers)
             {
-                if (party.Count < partyCap)
+                if (Party.Count < partyCap)
                 {
-                    c.Init();
-                    party.Add(c);
+                    c.Init(isPlayerParty);
+                    Party.Add(c);
                 }
             }
 
-            SwitchController(0);
-
-            pivot.Init();
-
-            health.Init(Hp, Hp, 1, 3999);
-            stamina.Init(Sp, Sp, 10, 999);
+            SetCharsActive(0);
 
             CurrentController.sm.ChangeState(StateID.ControllerMove);
+
+            Health.Init(Hp, Hp, CurrentCombatant.HRegen, healthCap);
+            Stamina.Init(Sp, Sp, CurrentCombatant.SRegen, staminaCap);
         }
 
         void UpdatePosition()
         {
             if (CurrentController != null)
             {
-                currentPosition = CurrentController.transform.position;
-                currentForward = CurrentController.Model.transform.forward;
+                CurrentPosition = CurrentController.transform.position;
+                CurrentForward = CurrentController.Model.transform.forward;
             }
         }
 
         public void SwitchController(int index)
         {
-            if (index == currentIndex) return;
+            if (Party[index] == CurrentController) return;
 
-            currentIndex = Mathf.Clamp(index, 0, party.Count - 1);
+            if (index >= Party.Count) return;
 
-            for(int i = 0; i < party.Count; i++)
+            UpdatePosition();
+
+            var state = CurrentController.CurrentState;
+
+            SetCharsActive(index);
+
+            CurrentController.sm.ChangeState(state);
+
+            InvokeCharChange();
+        }
+
+        void SetCharsActive(int index)
+        {
+            foreach (var p in Party) p.gameObject.SetActive(false);
+
+            Party[index].gameObject.SetActive(true);
+            CurrentController = Party[index];
+        }
+
+        void DpadInput(Vector2 dirInput)
+        {
+            if (CurrentController.sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
+                StateID.ControllerStrafe))
             {
-                if (i == currentIndex)
-                {
-                    party[i].gameObject.SetActive(true);
-                    CurrentController.transform.position = currentPosition;
-                    CurrentController.Model.transform.forward = currentForward;
-                }
-                else party[i].gameObject.SetActive(false);
+                if (dirInput == Vector2.up) SwitchController(0);
+                else if (dirInput == Vector2.left) SwitchController(1);
+                else if (dirInput == Vector2.right) SwitchController(2);
+                else if (dirInput == Vector2.down) SwitchController(3);
             }
         }
 
         #region Delegates
+        public void InvokeSpawn()
+        {
+            OnSpawn?.Invoke();
+        }
+
+        public void InvokeCharChange()
+        {
+            OnCharacterChanged?.Invoke();
+        }
+
+        public void InvokeHpChange()
+        {
+            OnHealthChanged?.Invoke();
+        }
+
+        public void InvokeSpChange()
+        {
+            OnStaminaChanged?.Invoke();
+        }
+
+        public void InvokeDamage()
+        {
+            OnDamage?.Invoke();
+        }
+
+        public void InvokeDeath()
+        {
+            OnDeath?.Invoke();
+        }
         #endregion
     }
 }

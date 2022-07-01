@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 1571201180065389065}
   - component: {fileID: 2674309135359071591}
   m_Layer: 0
-  m_Name: Usage
+  m_Name: AP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99/99
+  m_Text: AP 99
 --- !u!114 &2674309135359071591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 5493443642699644860}
   - component: {fileID: 5585848557868109887}
   - component: {fileID: 4414047696891809909}
+  - component: {fileID: 8478036098616874770}
   m_Layer: 0
   m_Name: ActionPanel
   m_TagString: Untagged
@@ -511,6 +512,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8478036098616874770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5752999785114510336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4688b32a723d1d94e8e45f84235e8601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionText: {fileID: 61293554470514104}
+  spText: {fileID: 1644864626558649574}
+  apText: {fileID: 1571201180065389065}
 --- !u!1 &7011850242205660463
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,19 +27,28 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Walk;
-            health.State = ResourceState.Recover;
-            stamina.State = ResourceState.Recover;
+            if (controller.TargetSphere.Active)
+                controller.Model.PlayAnimationFade(controller.strafeHash, 0, false);
+            else controller.Model.PlayAnimationFade(controller.moveHash, 0, false);
         }
 
         public void ExecuteFrame()
         {
-            stamina.Tick();
+            health.Tick(0);
+            stamina.Tick(2.5f * Time.deltaTime);
 
             if (stamina.Full)
-                csm.ChangeState(StateID.ControllerMove);
+            {
+                if (controller.TargetSphere.Active)
+                    csm.ChangeState(StateID.ControllerStrafe);
+                else csm.ChangeState(StateID.ControllerMove);
 
-            movement.MovePosition(controller.InputController.MoveCharXz, Time.deltaTime);
+                return;
+            }
+
+            if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
+            else controller.Move(controller.TargetSphere.Active);
         }
 
         public void ExecuteFrameFixed()

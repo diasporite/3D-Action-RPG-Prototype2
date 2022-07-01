@@ -26,7 +26,7 @@ namespace RPG_Project
         public float Count
         {
             get => count;
-            set => Mathf.Clamp(value, 0, cooldown);
+            set => count = Mathf.Clamp(value, 0, cooldown);
         }
 
         public float CooldownFraction
@@ -34,6 +34,9 @@ namespace RPG_Project
             get => count / cooldown;
             set => count = Mathf.Clamp(value * cooldown, 0, cooldown);
         }
+
+        public bool Empty => count == 0;
+        public bool Full => count == cooldown;
 
         public Cooldown(float cooldown)
         {

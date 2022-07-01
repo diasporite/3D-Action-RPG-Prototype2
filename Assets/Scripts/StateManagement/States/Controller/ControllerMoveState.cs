@@ -17,6 +17,8 @@ namespace RPG_Project
         InputController inputController;
         ActionQueue actionQueue;
 
+        Vector3 ds;
+
         public ControllerMoveState(Controller controller)
         {
             this.controller = controller;
@@ -32,37 +34,25 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            movement.State = MovementState.Walk;
-            health.State = ResourceState.Regen;
-            stamina.State = ResourceState.Regen;
-
-            controller.Pivot.ToggleLock(false);
-
-            controller.Model.PlayAnimationFade("Move", 0, 0.1f);
+            controller.Model.PlayAnimationFade(controller.moveHash, 0, true);
 
             actionQueue.ClearActions();
         }
 
         public void ExecuteFrame()
         {
-            if (stamina.Empty)
+            ds = controller.InputController.MoveChar;
+
+            if (ds != Vector3.zero) health.Tick();
+            else health.Tick(0);
+
+            stamina.Tick();
+
+            if (!movement.Grounded)
+                csm.ChangeState(StateID.ControllerFall);
+            else if (stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);
-            else
-            {
-                if (inputController.Run()) csm.ChangeState(StateID.ControllerRun);
-                else if (inputController.ToggleLock()) csm.ChangeState(StateID.ControllerStrafe);
-                else if (Action()) csm.ChangeState(StateID.ControllerAction);
-                else if (inputController.Dpad != Vector2.zero) controller.Switch();
-                else
-                {
-                    var ds = inputController.MoveCharXz;
-
-                    controller.Move(ds);
-
-                    if (ds != Vector3.zero) health.Tick();
-                    stamina.Tick();
-                }
-            }
+            else controller.Move(controller.TargetSphere.Active);
         }
 
         public void ExecuteFrameFixed()
@@ -78,19 +68,6 @@ namespace RPG_Project
         public void Exit()
         {
 
-        }
-
-        bool Action()
-        {
-            foreach(var inp in inputController.actions.Keys)
-            {
-                if (inp.Invoke())
-                {
-                    actionQueue.AddAction(inputController.actions[inp]);
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

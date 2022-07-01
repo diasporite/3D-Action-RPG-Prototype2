@@ -1,103 +1,147 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 namespace RPG_Project
 {
     public class CharacterModel : MonoBehaviour
     {
-        public bool isPlayer;
+        [field: SerializeField] public bool InMotion { get; private set; }
+        public bool LockOnRotation { get; private set; }
+
+        [field: SerializeField] public Transform Hips { get; private set; }
+
+        [field: SerializeField] public float FadeTime { get; private set; } = 0.1f;
 
         float angle;
         float target;
         float turnVelocity;
 
         Controller controller;
-        Animator anim;
+        [field: SerializeField] public Animator Anim { get; private set; }
+
+        PartyController party;
 
         CharacterController cc;
         CapsuleCollider col;
+
+        TargetSphere targetSphere;
 
         public Vector3 AbsoluteDir(Vector3 dir) => dir.z * transform.forward + 
             dir.x * transform.right;
 
         private void Awake()
         {
-            controller = GetComponentInParent<Controller>();
-            anim = GetComponentInParent<Animator>();
+            party = GetComponentInParent<PartyController>();
 
+            controller = GetComponentInParent<Controller>();
             cc = GetComponentInParent<CharacterController>();
 
-            col = GetComponent<CapsuleCollider>();
+            Anim = GetComponent<Animator>();
+        }
 
-            col.height = cc.height;
-            col.radius = cc.radius;
+        public void Init()
+        {
+            targetSphere = controller.TargetSphere;
         }
 
         public void RotateModel(Vector3 dir, float dt)
         {
-            if (controller.TargetSphere.enabled)
-                LookAt(controller.Pivot.targetPos);
+            if (targetSphere.Active)
+                LookAt(targetSphere.CurrentTargetTransform.position);
             else
             {
                 if (dir != Vector3.zero)
                 {
                     target = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-                    target -= controller.Party.Pivot.Theta;
 
                     angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                         target, ref turnVelocity, 0.1f);
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
-                    print(angle + " " + transform.eulerAngles);
+                    Hips.transform.rotation = Quaternion.Euler(0, angle, 0);
                 }
             }
         }
 
         public void LookAt(Vector3 look)
         {
-            look.y = transform.position.y;
-            transform.LookAt(look);
+            look.y = Hips.transform.position.y;
+            Hips.transform.LookAt(look);
         }
 
-        public void PlayAnimation(string stateName, int layer)
+        public void PlayAnimationFade(int stateHash, int layer, bool allowReentry)
         {
-            print(stateName);
-            anim.Play(stateName, 0);
+            if (!allowReentry)
+            {
+                if (stateHash != Anim.GetCurrentAnimatorStateInfo(0).shortNameHash)
+                    Anim.CrossFadeInFixedTime(stateHash, FadeTime);
+            }
+            else Anim.CrossFadeInFixedTime(stateHash, FadeTime);
         }
 
-        public void PlayAnimationFade(string stateName, int layer, float dt)
-        {
-            anim.CrossFade(stateName, dt);
-        }
-
-        public void AdvanceAction()
-        {
-            controller.Party.ActionQueue.AdvanceAction();
-        }
-
+        #region AnimParameters
         public void SetAnimSpeed(float speed)
         {
-            anim.SetFloat("Speed", speed);
+            Anim.SetFloat("Speed", speed);
         }
 
         public void SetAnimHorizontal(float horizontal)
         {
-            anim.SetFloat("Horizontal", horizontal);
+            Anim.SetFloat("Horizontal", horizontal);
         }
 
         public void SetAnimVertical(float vertical)
         {
-            anim.SetFloat("Vertical", vertical);
+            Anim.SetFloat("Vertical", vertical);
         }
 
-        public void SetAnimLocked(bool locked)
+        public void SetAnimDir(Vector3 dir)
         {
-            anim.SetBool("Locked", locked);
+            Anim.SetFloat("Horizontal", dir.x);
+            Anim.SetFloat("Vertical", dir.z);
+        }
+        #endregion
+
+        //public void SetAnimLocked(bool locked)
+        //{
+        //    anim.SetBool("Locked", locked);
+        //}
+
+        //public void SetAnimFalling(bool falling)
+        //{
+        //    anim.SetBool("Falling", falling);
+        //}
+
+        #region AnimationEventMethods
+        public void AdvanceAction()
+        {
+            controller.ActionQueue.AdvanceAction();
         }
 
-        public void SetAnimFalling(bool falling)
+        public void ApplyForce(Vector3 force)
         {
-            anim.SetBool("Falling", falling);
+            controller.Movement.ForceVelocity = force;
         }
+
+        public void StartMotion()
+        {
+            InMotion = true;
+        }
+
+        public void StopMotion()
+        {
+            InMotion = false;
+        }
+
+        public void EnableLockOnRotation()
+        {
+            LockOnRotation = true;
+        }
+
+        public void DisableLockOnRotation()
+        {
+            LockOnRotation = false;
+        }
+        #endregion
     }
 }

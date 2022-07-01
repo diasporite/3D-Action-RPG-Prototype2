@@ -4,113 +4,76 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    public enum QueueAction
-    {
-        Unqueuable = 0,
-
-        Defend = 1,
-
-        ActionL1 = 5,
-        ActionL2 = 6,
-        ActionR1 = 7,
-        ActionR2 = 8,
-
-        Char1 = 10,
-        Char2 = 11,
-        Char3 = 12,
-        Char4 = 13,
-    }
-
     public class ActionQueue : MonoBehaviour
     {
-        [SerializeField] bool executing = false;
-
-        [SerializeField] List<QueueAction> actions = new List<QueueAction>();
-        //[SerializeField] List<BattleAction> actions = new List<BattleAction>();
         int actionCap = 5;
 
-        Dictionary<QueueAction, string> actionTriggers = new Dictionary<QueueAction, string>();
+        [field: SerializeField] public bool Executing { get; private set; }
+
+        [field: SerializeField] public List<BattleAction> Actions { get; private set; } = 
+            new List<BattleAction>();
 
         PartyController party;
 
-        public bool Executing
-        {
-            get => executing;
-            set => executing = value;
-        }
-
-        public List<QueueAction> Actions => actions;
-
-        public QueueAction TopAction
+        public BattleAction TopAction
         {
             get
             {
-                if (actions.Count > 0) return actions[0];
-                return QueueAction.Unqueuable;
+                if (Actions.Count > 0) return Actions[0];
+                return null;
             }
         }
 
-        public string TopTrigger
-        {
-            get
-            {
-                if (actionTriggers.ContainsKey(TopAction))
-                    return actionTriggers[TopAction];
-                return "";
-            }
-        }
+        public int TopAnimation => TopAction.AnimStateHash;
 
         public Controller CurrentController => party.CurrentController;
 
         private void Awake()
         {
             party = GetComponent<PartyController>();
-
-            actionTriggers.Add(QueueAction.ActionL1, "ActionL1");
-            actionTriggers.Add(QueueAction.ActionL2, "ActionL2");
-            actionTriggers.Add(QueueAction.ActionR1, "ActionR1");
-            actionTriggers.Add(QueueAction.ActionR2, "ActionR2");
-            actionTriggers.Add(QueueAction.Defend, "Defend");
         }
 
-        public void AddAction(QueueAction action)
+        public void AddAction(BattleAction action)
         {
-            if (actions.Count < actionCap)
-                actions.Add(action);
+            if (Actions.Count < actionCap)
+                Actions.Add(action);
+
+            if (!Executing) StartChain();
         }
 
         public void ClearActions()
         {
-            if (actions.Count > 0) actions.Clear();
+            if (Actions.Count > 0) Actions.Clear();
         }
 
         public void AdvanceAction()
         {
-            if (actions.Count > 0) actions.RemoveAt(0);
+            if (Actions.Count > 0)
+                Actions.RemoveAt(0);
 
-            if (actions.Count <= 0) StopChain();
+            if (Actions.Count <= 0) StopChain();
             else
             {
-                if (!CurrentController.Movement.Grounded)
+                if (party.Stamina.Empty || !CurrentController.Movement.Grounded)
                     StopChain();
-                else CurrentController.Model.PlayAnimation(TopTrigger, 0);
+                else TopAction.Execute();
             }
         }
 
-        void StopChain()
+        public void StartChain()
         {
-            executing = false;
+            Executing = true;
 
-            if (!CurrentController.Movement.Grounded)
-                CurrentController.sm.ChangeState(StateID.ControllerFall);
-            else
-            {
-                if (CurrentController.TargetSphere.enabled)
-                    CurrentController.sm.ChangeState(StateID.ControllerStrafe);
-                else CurrentController.sm.ChangeState(StateID.ControllerMove);
-            }
+            CurrentController.sm.ChangeState(StateID.ControllerAction);
 
-            actions.Clear();
+            TopAction.Execute();
+        }
+
+        public void StopChain()
+        {
+            Executing = false;
+
+            Actions.Clear();
         }
     }
 }

@@ -12,5 +12,13 @@ namespace RPG_Project
         ControllerStagger = 6,
         ControllerDeath = 7,
         ControllerStrafe = 8,
+        ControllerGuard = 9,
+        ControllerMoveThirdPerson = 10,
+        ControllerMoveTopDown = 11,
+        ControllerMoveSideScroll = 12,
+
+        EnemyIdle = 21,
+        EnemyChase = 22,
+        EnemyAttack = 23,
     }
 }
