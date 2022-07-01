@@ -17,6 +17,7 @@ namespace RPG_Project
         [Header("Info")]
         [SerializeField] MovementState state;
         [SerializeField] bool grounded;
+        [SerializeField] float targetUpdateSpeed = 10f;
 
         [field: Header("Speed")]
         [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
@@ -52,8 +53,11 @@ namespace RPG_Project
 
         float target = 0f;
         float angle = 0f;
+        float targetAngle = 0f;
         float turnVelocity = 0f;
+        float targetTurnVelocity = 0f;
         float turnTime = 0.1f;
+        float targetTurnTime = 0f;
 
         float dropSpeed;
 
@@ -124,7 +128,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(Vector3 dir, float dt)
         {
-            RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
+            RotateTowards(targetSphere.CurrentTargetTransform);
 
             model?.SetAnimSpeed(dir.magnitude * StrafeSpeed);
             model?.SetAnimDir(dir);
@@ -137,7 +141,7 @@ namespace RPG_Project
 
         public void MovePositionStrafe(float speed, Vector3 dir, float dt)
         {
-            RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
+            RotateTowards(targetSphere.CurrentTargetTransform);
 
             model?.SetAnimSpeed(dir.magnitude * speed);
             model?.SetAnimDir(dir);
@@ -190,7 +194,7 @@ namespace RPG_Project
         public void RotateModel(Vector3 dir, float dt)
         {
             if (targetSphere.Active)
-                RotateTowards(party.transform, targetSphere.CurrentTargetTransform);
+                RotateTowards(targetSphere.CurrentTargetTransform);
             else
             {
                 if (dir != Vector3.zero)
@@ -205,12 +209,29 @@ namespace RPG_Project
             }
         }
 
-        public void RotateTowards(Transform t, Transform target)
+        public void RotateTowards(Transform target)
+        {
+            //var ds = target.position - transform.position;
+            //ds.y = 0;
+
+            //party.transform.rotation = 
+            //    Quaternion.LookRotation(Vector3.MoveTowards(party.transform.forward, 
+            //    ds, targetUpdateSpeed));
+
+            var dir = target.position - party.transform.position;
+            targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+
+            angle = Mathf.SmoothDampAngle(party.transform.eulerAngles.y,
+                targetAngle, ref targetTurnVelocity, targetTurnTime);
+            party.transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
+
+        public void FaceTarget(Transform target)
         {
             var ds = target.position - transform.position;
             ds.y = 0;
 
-            t.rotation = Quaternion.LookRotation(Vector3.MoveTowards(transform.forward, ds, 10f));
+            party.transform.rotation = Quaternion.LookRotation(ds);
         }
 
         void ApplyFallDamage()

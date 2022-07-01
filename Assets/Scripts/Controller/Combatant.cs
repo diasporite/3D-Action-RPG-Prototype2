@@ -105,6 +105,8 @@ namespace RPG_Project
                 controller.sm.ChangeState(StateID.ControllerDeath);
             else if (stamina.Empty)
                 controller.sm.ChangeState(StateID.ControllerStagger);
+
+            party.InvokeDamage();
         }
 
         public void Init(int lv)

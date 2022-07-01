@@ -70,6 +70,12 @@ BEFORE 24/6/22
 - TO DO:
   - Finish UI
 
+1/7/22
+- NOTES
+  - Basic enemy hp/sp bars implementation
+- TO DO:
+  - Find way to turn character controller collision off when enemy is dead
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

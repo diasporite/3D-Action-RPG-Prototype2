@@ -196,19 +196,23 @@ namespace RPG_Project
 
                 if (TargetSphere.Active)
                 {
-                    TargetSphere.InvokeLockOn();
+                    //TargetSphere.InvokeLockOn();
 
                     var targetFound = TargetSphere.SelectTargets();
 
                     if (targetFound)
                     {
-                        if (sm.InState(StateID.ControllerMove))
-                            sm.ChangeState(StateID.ControllerStrafe);
+                        TargetSphere.InvokeLockOn();
+
+                        //if (sm.InState(StateID.ControllerMove))
+                        //    sm.ChangeState(StateID.ControllerStrafe);
                     }
                     else
                     {
                         TargetSphere.Active = false;
-                        sm.ChangeState(StateID.ControllerMove);
+
+                        TargetSphere.InvokeLockOff();
+                        //sm.ChangeState(StateID.ControllerMove);
                     }
                 }
                 else

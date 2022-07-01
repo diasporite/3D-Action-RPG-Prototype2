@@ -48,10 +48,7 @@ namespace RPG_Project
             controller.Party.Stamina.Tick(0);
 
             if (controller.TargetSphere.Active)
-            {
-                controller.Movement.RotateTowards(controller.Party.transform,
-                    controller.TargetSphere.CurrentTargetTransform);
-            }
+                controller.Movement.RotateTowards(controller.TargetSphere.CurrentTargetTransform);
 
             if (controller.Party.Stamina.Empty)
                 csm.ChangeState(StateID.ControllerRecover);

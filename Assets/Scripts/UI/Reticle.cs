@@ -7,13 +7,17 @@ namespace RPG_Project
 {
     public class Reticle : MonoBehaviour
     {
+        Camera mainCam;
+
         Image image;
         TargetSphere targetSphere;
 
-        float speed = 90;
+        [SerializeField] float speed = 90;
 
         private void Awake()
         {
+            mainCam = Camera.main;
+
             image = GetComponent<Image>();
             targetSphere = FindObjectOfType<PlayerInputController>().GetComponentInChildren<TargetSphere>();
 
@@ -24,7 +28,7 @@ namespace RPG_Project
         {
             if (image.enabled)
             {
-                transform.position = Camera.main.WorldToScreenPoint(targetSphere.CurrentTargetTransform.position);
+                transform.position = mainCam.WorldToScreenPoint(targetSphere.CurrentTargetTransform.position);
                 transform.Rotate(0, 0, speed * Time.deltaTime);
             }
         }

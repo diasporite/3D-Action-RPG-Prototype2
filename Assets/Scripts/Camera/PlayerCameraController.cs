@@ -11,6 +11,7 @@ namespace RPG_Project
 
         PartyController party;
         InputController input;
+        TargetSphere targetSphere;
 
         CinemachineFreeLook freeLook;
         [SerializeField] CinemachineVirtualCamera vcam;
@@ -20,6 +21,7 @@ namespace RPG_Project
         {
             party = GetComponent<PartyController>();
             input = GetComponent<PlayerInputController>();
+            targetSphere = party.GetComponentInChildren<TargetSphere>();
 
             freeLook = GetComponentInChildren<CinemachineFreeLook>();
             targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
@@ -27,17 +29,27 @@ namespace RPG_Project
 
         private void OnEnable()
         {
-            input.LockAction += ToggleCam;
+            targetSphere.OnLockOn += LockOnCam;
+            targetSphere.OnLockOff += LockOffCam;
         }
 
         private void OnDisable()
         {
-            input.LockAction -= ToggleCam;
+            targetSphere.OnLockOn -= LockOnCam;
+            targetSphere.OnLockOff -= LockOffCam;
         }
 
-        void ToggleCam()
+        void LockOnCam()
         {
-            Locked = !Locked;
+            Locked = true;
+
+            freeLook.gameObject.SetActive(!Locked);
+            vcam.gameObject.SetActive(Locked);
+        }
+
+        void LockOffCam()
+        {
+            Locked = false;
 
             freeLook.gameObject.SetActive(!Locked);
             vcam.gameObject.SetActive(Locked);
