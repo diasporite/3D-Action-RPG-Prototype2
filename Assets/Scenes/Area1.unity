@@ -779,14 +779,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e3d89eac2ad3745b2f80114ce49c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerLength: 2.5
+  attackDelay: 4
+  spawnDelay: 20
   chaseRange: 16
-  attackRange: 1.2
-  <Timer>k__BackingField:
+  attackRange: 1.6
+  <AttackTimer>k__BackingField:
     cooldown: 0
     speed: 0
     count: 0
-  <playerTransform>k__BackingField: {fileID: 0}
+  <SpawnTimer>k__BackingField:
+    cooldown: 0
+    speed: 0
+    count: 0
+  <PlayerTransform>k__BackingField: {fileID: 0}
 --- !u!114 &974745418
 MonoBehaviour:
   m_ObjectHideFlags: 0

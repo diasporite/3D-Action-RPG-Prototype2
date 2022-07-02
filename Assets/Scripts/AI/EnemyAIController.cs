@@ -6,14 +6,16 @@ namespace RPG_Project
 {
     public class EnemyAIController : MonoBehaviour
     {
-        [SerializeField] float timerLength = 3f;
+        [SerializeField] float attackDelay = 3f;
+        [SerializeField] float spawnDelay = 20f;
 
         [SerializeField] float chaseRange = 6f;
         [SerializeField] float attackRange = 1f;
 
-        [field: SerializeField] public Cooldown Timer { get; private set; }
+        [field: SerializeField] public Cooldown AttackTimer { get; private set; }
+        [field: SerializeField] public Cooldown SpawnTimer { get; private set; }
 
-        [field: SerializeField] public Transform playerTransform { get; private set; }
+        [field: SerializeField] public Transform PlayerTransform { get; private set; }
 
         public float SqrChaseRange { get; private set; }
         public float SqrAttackRange { get; private set; }
@@ -28,7 +30,7 @@ namespace RPG_Project
         {
             get
             {
-                var ds = playerTransform.position - transform.position;
+                var ds = PlayerTransform.position - transform.position;
                 ds.y = 0;
                 return ds;
             }
@@ -41,7 +43,8 @@ namespace RPG_Project
 
         private void Awake()
         {
-            Timer = new Cooldown(timerLength);
+            AttackTimer = new Cooldown(attackDelay);
+            SpawnTimer = new Cooldown(spawnDelay);
 
             Party = GetComponent<PartyController>();
             ActionQueue = GetComponent<ActionQueue>();
@@ -67,7 +70,7 @@ namespace RPG_Project
 
         private void OnEnable()
         {
-            playerTransform = FindObjectOfType<PlayerSpawner>().transform;
+            PlayerTransform = FindObjectOfType<PlayerSpawner>().transform;
         }
 
         private void OnDisable()

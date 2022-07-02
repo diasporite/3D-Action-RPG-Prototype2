@@ -32,13 +32,13 @@ namespace RPG_Project
             if (!enemy.InAttackRange && enemy.InChaseRange) esm.ChangeState(StateID.EnemyChase);
             else if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
 
-            if (enemy.Timer.Full)
+            if (enemy.AttackTimer.Full)
             {
                 input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
-                enemy.Timer.Reset();
+                enemy.AttackTimer.Reset();
             }
 
-            if (!enemy.ActionQueue.Executing) enemy.Timer.Tick();
+            if (!enemy.ActionQueue.Executing) enemy.AttackTimer.Tick();
 
             input.OnMove(Vector3.zero);
             //party.CurrentController.Move(false);

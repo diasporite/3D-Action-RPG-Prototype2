@@ -61,7 +61,7 @@ namespace RPG_Project
                 if (target.transform.root != transform.root && !Targets.Contains(target))
                 {
                     Targets.Add(target);
-                    target.TargetSphere = this;
+                    target.AddTargetSphere(this);
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace RPG_Project
 
             if (target != null && Targets.Contains(target))
             {
-                target.TargetSphere = null;
+                target.RemoveTargetSphere(this);
                 Targets.Remove(target);
             }
         }

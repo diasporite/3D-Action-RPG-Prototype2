@@ -20,5 +20,7 @@ namespace RPG_Project
         EnemyIdle = 21,
         EnemyChase = 22,
         EnemyAttack = 23,
+        EnemyStandby = 24,  // Enemy waiting to spawn
+        EnemyStrafe = 25,   // Enemy in attacking range but timer isn't full
     }
 }

@@ -76,6 +76,14 @@ BEFORE 24/6/22
 - TO DO:
   - Find way to turn character controller collision off when enemy is dead
 
+2/7/22
+- NOTES
+  - Enemies disappear upon death
+  - Timer fills a bit (currently 0.5x fixed) when enemy is damaged
+- TO DO:
+  - Write EnemyStandby and EnemyStrafe states
+  - Start planning custom camera
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

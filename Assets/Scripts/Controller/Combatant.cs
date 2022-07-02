@@ -42,12 +42,15 @@ namespace RPG_Project
         #endregion
 
         // Only first 4 skills will be usable in combat
-        [field: SerializeField] public List<ActionData> Skillset { get; private set; } = new List<ActionData>();
+        [field: SerializeField] public List<ActionData> Skillset { get; private set; } = 
+            new List<ActionData>();
 
         PartyController party;
         Controller controller;
         Health health;
         Stamina stamina;
+
+        EnemyAIController enemyAi;
 
         public int Vit => Vitality.CurrentStatValue;
         public int End => Endurance.CurrentStatValue;
@@ -89,6 +92,8 @@ namespace RPG_Project
         {
             party = GetComponentInParent<PartyController>();
             controller = GetComponentInParent<Controller>();
+
+            enemyAi = GetComponentInParent<EnemyAIController>();
         }
 
         public void OnDamage(DamageInfo damage)
@@ -100,6 +105,8 @@ namespace RPG_Project
 
             health.ChangeValue(-hDamage);
             stamina.ChangeValue(-sDamage);
+
+            if (enemyAi != null) enemyAi.AttackTimer.CooldownFraction += 0.5f;
 
             if (health.Empty)
                 controller.sm.ChangeState(StateID.ControllerDeath);

@@ -32,7 +32,7 @@ namespace RPG_Project
             if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
             else if (enemy.InAttackRange) esm.ChangeState(StateID.EnemyAttack);
 
-            enemy.Timer.Tick();
+            enemy.AttackTimer.Tick();
 
             input.OnMove(enemy.DirToPlayer.normalized);
         }

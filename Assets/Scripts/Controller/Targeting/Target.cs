@@ -8,7 +8,7 @@ namespace RPG_Project
     {
         PartyController party;
 
-        public TargetSphere TargetSphere { get; set; }
+        public readonly List<TargetSphere> targetSpheres = new List<TargetSphere>();
 
         private void Awake()
         {
@@ -25,9 +25,22 @@ namespace RPG_Project
             party.OnDeath -= RemoveTarget;
         }
 
+        public void AddTargetSphere(TargetSphere ts)
+        {
+            targetSpheres.Add(ts);
+        }
+
+        public void RemoveTargetSphere(TargetSphere ts)
+        {
+            if (targetSpheres.Contains(ts))
+                targetSpheres.Remove(ts);
+        }
+
         void RemoveTarget()
         {
-            TargetSphere?.RemoveTarget(this);
+            print(9);
+            foreach (var ts in targetSpheres)
+                ts.RemoveTarget(this);
         }
     }
 }

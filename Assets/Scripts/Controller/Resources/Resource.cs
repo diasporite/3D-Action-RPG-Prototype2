@@ -22,7 +22,7 @@ namespace RPG_Project
 
         public float ResourceFraction => resourceCooldown.CooldownFraction;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             party = GetComponent<PartyController>();
         }

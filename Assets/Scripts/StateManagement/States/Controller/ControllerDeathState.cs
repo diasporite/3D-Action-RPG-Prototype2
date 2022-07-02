@@ -38,15 +38,6 @@ namespace RPG_Project
         {
             controller.Party.Health.Tick(0);
             controller.Party.Stamina.Tick(0);
-
-            animNormTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            animNormTime -= Mathf.Floor(animNormTime);
-
-            if (animNormTime >= 1f)
-            {
-                controller.Destroy();
-                csm.ChangeState(StateID.Empty);
-            }
         }
 
         public void ExecuteFrameFixed()

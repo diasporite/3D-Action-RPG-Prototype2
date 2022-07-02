@@ -272,24 +272,23 @@ namespace RPG_Project
             return new BattleAction(this, Combatant.GetActionData(index + 1), attackHashes[index]);
         }
 
+        #region AnimationEventMethods
         // For use with stagger animation
         public void ReturnToMoveState()
         {
             sm.ChangeState(StateID.ControllerMove);
         }
 
-        public void MoveTo(Vector3 pos)
-        {
-            Movement.MoveTo(pos);
-        }
-
-        public void Destroy()
+        public void Die()
         {
             Party.Party.Remove(this);
+
+            TargetSphere.InvokeLockOff();
 
             Party.InvokeDeath();
 
             Destroy(gameObject);
         }
+        #endregion
     }
 }
