@@ -32,7 +32,7 @@ namespace RPG_Project
 
         public event Action LockAction;
 
-        public event Action RollAction;
+        public event Action DashAction;
         public event Action GuardAction;
         public event Action GuardCancel;
 
@@ -151,7 +151,7 @@ namespace RPG_Project
 
         protected void InvokeRoll()
         {
-            RollAction?.Invoke();
+            DashAction?.Invoke();
         }
 
         protected void InvokeGuard()

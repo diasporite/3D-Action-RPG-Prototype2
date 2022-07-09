@@ -22,6 +22,10 @@ namespace RPG_Project
         float animNormTime;
         float speed;
 
+        float dashHash;
+
+        BattleAction TopAction => actionQueue.TopAction;
+
         public ControllerActionState(Controller controller)
         {
             this.controller = controller;
@@ -35,6 +39,8 @@ namespace RPG_Project
             targetSphere = controller.Party.TargetSphere;
 
             movement = controller.Movement;
+
+            dashHash = controller.dashHash;
         }
 
         public void Enter(params object[] args)
@@ -71,8 +77,8 @@ namespace RPG_Project
             {
                 if (!controller.Movement.Grounded)
                     csm.ChangeState(StateID.ControllerFall);
-                else if (controller.Party.Stamina.Empty)
-                    csm.ChangeState(StateID.ControllerRecover);
+                //else if (controller.Party.Stamina.Empty)
+                //    csm.ChangeState(StateID.ControllerRecover);
                 else if (controller.TargetSphere.Active)
                     csm.ChangeState(StateID.ControllerStrafe);
                 else csm.ChangeState(StateID.ControllerMove);
@@ -87,12 +93,18 @@ namespace RPG_Project
                     animNormTime -= Mathf.Floor(animNormTime);  // % operator doesn't work on floats
                     //Debug.Log(animNormTime);
                     speed = animData.CurrentMoveData(animNormTime).ForwardSpeed;
-                    
-                    movement.MovePositionForward(speed, Time.deltaTime, false);
+
+                    if (TopAction.AnimStateHash == dashHash)
+                    {
+                        if (TopAction.Dir != Vector3.zero)
+                            movement.MovePositionDir(speed, TopAction.Dir, Time.deltaTime);
+                        else movement.MovePositionForward(speed, Time.deltaTime, false);
+                    }
+                    else movement.MovePositionForward(speed, Time.deltaTime, false);
                 }
 
                 if (targetSphere.Active)
-                    if (model.LockOnRotation)
+                    if (TopAction.AnimStateHash != dashHash && model.LockOnRotation)
                         movement.RotateTowards(targetSphere.CurrentTargetTransform);
             }
         }

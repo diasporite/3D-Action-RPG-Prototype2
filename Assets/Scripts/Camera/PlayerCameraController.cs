@@ -13,9 +13,14 @@ namespace RPG_Project
         InputController input;
         TargetSphere targetSphere;
 
-        CinemachineFreeLook freeLook;
-        [SerializeField] CinemachineVirtualCamera vcam;
-        CinemachineTargetGroup targetGroup;
+        //CinemachineFreeLook freeLook;
+        //[SerializeField] CinemachineVirtualCamera vcam;
+        //CinemachineTargetGroup targetGroup;
+
+        CameraController cc;
+        ThirdPersonCamera thirdPerson;
+
+        public ICamera CurrentCamera { get; private set; }
 
         private void Awake()
         {
@@ -23,8 +28,16 @@ namespace RPG_Project
             input = GetComponent<PlayerInputController>();
             targetSphere = party.GetComponentInChildren<TargetSphere>();
 
-            freeLook = GetComponentInChildren<CinemachineFreeLook>();
-            targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+            //freeLook = GetComponentInChildren<CinemachineFreeLook>();
+            //targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+
+            cc = Camera.main.GetComponent<CameraController>();
+            thirdPerson = GetComponentInChildren<ThirdPersonCamera>();
+        }
+
+        private void Start()
+        {
+            CurrentCamera = thirdPerson;
         }
 
         private void OnEnable()
@@ -43,16 +56,20 @@ namespace RPG_Project
         {
             Locked = true;
 
-            freeLook.gameObject.SetActive(!Locked);
-            vcam.gameObject.SetActive(Locked);
+            //freeLook.gameObject.SetActive(!Locked);
+            //vcam.gameObject.SetActive(Locked);
+
+            CurrentCamera.LockCamera(Locked);
         }
 
         void LockOffCam()
         {
             Locked = false;
 
-            freeLook.gameObject.SetActive(!Locked);
-            vcam.gameObject.SetActive(Locked);
+            //freeLook.gameObject.SetActive(!Locked);
+            //vcam.gameObject.SetActive(Locked);
+
+            CurrentCamera.LockCamera(Locked);
         }
     }
 }

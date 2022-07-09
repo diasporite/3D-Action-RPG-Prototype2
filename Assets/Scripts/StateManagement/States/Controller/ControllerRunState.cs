@@ -40,7 +40,7 @@ namespace RPG_Project
             if (!movement.Grounded)
                 csm.ChangeState(StateID.ControllerFall);
             else if (stamina.Empty)
-                csm.ChangeState(StateID.ControllerRecover);
+                csm.ChangeState(StateID.ControllerMove);
             else if (controller.InputController.MoveChar == Vector2.zero)
                 csm.ChangeState(StateID.ControllerMove);
             else controller.Run();

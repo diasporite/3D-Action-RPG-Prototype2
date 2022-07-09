@@ -31,26 +31,17 @@ namespace RPG_Project
 
         public void Update()
         {
-            if (CurrentState != null)
-            {
-                CurrentState.ExecuteFrame();
-            }
+            CurrentState?.ExecuteFrame();
         }
 
         public void UpdateFixed()
         {
-            if (CurrentState != null)
-            {
-                CurrentState.ExecuteFrameFixed();
-            }
+            CurrentState?.ExecuteFrameFixed();
         }
 
         public void UpdateLate()
         {
-            if (CurrentState != null)
-            {
-                CurrentState.ExecuteFrameLate();
-            }
+            CurrentState?.ExecuteFrameLate();
         }
 
         public void AddState(StateID id, IState state)
@@ -73,8 +64,8 @@ namespace RPG_Project
                     CurrentState = States[id];
                     CurrentState.Enter(args);
                 }
+                else Debug.LogError("State machine does not contain the state " + id);
             }
-            else Debug.LogError("State machine does not contain the state " + id);
         }
 
         public void ClearStates()

@@ -9,20 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209bb17cd6285b44a8f4480ea65343d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 30ee624ca38987a4ca55bfe88b735265, type: 3}
   m_Name: Slash
   m_EditorClassIdentifier: 
   <Animation>k__BackingField:
     <animation>k__BackingField: {fileID: 0}
     <motion>k__BackingField:
     - <StartInNormTime>k__BackingField: 0
-      <ForwardSpeed>k__BackingField: 1.3368
+      <ForwardSpeed>k__BackingField: 1.34
       <DragTime>k__BackingField: 0
     - <StartInNormTime>k__BackingField: 0.217
-      <ForwardSpeed>k__BackingField: 1.0059
+      <ForwardSpeed>k__BackingField: 1.01
       <DragTime>k__BackingField: 0
     - <StartInNormTime>k__BackingField: 0.5942
-      <ForwardSpeed>k__BackingField: 0.615
+      <ForwardSpeed>k__BackingField: 0.62
       <DragTime>k__BackingField: 0
   <SpCost>k__BackingField: 30
-  <MpCost>k__BackingField: 5
+  <MpCost>k__BackingField: 15
+  <Damage>k__BackingField:
+    <NumOfHits>k__BackingField: 1
+    <BaseHealthDamage>k__BackingField: 40
+    <BaseStaminaDamage>k__BackingField: 10
+  <Knockback>k__BackingField:
+    <KnockbackForce>k__BackingField: 2
+    <DragTime>k__BackingField: 0.2
+    <KnockbackDir>k__BackingField: {x: 0, y: 0}

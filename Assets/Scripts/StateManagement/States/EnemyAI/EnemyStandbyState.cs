@@ -2,17 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStandbyState : MonoBehaviour
+namespace RPG_Project
 {
-    // Start is called before the first frame update
-    void Start()
+    public class EnemyStandbyState : IState
     {
-        
-    }
+        EnemyAIController enemy;
+        StateMachine esm;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        EnemyInputController input;
+        PartyController party;
+
+        public EnemyStandbyState(EnemyAIController enemy)
+        {
+            this.enemy = enemy;
+            esm = enemy.sm;
+
+            party = enemy.Party;
+            input = enemy.InputController;
+        }
+
+        #region InterfaceMethods
+        public void Enter(params object[] args)
+        {
+            enemy.SpawnTimer.Reset();
+        }
+
+        public void ExecuteFrame()
+        {
+            enemy.SpawnTimer.Tick();
+
+            if (enemy.SpawnTimer.Full)
+            {
+                Debug.Log("Enemy spawned");
+                //esm.ChangeState(StateID.EnemyIdle);
+            }
+        }
+
+        public void ExecuteFrameFixed()
+        {
+
+        }
+
+        public void ExecuteFrameLate()
+        {
+
+        }
+
+        public void Exit()
+        {
+
+        }
+        #endregion
     }
 }

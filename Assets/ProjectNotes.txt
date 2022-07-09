@@ -84,6 +84,21 @@ BEFORE 24/6/22
   - Write EnemyStandby and EnemyStrafe states
   - Start planning custom camera
 
+5/7/22
+- NOTES
+  - Start of camera implementation
+  - EnemyStandby state partially implemented
+- TO DO
+  - Reimplement movement during fall state
+
+8/7/22
+- NOTES
+  - ControllerStrafe state restored, ControllerRecoverState removed
+    - Stamina has InRecovery bool instead
+- TO DO
+  - Replace rolling with dashing
+  - Fix camera jitter when rotating when locked
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

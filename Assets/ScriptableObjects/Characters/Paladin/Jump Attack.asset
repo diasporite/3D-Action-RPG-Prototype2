@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209bb17cd6285b44a8f4480ea65343d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 30ee624ca38987a4ca55bfe88b735265, type: 3}
   m_Name: Jump Attack
   m_EditorClassIdentifier: 
   <Animation>k__BackingField:
     <animation>k__BackingField: {fileID: 0}
     <motion>k__BackingField:
     - <StartInNormTime>k__BackingField: 0
-      <ForwardSpeed>k__BackingField: 3.38967
+      <ForwardSpeed>k__BackingField: 3.39
       <DragTime>k__BackingField: 0
     - <StartInNormTime>k__BackingField: 0.157
-      <ForwardSpeed>k__BackingField: 5.50998
+      <ForwardSpeed>k__BackingField: 5.51
       <DragTime>k__BackingField: 0
     - <StartInNormTime>k__BackingField: 0.5286
       <ForwardSpeed>k__BackingField: 2.38
@@ -29,3 +29,11 @@ MonoBehaviour:
       <DragTime>k__BackingField: 0
   <SpCost>k__BackingField: 50
   <MpCost>k__BackingField: 5
+  <Damage>k__BackingField:
+    <NumOfHits>k__BackingField: 1
+    <BaseHealthDamage>k__BackingField: 50
+    <BaseStaminaDamage>k__BackingField: 15
+  <Knockback>k__BackingField:
+    <KnockbackForce>k__BackingField: 2
+    <DragTime>k__BackingField: 0.2
+    <KnockbackDir>k__BackingField: {x: 0, y: 0}

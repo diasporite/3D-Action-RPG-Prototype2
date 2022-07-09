@@ -8,18 +8,17 @@ namespace RPG_Project
     public class BattleAction : ICommand
     {
         [field: SerializeField] public ActionData Action { get; private set; }
-        [SerializeField] protected int animStateHash;
-        [SerializeField] Controller controller;
-        [SerializeField] PartyController party;
-        [SerializeField] Vector3 dir = new Vector3(0, 0, 0);
-
-        public int AnimStateHash => animStateHash;
+        [field: SerializeField] public int AnimStateHash { get; protected set; }
+        [SerializeField] protected Controller controller;
+        [SerializeField] protected PartyController party;
+        [field: SerializeField] public Vector3 Dir { get; protected set; } = 
+            new Vector3(0, 0, 0);
 
         public BattleAction(Controller controller, ActionData action, int animStateHash)
         {
             this.controller = controller;
             Action = action;
-            this.animStateHash = animStateHash;
+            this.AnimStateHash = animStateHash;
 
             party = controller.Party;
         }
@@ -27,9 +26,9 @@ namespace RPG_Project
         public BattleAction(Controller controller, Vector3 dir, ActionData action, int animStateHash)
         {
             this.controller = controller;
-            this.dir = dir;
+            this.Dir = dir;
             Action = action;
-            this.animStateHash = animStateHash;
+            this.AnimStateHash = animStateHash;
 
             party = controller.Party;
         }
@@ -40,11 +39,11 @@ namespace RPG_Project
                 controller.Movement.FaceTarget(controller.TargetSphere.CurrentTargetTransform);
             else
             {
-                if (dir != Vector3.zero)
-                    controller.transform.rotation = Quaternion.LookRotation(dir);
+                if (Dir != Vector3.zero)
+                    controller.transform.rotation = Quaternion.LookRotation(Dir);
             }
 
-            controller.Model.PlayAnimationFade(animStateHash, 0, true);
+            controller.Model.PlayAnimationFade(AnimStateHash, 0, true);
             controller.Party.Stamina.ChangeValue(-Mathf.Abs(Action.SpCost));
         }
 

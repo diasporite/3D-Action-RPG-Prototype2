@@ -6,6 +6,8 @@ namespace RPG_Project
 {
     public class EnemyAIController : MonoBehaviour
     {
+        [SerializeField] StateID currentState;
+
         [SerializeField] float attackDelay = 3f;
         [SerializeField] float spawnDelay = 20f;
 
@@ -59,23 +61,34 @@ namespace RPG_Project
             sm.AddState(StateID.EnemyIdle, new EnemyIdleState(this));
             sm.AddState(StateID.EnemyChase, new EnemyChaseState(this));
             sm.AddState(StateID.EnemyAttack, new EnemyAttackState(this));
+            sm.AddState(StateID.EnemyStandby, new EnemyStandbyState(this));
+            sm.AddState(StateID.EnemyStrafe, new EnemyStrafeState(this));
 
             sm.ChangeState(StateID.EnemyIdle);
         }
 
         private void Update()
         {
+            currentState = sm.CurrentStateKey;
+
             sm.Update();
         }
 
         private void OnEnable()
         {
             PlayerTransform = FindObjectOfType<PlayerSpawner>().transform;
+
+            Party.OnDeath += SwitchToStandby;
         }
 
         private void OnDisable()
         {
-            
+            Party.OnDeath -= SwitchToStandby;
+        }
+
+        void SwitchToStandby()
+        {
+            sm.ChangeState(StateID.EnemyStandby);
         }
     }
 }

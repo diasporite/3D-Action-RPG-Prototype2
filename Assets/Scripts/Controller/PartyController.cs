@@ -110,7 +110,7 @@ namespace RPG_Project
 
         private void Update()
         {
-            CurrentController.UpdateController();
+            CurrentController?.UpdateController();
 
             UpdatePosition();
         }
@@ -166,6 +166,15 @@ namespace RPG_Project
             CurrentController.sm.ChangeState(state);
 
             InvokeCharChange();
+        }
+
+        public void RemoveController(Controller controller)
+        {
+            if (Party.Contains(controller))
+            {
+                if (CurrentController == controller) CurrentController = null;
+                Party.Remove(controller);
+            }
         }
 
         void SetCharsActive(int index)

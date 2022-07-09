@@ -24,24 +24,20 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
+            input.OnToggleLock();
 
+            input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
+            enemy.AttackTimer.Reset();
         }
 
         public void ExecuteFrame()
         {
-            if (!enemy.InAttackRange && enemy.InChaseRange) esm.ChangeState(StateID.EnemyChase);
-            else if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
-
-            if (enemy.AttackTimer.Full)
+            if (!enemy.ActionQueue.Executing)
             {
-                input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
-                enemy.AttackTimer.Reset();
+                if (enemy.InAttackRange) esm.ChangeState(StateID.EnemyStrafe);
+                else if (!enemy.InAttackRange && enemy.InChaseRange) esm.ChangeState(StateID.EnemyChase);
+                else if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
             }
-
-            if (!enemy.ActionQueue.Executing) enemy.AttackTimer.Tick();
-
-            input.OnMove(Vector3.zero);
-            //party.CurrentController.Move(false);
         }
 
         public void ExecuteFrameFixed()
@@ -56,7 +52,7 @@ namespace RPG_Project
 
         public void Exit()
         {
-
+            input.OnToggleLock();
         }
         #endregion
     }

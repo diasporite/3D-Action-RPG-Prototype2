@@ -29,12 +29,17 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
-            if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
-            else if (enemy.InAttackRange) esm.ChangeState(StateID.EnemyAttack);
-
             enemy.AttackTimer.Tick();
 
             input.OnMove(enemy.DirToPlayer.normalized);
+
+            if (!enemy.InChaseRange) esm.ChangeState(StateID.EnemyIdle);
+            else if (enemy.InAttackRange)
+            {
+                if (enemy.AttackTimer.Full)
+                    esm.ChangeState(StateID.EnemyAttack);
+                else esm.ChangeState(StateID.EnemyStrafe);
+            }
         }
 
         public void ExecuteFrameFixed()

@@ -66,7 +66,7 @@ namespace RPG_Project
 
             CurrentController.sm.ChangeState(StateID.ControllerAction);
 
-            TopAction.Execute();
+            TopAction?.Execute();
         }
 
         public void StopChain()

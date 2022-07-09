@@ -24,8 +24,7 @@ namespace RPG_Project
         public readonly int fallHash = Animator.StringToHash("Fall");
 
         public readonly int guardHash = Animator.StringToHash("Guard");
-        public readonly int defendHash = Animator.StringToHash("Defend");
-        public readonly int strafeDefendHash = Animator.StringToHash("StrafeDefend");
+        public readonly int dashHash = Animator.StringToHash("Dash");
 
         public readonly int staggerHash = Animator.StringToHash("Stagger");
         public readonly int deathHash = Animator.StringToHash("Death");
@@ -114,7 +113,7 @@ namespace RPG_Project
 
             InputController.LockAction += ToggleLock;
 
-            InputController.RollAction += Roll;
+            InputController.DashAction += Dash;
             InputController.GuardAction += Guard;
 
             InputController.OnAction += Action;
@@ -129,7 +128,7 @@ namespace RPG_Project
 
             InputController.LockAction -= ToggleLock;
 
-            InputController.RollAction -= Roll;
+            InputController.DashAction -= Dash;
             InputController.GuardAction -= Guard;
 
             InputController.OnAction -= Action;
@@ -177,7 +176,8 @@ namespace RPG_Project
 
         void Run(Vector2 dir)
         {
-            if (sm.InState(StateID.ControllerMove) && dir != Vector2.zero)
+            if (sm.InState(StateID.ControllerMove) && dir != Vector2.zero && 
+                !Party.Stamina.InRecovery)
                 sm.ChangeState(StateID.ControllerRun);
         }
 
@@ -204,15 +204,15 @@ namespace RPG_Project
                     {
                         TargetSphere.InvokeLockOn();
 
-                        //if (sm.InState(StateID.ControllerMove))
-                        //    sm.ChangeState(StateID.ControllerStrafe);
+                        if (sm.InState(StateID.ControllerMove))
+                            sm.ChangeState(StateID.ControllerStrafe);
                     }
                     else
                     {
                         TargetSphere.Active = false;
 
                         TargetSphere.InvokeLockOff();
-                        //sm.ChangeState(StateID.ControllerMove);
+                        sm.ChangeState(StateID.ControllerMove);
                     }
                 }
                 else
@@ -224,32 +224,34 @@ namespace RPG_Project
             }
         }
 
-        void Roll()
+        void Dash()
         {
-            print("roll");
-            if (sm.InState(StateID.ControllerGuard)) sm.ChangeState(StateID.ControllerMove);
-            else if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
-                StateID.ControllerStrafe, StateID.ControllerAction))
+            if (!Party.Stamina.InRecovery)
             {
-                BattleAction action;
+                if (sm.InState(StateID.ControllerGuard))
+                    sm.ChangeState(StateID.ControllerMove);
+                else if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
+                    StateID.ControllerStrafe, StateID.ControllerAction))
+                {
+                    var dir = new Vector3(InputController.MoveChar.x, 0, InputController.MoveChar.y);
+                    BattleAction action =
+                        new BattleAction(this, dir,
+                        Combatant.GetActionData(0), dashHash);
 
-                if (TargetSphere.Active)
-                    action = new BattleAction(this, new Vector3(InputController.MoveChar.x, 0, InputController.MoveChar.y),
-                        Combatant.GetActionData(0), defendHash);
-                else action = new BattleAction(this, Combatant.GetActionData(0), defendHash);
-
-                ActionQueue.AddAction(action);
+                    ActionQueue.AddAction(action);
+                }
             }
         }
 
         void Guard()
         {
-            print("guard");
-            if (sm.InState(StateID.ControllerMove, StateID.ControllerRun, 
-                StateID.ControllerStrafe))
-                sm.ChangeState(StateID.ControllerGuard);
+            if (!Party.Stamina.InRecovery)
+            {
+                if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
+                    StateID.ControllerStrafe))
+                    sm.ChangeState(StateID.ControllerGuard);
+            }
         }
-
         void GuardCancel()
         {
             if (sm.InState(StateID.ControllerGuard))
@@ -258,18 +260,22 @@ namespace RPG_Project
 
         void Action(int index)
         {
-            if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
-                StateID.ControllerAction, StateID.ControllerStrafe))
+            if (!Party.Stamina.InRecovery)
             {
-                index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
-                ActionQueue.AddAction(GetAttackAction(index));
+                if (sm.InState(StateID.ControllerMove, StateID.ControllerRun,
+                    StateID.ControllerAction, StateID.ControllerStrafe))
+                {
+                    index = Mathf.Clamp(index, 0, Combatant.Skillset.Count - 1);
+                    ActionQueue.AddAction(GetAttackAction(index));
+                }
             }
         }
         #endregion
 
         BattleAction GetAttackAction(int index)
         {
-            return new BattleAction(this, Combatant.GetActionData(index + 1), attackHashes[index]);
+            return new BattleAction(this, Combatant.GetActionData(index + 1), 
+                attackHashes[index]);
         }
 
         #region AnimationEventMethods
@@ -281,7 +287,7 @@ namespace RPG_Project
 
         public void Die()
         {
-            Party.Party.Remove(this);
+            Party.RemoveController(this);
 
             TargetSphere.InvokeLockOff();
 

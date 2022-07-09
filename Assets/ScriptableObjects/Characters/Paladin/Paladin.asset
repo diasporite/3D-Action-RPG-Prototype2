@@ -25,9 +25,9 @@ MonoBehaviour:
   mainDefence: 0
   mainResist: 80
   <Actions>k__BackingField:
-  - {fileID: 11400000, guid: 02499f2143b07c0439c28977372c76cb, type: 2}
-  - {fileID: 11400000, guid: 9d866750367d23548903ca1c10558a51, type: 2}
-  - {fileID: 11400000, guid: 68c18890bcf5fae4e8cc56489317afe1, type: 2}
+  - {fileID: 11400000, guid: fc1065c2d73872b4ea4f30158b99bdf2, type: 2}
+  - {fileID: 11400000, guid: 521a50dc4780b9b4283c398a6e9dd3b6, type: 2}
+  - {fileID: 11400000, guid: b0979982e19a3084fa1ee91cf461e5fe, type: 2}
   - {fileID: 11400000, guid: ade8c1a9463f71a45bd37eecfdf9f223, type: 2}
   <DefendAction>k__BackingField: {fileID: 11400000, guid: 79107a8ab095fc043b4be556a94b0988,
     type: 2}

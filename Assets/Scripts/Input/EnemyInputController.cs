@@ -42,7 +42,7 @@ namespace RPG_Project
 
         public void OnToggleLock()
         {
-            //if (context.performed) InvokeLock();
+            InvokeLock();
         }
     }
 }

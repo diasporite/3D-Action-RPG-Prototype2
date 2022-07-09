@@ -50,8 +50,8 @@ namespace RPG_Project
 
             if (!movement.Grounded)
                 csm.ChangeState(StateID.ControllerFall);
-            else if (stamina.Empty)
-                csm.ChangeState(StateID.ControllerRecover);
+            //else if (stamina.Empty)
+            //    csm.ChangeState(StateID.ControllerRecover);
             else controller.Move(controller.TargetSphere.Active);
         }
 

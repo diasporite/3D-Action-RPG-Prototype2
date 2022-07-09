@@ -8,10 +8,10 @@ namespace RPG_Project
     public class ActionData : ScriptableObject
     {
         [field: Header("Animation Info")]
-        [field: SerializeField] public AnimationData Animation { get; private set; }
+        [field: SerializeField] public AnimationData Animation { get; protected set; }
 
         [field: Header("Costs")]
-        [field: SerializeField] public int SpCost { get; private set; } = 20;
-        [field: SerializeField] public int MpCost { get; private set; } = 5;
+        [field: SerializeField] public int SpCost { get; protected set; } = 20;
+        [field: SerializeField] public int MpCost { get; protected set; } = 5;
     }
 }

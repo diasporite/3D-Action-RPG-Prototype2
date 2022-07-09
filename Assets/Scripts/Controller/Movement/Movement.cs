@@ -115,6 +115,18 @@ namespace RPG_Project
                 cc.Move(Move(speed, transform.forward) * dt);
         }
 
+        public void MovePositionDir(float speed, Vector3 dir, float dt)
+        {
+            RotateModel(dir, dt);
+            var ds = dir.x * party.transform.right + dir.z * party.transform.forward;
+
+            model?.SetAnimSpeed(dir.magnitude * speed);
+            model?.SetAnimDir(dir);
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, ds.normalized) * dt);
+        }
+
         public void MovePositionRun(Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
