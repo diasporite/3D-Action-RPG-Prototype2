@@ -99,6 +99,10 @@ BEFORE 24/6/22
   - Replace rolling with dashing
   - Fix camera jitter when rotating when locked
 
+9/7/22
+- NOTES
+  - Knockback started to be implemented
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

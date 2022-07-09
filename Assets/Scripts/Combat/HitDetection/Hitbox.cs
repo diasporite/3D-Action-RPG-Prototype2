@@ -43,7 +43,8 @@ namespace RPG_Project
                     {
                         print(3);
                         //hits.Add(damageable);
-                        damageable.OnDamage(GetDamage(hurt));
+                        damageable.OnDamage(Instigator.CurrentAction.Info(Instigator), 
+                            Instigator.CurrentAction.Knockback(Instigator.transform.forward));
                     }
                 }
             }

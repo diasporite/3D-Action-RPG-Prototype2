@@ -15,7 +15,7 @@ namespace RPG_Project
 
         [Range(0f, 1f)]
         [SerializeField] float focalPoint = 0.5f;
-        [SerializeField] Transform targetFocus;
+        [field: SerializeField] public Transform TargetFocus { get; private set; }
 
         [field: SerializeField] public List<Target> Targets { get; private set; } = 
             new List<Target>();
@@ -23,8 +23,6 @@ namespace RPG_Project
         Camera mainCam;
 
         [field: SerializeField] public Target CurrentTarget { get; private set; }
-
-        public Transform TargetFocus => targetFocus;
 
         public Transform CurrentTargetTransform => CurrentTarget?.transform;
 
@@ -45,9 +43,13 @@ namespace RPG_Project
                 if (CurrentTarget != null && party.CurrentControllerTransform != null)
                 {
                     transform.position = party.CurrentControllerTransform.position;
-                    TargetFocus.transform.position =
-                        Vector3.Lerp(party.CurrentControllerTransform.position,
-                        CurrentTargetTransform.position, focalPoint);
+
+                    if (TargetFocus != null)
+                    {
+                        TargetFocus.transform.position =
+                            Vector3.Lerp(party.CurrentControllerTransform.position,
+                            CurrentTargetTransform.position, focalPoint);
+                    }
                 }
             }
         }
@@ -85,11 +87,13 @@ namespace RPG_Project
 
         public void InvokeLockOn()
         {
+            focalPoint = 0.5f;
             OnLockOn?.Invoke();
         }
 
         public void InvokeLockOff()
         {
+            focalPoint = 0f;
             OnLockOff?.Invoke();
         }
 

@@ -118,9 +118,9 @@ namespace RPG_Project
             controller.ActionQueue.AdvanceAction();
         }
 
-        public void ApplyForce(Vector3 force)
+        public void ApplyForce(Vector3 force, float dt)
         {
-            controller.Movement.ForceVelocity = force;
+            controller.Movement.ApplyForce(force, dt);
         }
 
         public void StartMotion()

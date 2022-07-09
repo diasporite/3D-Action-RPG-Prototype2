@@ -14,6 +14,8 @@ namespace RPG_Project
 
         public override void Execute()
         {
+            controller.Combatant.CurrentAction = Action;
+
             //if (controller.TargetSphere.Active)
             //    controller.Movement.FaceTarget(controller.TargetSphere.CurrentTargetTransform);
             //else

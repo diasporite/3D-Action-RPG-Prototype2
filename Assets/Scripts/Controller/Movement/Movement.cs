@@ -24,8 +24,8 @@ namespace RPG_Project
         [field: SerializeField] public float RunSpeed { get; private set; } = 6f;
         [field: SerializeField] public float StrafeSpeed { get; private set; } = 3f;
 
-        [Header("Forces")]
-        [SerializeField] Vector3 forceVelocity = 
+        [field: Header("Forces")]
+        [field: SerializeField] public Vector3 ForceVelocity { get; private set; } =
             new Vector3(0, 0, 0);
         [field: SerializeField] public float DragTime { get; private set; }
 
@@ -63,9 +63,7 @@ namespace RPG_Project
 
         public bool Grounded => grounded;
 
-        public Vector3 Move(float speed, Vector3 dir) => forceVelocity + (speed * dir);
-
-        public Vector3 ForceVelocity { set => forceVelocity = value; }
+        public Vector3 Move(float speed, Vector3 dir) => ForceVelocity + (speed * dir);
 
         private void Awake()
         {
@@ -197,9 +195,15 @@ namespace RPG_Project
             }
         }
 
+        public void ApplyForce(Vector3 dir, float dragTime)
+        {
+            ForceVelocity += dir;
+            DragTime = dragTime;
+        }
+
         public void UpdateForce()
         {
-            forceVelocity = Vector3.SmoothDamp(forceVelocity, Vector3.zero,
+            ForceVelocity = Vector3.SmoothDamp(ForceVelocity, Vector3.zero,
                 ref dampingVelocity, DragTime);
         }
 
@@ -252,7 +256,7 @@ namespace RPG_Project
             var damage = Mathf.RoundToInt(controller.Party.Health.ResourceStatValue *
                 dv * fallDamageScaling);
 
-            controller.Combatant.OnDamage(new DamageInfo(controller.Combatant, damage, 0));
+            controller.Combatant.OnDamage(new DamageInfo(controller.Combatant, damage, 0), null);
         }
     }
 }

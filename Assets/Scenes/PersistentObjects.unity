@@ -212,10 +212,15 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2219264401420718047, guid: 590afe9eb7b795c4f9988b51cfb8a664,
+        type: 3}
+      propertyPath: <TargetFocus>k__BackingField
+      value: 
+      objectReference: {fileID: 764957513}
     - target: {fileID: 4728763491243211616, guid: 590afe9eb7b795c4f9988b51cfb8a664,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4728763491243211616, guid: 590afe9eb7b795c4f9988b51cfb8a664,
         type: 3}
@@ -287,6 +292,12 @@ PrefabInstance:
 --- !u!4 &491789072 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4728763491243211616, guid: 590afe9eb7b795c4f9988b51cfb8a664,
+    type: 3}
+  m_PrefabInstance: {fileID: 491789071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &764957513 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735299386046731739, guid: 590afe9eb7b795c4f9988b51cfb8a664,
     type: 3}
   m_PrefabInstance: {fileID: 491789071}
   m_PrefabAsset: {fileID: 0}

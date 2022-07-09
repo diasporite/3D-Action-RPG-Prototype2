@@ -13,5 +13,8 @@ namespace RPG_Project
         [field: Header("Costs")]
         [field: SerializeField] public int SpCost { get; protected set; } = 20;
         [field: SerializeField] public int MpCost { get; protected set; } = 5;
+
+        public virtual DamageInfo Info(Combatant instigator) { return null; }
+        public virtual Knockback Knockback(Vector3 forward) { return null; }
     }
 }

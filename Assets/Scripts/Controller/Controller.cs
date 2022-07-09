@@ -141,8 +141,8 @@ namespace RPG_Project
             sm.Update();
 
             // Test damage
-            if (Input.GetKeyDown("space")) Combatant.OnDamage(new DamageInfo(Combatant, 35, 10));
-            if (Input.GetKeyDown("tab")) Combatant.OnDamage(new DamageInfo(Combatant, 10, 35));
+            if (Input.GetKeyDown("space")) Combatant.OnDamage(new DamageInfo(Combatant, 35, 10), null);
+            if (Input.GetKeyDown("tab")) Combatant.OnDamage(new DamageInfo(Combatant, 10, 35), null);
         }
 
         #region ControllerActions

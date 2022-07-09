@@ -23,11 +23,11 @@ MonoBehaviour:
       <DragTime>k__BackingField: 0
   <SpCost>k__BackingField: 45
   <MpCost>k__BackingField: 12
-  <Damage>k__BackingField:
+  <DamageData>k__BackingField:
     <NumOfHits>k__BackingField: 1
     <BaseHealthDamage>k__BackingField: 40
     <BaseStaminaDamage>k__BackingField: 10
-  <Knockback>k__BackingField:
+  <KnockbackData>k__BackingField:
     <KnockbackForce>k__BackingField: 4
     <DragTime>k__BackingField: 0.4
-    <KnockbackDir>k__BackingField: {x: 1, y: 0}
+    <KnockbackDir>k__BackingField: {x: 1, y: 1}

@@ -13,6 +13,8 @@ namespace RPG_Project
 
         [field: SerializeField] public string CharName { get; private set; }
 
+        [field: SerializeField] public ActionData CurrentAction { get; set; }
+
         [field: Header("Progression")]
         [field: SerializeField] public Stat Level { get; private set; }
 
@@ -96,7 +98,7 @@ namespace RPG_Project
             enemyAi = GetComponentInParent<EnemyAIController>();
         }
 
-        public void OnDamage(DamageInfo damage)
+        public void OnDamage(DamageInfo damage, Knockback knockback)
         {
             if (controller.sm.InState(StateID.ControllerDeath)) return;
 
@@ -112,6 +114,8 @@ namespace RPG_Project
                 controller.sm.ChangeState(StateID.ControllerDeath);
             else if (stamina.Empty)
                 controller.sm.ChangeState(StateID.ControllerStagger);
+
+            knockback?.Apply(controller.Movement);
 
             party.InvokeDamage();
         }
@@ -156,15 +160,6 @@ namespace RPG_Project
             Skillset = Data.Actions.ToList();
         }
 
-        //int CalculateLv()
-        //{
-        //    for (int i = 0; i < expAtLv.Length; i++)
-        //        if (exp < expAtLv[i])
-        //            return i;
-
-        //    return expAtLv.Length;
-        //}
-
         public void SwapSkills(ActionData skill1, ActionData skill2)
         {
             if (!Skillset.Contains(skill1) || !Skillset.Contains(skill2)) return;
@@ -177,6 +172,18 @@ namespace RPG_Project
 
             Skillset.RemoveAt(i2);
             Skillset.Insert(i2, skill1);
+        }
+
+        float HurtboxMultiplier(Hurtbox hurt)
+        {
+            if (hurt.HurtboxState == HurtboxState.Acting)
+                return 2f;
+            else if (hurt.HurtboxState == HurtboxState.Guard)
+                return 0.5f;    // Guard resistance stat
+            else if (hurt.HurtboxState == HurtboxState.Roll)
+                return 0.5f;    // Roll/dash/teleport resist stat
+
+            return 1f;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IDamageable
     {
-        void OnDamage(DamageInfo damage);
+        void OnDamage(DamageInfo damage, Knockback knockback);
     }
 }
