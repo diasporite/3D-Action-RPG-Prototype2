@@ -103,6 +103,12 @@ BEFORE 24/6/22
 - NOTES
   - Knockback started to be implemented
 
+10/7/22
+- NOTES
+  - Starting to implement nav mesh
+- TO DO
+  - NMA does not update path to follow player
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

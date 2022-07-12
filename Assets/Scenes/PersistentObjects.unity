@@ -107,7 +107,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
+    agentHeight: 1
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 909a1a9c23ec60a4f90cace1933d576b, type: 2}
 --- !u!1001 &185970703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1112,6 +1112,8 @@ MonoBehaviour:
   <BottomOrbit>k__BackingField:
     <Height>k__BackingField: -0.6
     <Radius>k__BackingField: 2
+  freeTarget: {fileID: 0}
+  lockTarget: {fileID: 0}
 --- !u!1 &1753004122
 GameObject:
   m_ObjectHideFlags: 0

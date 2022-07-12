@@ -23,6 +23,8 @@ namespace RPG_Project
         [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
         [field: SerializeField] public float RunSpeed { get; private set; } = 6f;
         [field: SerializeField] public float StrafeSpeed { get; private set; } = 3f;
+        [field: SerializeField] public Vector3 MoveVelocity { get; private set; } = 
+            new Vector3(0, 0, 0);
 
         [field: Header("Forces")]
         [field: SerializeField] public Vector3 ForceVelocity { get; private set; } =
@@ -63,7 +65,8 @@ namespace RPG_Project
 
         public bool Grounded => grounded;
 
-        public Vector3 Move(float speed, Vector3 dir) => ForceVelocity + (speed * dir);
+        public Vector3 Move(float speed, Vector3 dir) => 
+            ForceVelocity + (speed * dir.normalized);
 
         private void Awake()
         {
@@ -91,6 +94,14 @@ namespace RPG_Project
             dropSpeed = -Mathf.Tan(cc.slopeLimit * Mathf.Deg2Rad);
         }
 
+        void MovePosition(float speed, Vector3 dir, float dt)
+        {
+            MoveVelocity = speed * dir;
+
+            if (dir != Vector3.zero)
+                cc.Move(Move(speed, dir) * dt);
+        }
+
         public void MovePositionFree(Vector3 dir, float dt)
         {
             RotateModel(dir, dt);
@@ -99,7 +110,7 @@ namespace RPG_Project
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(Move(WalkSpeed, transform.forward) * dt);
+                MovePosition(WalkSpeed, transform.forward, dt);
         }
 
         public void MovePositionFree(float speed, Vector3 dir, float dt)
@@ -110,7 +121,7 @@ namespace RPG_Project
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(Move(speed, transform.forward) * dt);
+                MovePosition(speed, transform.forward, dt);
         }
 
         public void MovePositionDir(float speed, Vector3 dir, float dt)
@@ -122,7 +133,7 @@ namespace RPG_Project
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(Move(speed, ds.normalized) * dt);
+                MovePosition(speed, ds, dt);
         }
 
         public void MovePositionRun(Vector3 dir, float dt)
@@ -133,7 +144,7 @@ namespace RPG_Project
             model?.SetAnimDir(dir);
 
             if (dir != Vector3.zero)
-                cc.Move(Move(RunSpeed, transform.forward) * dt);
+                MovePosition(RunSpeed, transform.forward, dt);
         }
 
         public void MovePositionStrafe(Vector3 dir, float dt)
@@ -146,7 +157,7 @@ namespace RPG_Project
             var ds = transform.forward * dir.z + transform.right * dir.x;
 
             if (dir != Vector3.zero)
-                cc.Move(Move(StrafeSpeed, ds) * dt);
+                MovePosition(StrafeSpeed, ds, dt);
         }
 
         public void MovePositionStrafe(float speed, Vector3 dir, float dt)
@@ -159,7 +170,7 @@ namespace RPG_Project
             var ds = transform.forward * dir.z + transform.right * dir.x;
 
             if (dir != Vector3.zero)
-                cc.Move(Move(speed, ds) * dt);
+                MovePosition(speed, ds, dt);
         }
 
         public void MovePositionForward(float speed, float dt, bool damping)

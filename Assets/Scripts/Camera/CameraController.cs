@@ -31,11 +31,11 @@ namespace RPG_Project
             //transform.position = Vector3.Lerp(transform.position,
             //    pcc.CurrentCamera.ExpectedCamPosition(follow, ts.TargetFocus), 0.8f);
 
-            //transform.rotation = Quaternion.Lerp(transform.rotation, 
-            //    Quaternion.LookRotation(lookAt.position-transform.position), 
-            //    0.5f * updateSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                Quaternion.LookRotation(lookAt.position - transform.position),
+                5f * updateSpeed * Time.deltaTime);
 
-            transform.LookAt(lookAt);
+            //transform.LookAt(t);
         }
     }
 }

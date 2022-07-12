@@ -6,9 +6,16 @@ namespace RPG_Project
 {
     public class EnemyInputController : InputController
     {
-        public void OnMove(Vector3 dir)
+        TargetSphere ts;
+
+        private void Awake()
         {
-            MoveChar = new Vector2(dir.x, dir.z);
+            ts = GetComponentInChildren<TargetSphere>();
+        }
+
+        public void OnMove(Vector3 dirToPlayer)
+        {
+            MoveChar = new Vector2(dirToPlayer.x, dirToPlayer.z);
         }
 
         public void OnRotate(Vector3 dir)
@@ -43,6 +50,16 @@ namespace RPG_Project
         public void OnToggleLock()
         {
             InvokeLock();
+        }
+
+        public void OnLockOn()
+        {
+
+        }
+
+        public void OnLockOff()
+        {
+
         }
     }
 }

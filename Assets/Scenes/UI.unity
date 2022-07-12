@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 909a1a9c23ec60a4f90cace1933d576b, type: 2}
 --- !u!1 &30605449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,6 +1101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b20561a7a9a7ca4782158a4148a7a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 90
 --- !u!1 &770898910 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6737612878352029849, guid: 9b94029198e12834f80af0cabaf6de26,
@@ -1926,6 +1927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7714227eebf8248a55595a6dfa5785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  party: {fileID: 0}
+  characters: []
 --- !u!1 &1254607483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2463,6 +2466,7 @@ MonoBehaviour:
   player: {fileID: 0}
   charInfo: {fileID: 494188897}
   skillsetUI: {fileID: 0}
+  partyInfo: {fileID: 0}
 --- !u!114 &1443701589 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6737612878755806516, guid: 9b94029198e12834f80af0cabaf6de26,

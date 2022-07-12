@@ -26,7 +26,20 @@ namespace RPG_Project
         [field: SerializeField] public CameraOrbit MiddleOrbit { get; private set; }
         [field: SerializeField] public CameraOrbit BottomOrbit { get; private set; }
 
+        [SerializeField] Transform freeTarget;
+        [SerializeField] Transform lockTarget;
+
         InputController input;
+
+        public Transform CurrentTarget
+        {
+            get
+            {
+                if (Locked) return lockTarget;
+
+                return freeTarget;
+            }
+        }
 
         private void Awake()
         {
@@ -46,9 +59,9 @@ namespace RPG_Project
         {
             Gizmos.color = Color.red;
 
-            DrawRadii(TopOrbit);
-            DrawRadii(MiddleOrbit);
-            DrawRadii(BottomOrbit);
+            //DrawRadii(TopOrbit);
+            //DrawRadii(MiddleOrbit);
+            //DrawRadii(BottomOrbit);
         }
 
         void DrawRadii(CameraOrbit orbit)

@@ -224,6 +224,16 @@ namespace RPG_Project
             }
         }
 
+        void LockOn()
+        {
+
+        }
+
+        void LockOff()
+        {
+
+        }
+
         void Dash()
         {
             if (!Party.Stamina.InRecovery)
