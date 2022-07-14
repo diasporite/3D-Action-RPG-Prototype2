@@ -22,8 +22,6 @@ namespace RPG_Project
 
         public void Enter(params object[] args)
         {
-            controller.TargetSphere.Active = false;
-
             controller.Model.PlayAnimationFade(controller.deathHash, 0, false);
 
             controller.ActionQueue.ClearActions();

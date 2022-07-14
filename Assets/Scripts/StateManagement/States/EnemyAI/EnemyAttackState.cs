@@ -24,7 +24,7 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
-            input.OnToggleLock();
+            input.OnLockOn();
 
             input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
             enemy.AttackTimer.Reset();
@@ -32,6 +32,8 @@ namespace RPG_Project
 
         public void ExecuteFrame()
         {
+            MoveAgentToPlayer();
+
             if (!enemy.ActionQueue.Executing)
             {
                 if (enemy.InAttackRange) esm.ChangeState(StateID.EnemyStrafe);
@@ -52,8 +54,13 @@ namespace RPG_Project
 
         public void Exit()
         {
-            input.OnToggleLock();
+            input.OnLockOff();
         }
         #endregion
+
+        void MoveAgentToPlayer()
+        {
+            enemy.Agent.velocity = enemy.Party.CurrentController.GetComponent<Movement>().MoveVelocity;
+        }
     }
 }

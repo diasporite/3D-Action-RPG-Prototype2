@@ -26,7 +26,7 @@ namespace RPG_Project
         public PartyController Party { get; private set; }
         public ActionQueue ActionQueue { get; private set; }
         public EnemyInputController InputController { get; private set; }
-        public NavMeshAgent Nma { get; private set; }
+        public NavMeshAgent Agent { get; private set; }
 
         public readonly StateMachine sm = new StateMachine();
 
@@ -53,7 +53,7 @@ namespace RPG_Project
             Party = GetComponent<PartyController>();
             ActionQueue = GetComponent<ActionQueue>();
             InputController = GetComponent<EnemyInputController>();
-            Nma = GetComponent<NavMeshAgent>();
+            Agent = GetComponent<NavMeshAgent>();
 
             SqrChaseRange = chaseRange * chaseRange;
             SqrAttackRange = attackRange * attackRange;
@@ -84,6 +84,10 @@ namespace RPG_Project
 
             Gizmos.color = Color.blue;
             Gizmos.DrawRay(transform.position, 3f * transform.forward);
+
+            Gizmos.color = Color.magenta;
+            if (Agent != null)
+                Gizmos.DrawRay(transform.position, 3f * Agent.desiredVelocity);
         }
 
         private void OnEnable()

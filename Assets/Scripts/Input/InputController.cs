@@ -31,6 +31,8 @@ namespace RPG_Project
         public event Action<Vector2> WalkAction;
 
         public event Action LockAction;
+        public event Action LockOnAction;
+        public event Action LockOffAction;
 
         public event Action DashAction;
         public event Action GuardAction;
@@ -147,6 +149,16 @@ namespace RPG_Project
         protected void InvokeLock()
         {
             LockAction?.Invoke();
+        }
+
+        protected void InvokeLockOn()
+        {
+            LockOnAction?.Invoke();
+        }
+
+        protected void InvokeLockOff()
+        {
+            LockOffAction?.Invoke();
         }
 
         protected void InvokeRoll()

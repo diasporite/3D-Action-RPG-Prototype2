@@ -112,6 +112,8 @@ namespace RPG_Project
             InputController.WalkAction += Walk;
 
             InputController.LockAction += ToggleLock;
+            InputController.LockOnAction += LockOn;
+            InputController.LockOffAction += LockOff;
 
             InputController.DashAction += Dash;
             InputController.GuardAction += Guard;
@@ -127,6 +129,8 @@ namespace RPG_Project
             InputController.WalkAction -= Walk;
 
             InputController.LockAction -= ToggleLock;
+            InputController.LockOnAction -= LockOn;
+            InputController.LockOffAction -= LockOff;
 
             InputController.DashAction -= Dash;
             InputController.GuardAction -= Guard;
@@ -192,46 +196,74 @@ namespace RPG_Project
             if (sm.InState(StateID.ControllerMove, StateID.ControllerStrafe, 
                 StateID.ControllerRecover))
             {
-                TargetSphere.Active = !TargetSphere.Active;
+                if (TargetSphere.Active) LockOff();
+                else LockOn();
 
-                if (TargetSphere.Active)
-                {
-                    //TargetSphere.InvokeLockOn();
+                //TargetSphere.Active = !TargetSphere.Active;
 
-                    var targetFound = TargetSphere.SelectTargets();
+                //if (TargetSphere.Active)
+                //{
+                //    //TargetSphere.InvokeLockOn();
 
-                    if (targetFound)
-                    {
-                        TargetSphere.InvokeLockOn();
+                //    var targetFound = TargetSphere.SelectTargets();
 
-                        if (sm.InState(StateID.ControllerMove))
-                            sm.ChangeState(StateID.ControllerStrafe);
-                    }
-                    else
-                    {
-                        TargetSphere.Active = false;
+                //    if (targetFound)
+                //    {
+                //        TargetSphere.InvokeLockOn();
 
-                        TargetSphere.InvokeLockOff();
-                        sm.ChangeState(StateID.ControllerMove);
-                    }
-                }
-                else
-                {
-                    TargetSphere.InvokeLockOff();
+                //        if (sm.InState(StateID.ControllerMove))
+                //            sm.ChangeState(StateID.ControllerStrafe);
+                //    }
+                //    else
+                //    {
+                //        TargetSphere.Active = false;
 
-                    sm.ChangeState(StateID.ControllerMove);
-                }
+                //        TargetSphere.InvokeLockOff();
+                //        sm.ChangeState(StateID.ControllerMove);
+                //    }
+                //}
+                //else
+                //{
+                //    TargetSphere.InvokeLockOff();
+
+                //    sm.ChangeState(StateID.ControllerMove);
+                //}
             }
         }
 
         void LockOn()
         {
+            //if (sm.InState(StateID.ControllerMove, StateID.ControllerStrafe,
+            //    StateID.ControllerRecover))
+            //{
+                if (!TargetSphere.Active)
+                {
+                    var targetsFound = TargetSphere.SelectTargets();
 
+                    if (targetsFound)
+                    {
+                        TargetSphere.InvokeLockOn();
+                        sm.ChangeState(StateID.ControllerStrafe);
+                    }
+                    else
+                    {
+                        sm.ChangeState(StateID.ControllerMove);
+                    }
+                }
+            //}
         }
 
         void LockOff()
         {
-
+            //if (sm.InState(StateID.ControllerMove, StateID.ControllerStrafe,
+            //    StateID.ControllerRecover))
+            //{
+                if (TargetSphere.Active)
+                {
+                    TargetSphere.InvokeLockOff();
+                    sm.ChangeState(StateID.ControllerMove);
+                }
+            //}
         }
 
         void Dash()

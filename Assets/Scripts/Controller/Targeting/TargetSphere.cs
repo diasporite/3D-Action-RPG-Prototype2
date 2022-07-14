@@ -37,7 +37,7 @@ namespace RPG_Project
 
         private void Update()
         {
-            if (NoTargets) Active = false;
+            if (NoTargets) InvokeLockOff();
             else
             {
                 if (CurrentTarget != null && party.CurrentControllerTransform != null)
@@ -87,12 +87,15 @@ namespace RPG_Project
 
         public void InvokeLockOn()
         {
+            Active = true;
             focalPoint = 0.5f;
             OnLockOn?.Invoke();
         }
 
         public void InvokeLockOff()
         {
+            print("off");
+            Active = false;
             focalPoint = 0f;
             OnLockOff?.Invoke();
         }
@@ -117,11 +120,11 @@ namespace RPG_Project
                 }
             }
 
-            if (closestTarget == null) return false;
+            //if (closestTarget == null) return false;
 
             CurrentTarget = closestTarget;
 
-            return true;
+            return CurrentTarget != null;
         }
 
         bool OutsideScreen(Vector2 screenPos)

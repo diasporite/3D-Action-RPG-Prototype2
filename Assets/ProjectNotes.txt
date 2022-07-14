@@ -109,6 +109,13 @@ BEFORE 24/6/22
 - TO DO
   - NMA does not update path to follow player
 
+14/7/22
+- NOTES
+  - Toggle/lock on methods separated
+  - NAVMESH GOES PAST PLAYER AS AGENT SEPARATES FROM CONTROLLER
+- TO DO
+  - Implement agent moving code for EnemyAttack state
+
 IDEAS
 - Max stamina gradually changes [DITCHED]
   - Very slow with time

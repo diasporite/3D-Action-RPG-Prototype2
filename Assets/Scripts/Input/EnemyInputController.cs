@@ -54,12 +54,12 @@ namespace RPG_Project
 
         public void OnLockOn()
         {
-
+            InvokeLockOn();
         }
 
         public void OnLockOff()
         {
-
+            InvokeLockOff();
         }
     }
 }

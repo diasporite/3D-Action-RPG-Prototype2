@@ -20,17 +20,14 @@ namespace RPG_Project
             party = enemy.Party;
             input = enemy.InputController;
 
-            enemy.Nma.updatePosition = false;
-            enemy.Nma.updateRotation = false;
+            enemy.Agent.updatePosition = false;
+            enemy.Agent.updateRotation = false;
         }
 
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
-            enemy.Nma.ResetPath();
-            enemy.Nma.velocity = Vector3.zero;
 
-            MoveToPlayer();
         }
 
         public void ExecuteFrame()
@@ -60,20 +57,20 @@ namespace RPG_Project
 
         public void Exit()
         {
-            enemy.Nma.ResetPath();
-            enemy.Nma.velocity = Vector3.zero;
+            enemy.Agent.ResetPath();
+            enemy.Agent.velocity = Vector3.zero;
         }
         #endregion
 
         void MoveToPlayer()
         {
-            enemy.Nma.destination = enemy.PlayerTransform.position;
+            enemy.Agent.destination = enemy.PlayerTransform.position;
 
-            var dirToPlayer = enemy.Nma.desiredVelocity.normalized;
+            var dirToPlayer = enemy.Agent.desiredVelocity.normalized;
             input.OnMove(dirToPlayer);
 
             //enemy.Nma.velocity = enemy.Party.GetComponent<CharacterController>().velocity;
-            enemy.Nma.velocity = enemy.Party.CurrentController.GetComponent<Movement>().MoveVelocity;
+            enemy.Agent.velocity = enemy.Party.CurrentController.GetComponent<Movement>().MoveVelocity;
         }
     }
 }
