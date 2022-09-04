@@ -111,7 +111,11 @@ namespace RPG_Project
             if (enemyAi != null) enemyAi.AttackTimer.CooldownFraction += 0.5f;
 
             if (health.Empty)
+            {
                 controller.sm.ChangeState(StateID.ControllerDeath);
+                var ai = party.GetComponent<EnemyAIController>();
+                if (ai != null) ai.sm.ChangeState(StateID.EnemyStandby);
+            }
             else if (stamina.Empty)
                 controller.sm.ChangeState(StateID.ControllerStagger);
 

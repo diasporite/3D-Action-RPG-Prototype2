@@ -24,6 +24,8 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
+            enemy.Agent.updatePosition = false;
+
             enemy.SpawnTimer.Reset();
         }
 

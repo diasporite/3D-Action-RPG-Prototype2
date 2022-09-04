@@ -24,6 +24,8 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
+            enemy.Agent.updatePosition = true;
+
             input.OnLockOn();
 
             input.OnAttack(Random.Range(0, enemy.Party.CurrentCombatant.Skillset.Count - 1));
@@ -54,6 +56,8 @@ namespace RPG_Project
 
         public void Exit()
         {
+            enemy.Agent.updatePosition = false;
+
             input.OnLockOff();
         }
         #endregion

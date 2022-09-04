@@ -85,6 +85,18 @@ namespace RPG_Project
 
         float InterpolateRadius(float height)
         {
+            if (height >= TopOrbit.Height) return TopOrbit.Radius;
+
+            if (height >= MiddleOrbit.Height)
+            {
+                return MiddleOrbit.Radius;
+            }
+
+            if (height >= BottomOrbit.Height)
+            {
+                return BottomOrbit.Radius;
+            }
+
             return 3f;
         }
 
@@ -112,8 +124,8 @@ namespace RPG_Project
 
             if (Locked)
             {
-                height = TopOrbit.Height;
-                radius = TopOrbit.Radius;
+                height = 0.5f * (TopOrbit.Height - MiddleOrbit.Height) + MiddleOrbit.Height;
+                radius = InterpolateRadius(height);
             }
         }
         #endregion

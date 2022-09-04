@@ -94,17 +94,18 @@ namespace RPG_Project
         {
             PlayerTransform = FindObjectOfType<PlayerSpawner>().transform;
 
-            Party.OnDeath += SwitchToStandby;
+            //Party.OnDeath += SwitchToStandby;
         }
 
         private void OnDisable()
         {
-            Party.OnDeath -= SwitchToStandby;
+            //Party.OnDeath -= SwitchToStandby;
         }
 
         void SwitchToStandby()
         {
             sm.ChangeState(StateID.EnemyStandby);
+            print("standby");
         }
     }
 }

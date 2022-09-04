@@ -24,6 +24,8 @@ namespace RPG_Project
         #region InterfaceMethods
         public void Enter(params object[] args)
         {
+            enemy.Agent.updatePosition = true;
+
             input.OnLockOn();
         }
 
@@ -58,6 +60,8 @@ namespace RPG_Project
 
         public void Exit()
         {
+            enemy.Agent.updatePosition = false;
+
             input.OnLockOff();
         }
         #endregion

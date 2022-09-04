@@ -4,18 +4,48 @@ using UnityEngine;
 
 namespace RPG_Project
 {
-    public class EnemyDeathState : MonoBehaviour
+    public class EnemyDeathState : IState
     {
-        // Start is called before the first frame update
-        void Start()
+        EnemyAIController enemy;
+        StateMachine esm;
+
+        EnemyInputController input;
+        PartyController party;
+
+        public EnemyDeathState(EnemyAIController enemy)
+        {
+            this.enemy = enemy;
+            esm = enemy.sm;
+
+            party = enemy.Party;
+            input = enemy.InputController;
+        }
+
+        #region InterfaceMethods
+        public void Enter(params object[] args)
+        {
+            enemy.Agent.updatePosition = false;
+        }
+
+        public void ExecuteFrame()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        public void ExecuteFrameFixed()
         {
 
         }
+
+        public void ExecuteFrameLate()
+        {
+
+        }
+
+        public void Exit()
+        {
+
+        }
+        #endregion
     }
 }
